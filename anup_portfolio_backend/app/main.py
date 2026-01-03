@@ -27,7 +27,7 @@ app = FastAPI(
 
 origins = [
     "http://localhost:5173",
-    "https://your-portfolio.vercel.app",
+    "https://anup-portfolio-one.vercel.app",
 ]
 
 
