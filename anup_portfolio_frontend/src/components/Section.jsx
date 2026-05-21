@@ -6,7 +6,7 @@ export function Section({ id, title, eyebrow, children }) {
       <div className="container">
         {eyebrow && <p className="section-eyebrow">{eyebrow}</p>}
         {title && <h2 className="section-title">{title}</h2>}
-        <div className="section-content">{children}</div>
+        {children}
       </div>
     </section>
   );

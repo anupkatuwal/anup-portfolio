@@ -1,41 +1,26 @@
-// src/components/SkillsSection.jsx
 import React from "react";
 import { Section } from "./Section";
 
-const SKILL_GROUPS = [
-  {
-    title: "Programming & Data",
-    items: ["Python", "Pandas / NumPy", "SQL (MySQL, MS SQL, SQLite)", "Data Visualization"],
-  },
-  {
-    title: "Web & APIs",
-    items: ["FastAPI", "Flask (basics)", "React", "RESTful APIs"],
-  },
-  {
-    title: "Machine Learning & NLP",
-    items: ["Scikit-learn", "Transformers / BERT", "Sentiment Analysis", "Model Evaluation"],
-  },
-  {
-    title: "Tools & Platforms",
-    items: ["Git & GitHub", "VS Code", "Google Colab", "Jupyter"],
-  },
+const SKILLS = [
+  { domain: "data",   items: ["Python", "Pandas", "NumPy", "SQL", "Data Visualization"] },
+  { domain: "ml/nlp", items: ["BERT", "Transformers", "Scikit-learn", "Sentiment Analysis", "Fairness Metrics"] },
+  { domain: "web",    items: ["FastAPI", "React", "Vite", "REST APIs", "SQLite"] },
+  { domain: "tools",  items: ["Git", "Jupyter", "Google Colab", "VS Code", "Linux"] },
 ];
 
 export function SkillsSection() {
   return (
-    <Section id="skills" title="Skills" eyebrow="What I work with">
-      <div className="skills-grid">
-        {SKILL_GROUPS.map((group) => (
-          <article key={group.title} className="card">
-            <h3 className="card-title">{group.title}</h3>
-            <ul className="pill-list">
-              {group.items.map((item) => (
-                <li key={item} className="pill">
-                  {item}
-                </li>
+    <Section id="skills" title="Skills" eyebrow="// what I work with">
+      <div className="skills-table">
+        {SKILLS.map((row) => (
+          <div key={row.domain} className="skill-row">
+            <div className="skill-domain">{row.domain}</div>
+            <div className="skill-items">
+              {row.items.map((item) => (
+                <span key={item} className="skill-chip">{item}</span>
               ))}
-            </ul>
-          </article>
+            </div>
+          </div>
         ))}
       </div>
     </Section>

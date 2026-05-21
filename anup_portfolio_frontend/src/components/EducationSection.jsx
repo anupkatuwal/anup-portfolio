@@ -5,25 +5,20 @@ const EDUCATION = [
   {
     degree: "Master of Computer Information Systems (MCIS)",
     inst: "NCIT, Pokhara University",
-    period: "2022 – Present",
-    details:
-      "Thesis: Bias Mitigation in Mental Health Sentiment Analysis using BERT with Fairness Techniques.",
+    period: "2022 – Apr 2026",
+    details: "CGPA 3.71 · Thesis: Bias Mitigation in Mental Health Sentiment Analysis using BERT.",
   },
   {
     degree: "B.Sc. in Computer Information Systems",
-    inst: "Columbia College, Denver, Colorado, USA",
+    inst: "Columbia College, Denver, Colorado",
     period: "2010 – 2014",
-    details: "GPA: 3.34, strong focus on information systems and programming.",
+    details: "GPA 3.34 · Focus on information systems and programming.",
   },
 ];
 
 export function EducationSection() {
   return (
-    <Section
-      id="education"
-      title="Education"
-      eyebrow="Academic journey"
-    >
+    <Section id="education" title="Education" eyebrow="// academic background">
       <div className="education-grid">
         {EDUCATION.map((ed) => (
           <article key={ed.degree} className="card">

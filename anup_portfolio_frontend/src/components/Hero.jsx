@@ -1,66 +1,55 @@
-// src/components/Hero.jsx
 import React from "react";
 
 export function Hero() {
   return (
     <section id="top" className="hero">
       <div className="container">
-        <div className="hero-grid">
-          {/* Left */}
-          <div className="hero-left">
-            <p className="hero-eyebrow">Data & AI · Portfolio</p>
+        <div className="hero-layout">
 
-            <h1 className="hero-title">
-              Hi, I am <span className="hero-accent">Anup Katuwal</span>.
+          {/* LEFT */}
+          <div>
+            <p className="hero-kicker">Kathmandu, Nepal · Data & NLP</p>
+
+            <h1 className="hero-name">
+              Anup<br /><em>Katuwal.</em>
             </h1>
 
-            <p className="hero-subtitle">
-              Graduate student in Computer Information Systems, aspiring data
-              analyst and lecturer, building intelligent systems at the
-              intersection of{" "}
-              <span className="hero-subtle-accent">
-                NLP, analytics, and real-world problems.
-              </span>
+            <p className="hero-bio">
+              I build <strong>NLP systems</strong> that understand language and surface bias.
+              Graduate researcher, aspiring lecturer, occasional tinkerer.
             </p>
 
             <div className="hero-actions">
-              <a href="#projects" className="btn btn-primary">
-                View Projects
-              </a>
-              <a href="#contact" className="btn btn-ghost">
-                Contact Me
-              </a>
+              <a href="#projects" className="btn btn-primary">Projects</a>
+              <a href="#contact" className="btn btn-ghost">Get in touch</a>
             </div>
 
-            <p className="hero-meta">
-              Based in Kathmandu · Open to data/analytics roles and
-              collaborations.
-            </p>
-          </div>
-
-          {/* Right */}
-          <div className="card hero-card">
-            <div className="hero-card-top">
-              <div className="hero-avatar">
-                <span>AK</span>
-              </div>
-              <div>
-                <p className="hero-card-label">Current Focus</p>
-                <p className="hero-card-text">
-                  Finishing master&apos;s thesis on bias in mental-health
-                  sentiment analysis using BERT, and preparing for a lecturer
-                  role.
-                </p>
-              </div>
-            </div>
-
-            <div className="hero-tags">
-              <span className="tag">Python</span>
-              <span className="tag">FastAPI</span>
-              <span className="tag">React</span>
-              <span className="tag">Data Analytics</span>
+            <div className="hero-status">
+              <span className="status-dot" />
+              Open to data & analytics roles
             </div>
           </div>
+
+          {/* RIGHT */}
+          <div className="hero-panel">
+            <div className="hero-stat">
+              <p className="stat-label">Currently</p>
+              <p className="stat-value">M.CIS thesis — <span>bias in mental-health NLP</span></p>
+            </div>
+            <div className="hero-stat">
+              <p className="stat-label">Stack</p>
+              <p className="stat-value">Python · BERT · FastAPI · React · SQL</p>
+            </div>
+            <div className="hero-stat">
+              <p className="stat-label">Background</p>
+              <p className="stat-value">Teaching · Consulting · Research</p>
+            </div>
+            <div className="hero-stat">
+              <p className="stat-label">Interests</p>
+              <p className="stat-value">Fairness in AI · Teaching · Data storytelling</p>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
