@@ -1,13 +1,10 @@
 // src/api/client.js
 import axios from "axios";
 
-const BASE_URL =
-  import.meta.env.VITE_API_URL ||
-  (import.meta.env.DEV ? "http://127.0.0.1:8000" : "");
+// In dev: proxy to local FastAPI. In production: same-origin /api on Vercel.
+const BASE_URL = import.meta.env.DEV ? "http://127.0.0.1:8000" : "/api";
 
-export const apiClient = axios.create({
-  baseURL: BASE_URL,
-});
+export const apiClient = axios.create({ baseURL: BASE_URL });
 
 /* ---------------- AUTH ---------------- */
 export async function login(username, password) {
@@ -34,6 +31,14 @@ export async function createProject(payload) {
   return res.data;
 }
 
+export async function updateProject(id, payload) {
+  const token = localStorage.getItem("access_token");
+  const res = await apiClient.put(`/projects/${id}`, payload, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
+
 export async function deleteProject(id) {
   const token = localStorage.getItem("access_token");
   const res = await apiClient.delete(`/projects/${id}`, {
@@ -54,14 +59,6 @@ export async function fetchContacts() {
 export async function deleteContact(id) {
   const token = localStorage.getItem("access_token");
   const res = await apiClient.delete(`/admin/contacts/${id}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return res.data;
-}
-
-export async function updateProject(id, payload) {
-  const token = localStorage.getItem("access_token");
-  const res = await apiClient.put(`/projects/${id}`, payload, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return res.data;
