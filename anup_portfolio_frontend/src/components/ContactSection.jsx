@@ -20,7 +20,6 @@ export function ContactSection() {
     e.preventDefault();
     setStatus({ type: null, message: "" });
     setLoading(true);
-
     try {
       await sendContactMessage(form);
       setStatus({
@@ -40,25 +39,49 @@ export function ContactSection() {
   };
 
   return (
-    <Section
-      id="contact"
-      title="Contact"
-      eyebrow="Let us collaborate"
-    >
+    <Section id="contact" title="Contact" eyebrow="Let us collaborate">
       <div className="contact-layout">
         <div className="contact-text">
-          <p className="card-text">
+          <p className="card-text" style={{ marginBottom: "20px" }}>
             Whether you want to discuss data analytics, NLP projects, teaching,
             or potential collaborations, feel free to send me a message.
           </p>
           <ul className="contact-meta">
-            <li>
-              <span className="meta-label">Current focus:</span>
-              <span>Thesis, data analytics, and academic roles</span>
+            <li className="contact-meta-item">
+              <span className="meta-label">Email</span>
+              <a href="mailto:katuwalanup@gmail.com" className="meta-link">
+                katuwalanup@gmail.com
+              </a>
             </li>
-            <li>
-              <span className="meta-label">Location:</span>
+            <li className="contact-meta-item">
+              <span className="meta-label">Location</span>
               <span>Kathmandu, Nepal</span>
+            </li>
+            <li className="contact-meta-item">
+              <span className="meta-label">GitHub</span>
+              <a
+                href="https://github.com/anupkatuwal"
+                target="_blank"
+                rel="noreferrer"
+                className="meta-link"
+              >
+                github.com/anupkatuwal
+              </a>
+            </li>
+            <li className="contact-meta-item">
+              <span className="meta-label">LinkedIn</span>
+              <a
+                href="https://www.linkedin.com/in/anup-katuwal"
+                target="_blank"
+                rel="noreferrer"
+                className="meta-link"
+              >
+                linkedin.com/in/anup-katuwal
+              </a>
+            </li>
+            <li className="contact-meta-item">
+              <span className="meta-label">Focus</span>
+              <span>Data analytics, NLP, academic roles</span>
             </li>
           </ul>
         </div>
@@ -114,7 +137,9 @@ export function ContactSection() {
           {status.type && (
             <p
               className={
-                status.type === "success" ? "form-status success" : "form-status error"
+                status.type === "success"
+                  ? "form-status success"
+                  : "form-status error"
               }
             >
               {status.message}

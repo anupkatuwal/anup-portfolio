@@ -8,12 +8,21 @@ export function Footer() {
           © {new Date().getFullYear()} Anup Katuwal. All rights reserved.
         </p>
         <div className="footer-links">
-          <a href="#" target="_blank" rel="noreferrer">
+          <a
+            href="https://github.com/anupkatuwal"
+            target="_blank"
+            rel="noreferrer"
+          >
             GitHub
           </a>
-          <a href="#" target="_blank" rel="noreferrer">
+          <a
+            href="https://www.linkedin.com/in/anup-katuwal"
+            target="_blank"
+            rel="noreferrer"
+          >
             LinkedIn
           </a>
+          <a href="mailto:katuwalanup@gmail.com">Email</a>
         </div>
       </div>
     </footer>
