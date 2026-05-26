@@ -49,7 +49,7 @@ body {
   transition: background-color 0.9s ease;
 }
 
-/* Per-section background tint as you scroll */
+/* Per-section background tint as you scroll (DARK theme) */
 body[data-section="top"]        { background-color: #0e0d0b; }
 body[data-section="skills"]     { background-color: #0a0f1c; }
 body[data-section="experience"] { background-color: #0a1418; }
@@ -57,6 +57,15 @@ body[data-section="education"]  { background-color: #0f0b1a; }
 body[data-section="resume"]     { background-color: #0a1410; }
 body[data-section="projects"]   { background-color: #14100b; }
 body[data-section="contact"]    { background-color: #0b0e16; }
+
+/* Per-section background tint as you scroll (LIGHT theme) */
+html[data-theme="light"] body[data-section="top"]        { background-color: #f7f3ee; }
+html[data-theme="light"] body[data-section="skills"]     { background-color: #eef1f9; }
+html[data-theme="light"] body[data-section="experience"] { background-color: #eaf4f1; }
+html[data-theme="light"] body[data-section="education"]  { background-color: #f2ecfa; }
+html[data-theme="light"] body[data-section="resume"]     { background-color: #ecf6ef; }
+html[data-theme="light"] body[data-section="projects"]   { background-color: #faf3e9; }
+html[data-theme="light"] body[data-section="contact"]    { background-color: #eef1f8; }
 
 /* =========================================================
    ANIMATED BACKGROUND FX
@@ -113,6 +122,15 @@ body[data-section="contact"]    { background-color: #0b0e16; }
   background-size: 64px 64px;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 30%, transparent 75%);
   -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 30%, transparent 75%);
+}
+
+/* Lighten orbs and darken grid lines in light mode for contrast */
+html[data-theme="light"] .bg-orb { opacity: 0.16; }
+
+html[data-theme="light"] .bg-grid {
+  background-image:
+    linear-gradient(rgba(20,15,10,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20,15,10,0.04) 1px, transparent 1px);
 }
 
 @keyframes orbFloat1 {
