@@ -71,12 +71,12 @@ export function ContactSection() {
             <li className="contact-meta-item">
               <span className="meta-label">LinkedIn</span>
               <a
-                href="https://www.linkedin.com/in/anup-katuwal"
+                href="https://www.linkedin.com/in/anup-katuwal-004b7884"
                 target="_blank"
                 rel="noreferrer"
                 className="meta-link"
               >
-                linkedin.com/in/anup-katuwal
+                linkedin.com/in/anup-katuwal-004b7884
               </a>
             </li>
             <li className="contact-meta-item">

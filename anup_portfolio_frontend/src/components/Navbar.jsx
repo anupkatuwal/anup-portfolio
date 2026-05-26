@@ -6,6 +6,7 @@ const LINKS = [
   { href: "#skills", label: "Skills" },
   { href: "#experience", label: "Experience" },
   { href: "#education", label: "Education" },
+  { href: "#resume", label: "Resume" },
   { href: "#projects", label: "Projects" },
   { href: "#contact", label: "Contact" },
 ];
@@ -24,7 +25,7 @@ export function Navbar() {
     <header className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
       <div className="container navbar-inner">
         <a href="#top" className="navbar-brand">
-          <span className="brand-mark">AK</span>
+          <span className="brand-mark"><img src="/logo.jpg" alt="Anup Katuwal" /></span>
           <span className="brand-text">Anup Katuwal</span>
         </a>
 
