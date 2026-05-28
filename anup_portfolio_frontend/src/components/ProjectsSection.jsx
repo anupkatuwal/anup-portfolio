@@ -23,6 +23,15 @@ const STATIC_PROJECTS = [
     github_link: "https://github.com/anupkatuwal/anup-portfolio",
     live_link: "https://anup-portfolio-one.vercel.app",
   },
+  {
+    id: "s-3",
+    title: "Mood Board",
+    description:
+      "Full-stack Mood Board app that generates a color palette, quote, and emoji based on how you feel. Built with FastAPI and React, deployed serverless on Vercel.",
+    tech_stack: "Python,FastAPI,React,JavaScript,CSS",
+    github_link: "https://github.com/anupkatuwal/mood-board",
+    live_link: "https://mood-board-five-theta.vercel.app",
+  },
 ];
 
 export function ProjectsSection() {
