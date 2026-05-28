@@ -58,11 +58,12 @@ class ContactMessage(Base):
 Base.metadata.create_all(bind=engine)
 
 # ── Auth ──────────────────────────────────────────────────────────────────────
-SECRET_KEY        = os.getenv("SECRET_KEY", "dev-secret-change-me")
+SECRET_KEY        = os.getenv("SECRET_KEY") or os.urandom(32).hex()
 ALGORITHM         = "HS256"
 TOKEN_EXPIRE_MINS = 60
-ADMIN_USERNAME    = os.getenv("ADMIN_USERNAME", "admin")
-ADMIN_PASSWORD    = os.getenv("ADMIN_PASSWORD", "admin123")
+# Admin credentials must be provided via env vars; no insecure defaults.
+ADMIN_USERNAME    = os.getenv("ADMIN_USERNAME")
+ADMIN_PASSWORD    = os.getenv("ADMIN_PASSWORD")
 
 pwd_ctx        = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme  = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
@@ -126,6 +127,9 @@ def health():
 # ── Routes: auth ──────────────────────────────────────────────────────────────
 @app.post("/api/auth/login")
 def login(form: OAuth2PasswordRequestForm = Depends()):
+    # If env vars are not configured, admin login is disabled entirely.
+    if not ADMIN_USERNAME or not ADMIN_PASSWORD:
+        raise HTTPException(status_code=503, detail="Admin login is not configured on this deployment")
     if form.username != ADMIN_USERNAME or form.password != ADMIN_PASSWORD:
         raise HTTPException(status_code=401, detail="Invalid credentials")
     return {"access_token": make_token({"sub": form.username}), "token_type": "bearer"}

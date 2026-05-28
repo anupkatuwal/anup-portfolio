@@ -1,11 +1,6 @@
 // src/App.jsx
 import { useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
-import { AdminLogin } from "./pages/AdminLogin";
-import { AdminDashboard } from "./pages/AdminDashboard";
-
-// Import your existing portfolio components
-//import { Navbar } from "./components/Navbar";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import { Hero } from "./components/Hero";
 import { SkillsSection } from "./components/SkillsSection";
@@ -68,8 +63,11 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/admin/login" element={<AdminLogin />} />
-      <Route path="/admin" element={<AdminDashboard />} />
+      {/* Admin routes intentionally removed from production: the Vercel
+          serverless DB is ephemeral so admin-created data cannot persist.
+          Re-enable when migrated to a persistent DB (Vercel Postgres,
+          Turso, Supabase, etc.) and proper credentials are configured. */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
