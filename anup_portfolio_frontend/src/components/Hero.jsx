@@ -1,22 +1,6 @@
-import React, { useState, useEffect } from "react";
-
-const ROLES = ["Data Analyst", "Web Developer", "NLP Researcher"];
+import React from "react";
 
 export function Hero() {
-  const [roleIndex, setRoleIndex] = useState(0);
-  const [roleVisible, setRoleVisible] = useState(true);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRoleVisible(false);
-      setTimeout(() => {
-        setRoleIndex((prev) => (prev + 1) % ROLES.length);
-        setRoleVisible(true);
-      }, 450);
-    }, 2600);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section id="top" className="hero">
       <div className="container">
@@ -30,16 +14,13 @@ export function Hero() {
 
             <p className="hero-roles">
               <span className="role-prefix">I&apos;m a </span>
-              <span className={`role-word${roleVisible ? " is-visible" : ""}`}>
-                {ROLES[roleIndex]}
-              </span>
+              <span className="role-word is-visible">Data Analyst &amp; NLP Researcher</span>
             </p>
 
             <p className="hero-bio">
-              Hi, I&apos;m Anup Katuwal — a <strong>Master&apos;s graduate in Computer Information
-              Systems</strong> from Kathmandu, Nepal. I build data pipelines, wrangle messy
-              datasets, and research fairness in AI. My Master&apos;s thesis tackled bias
-              mitigation in mental-health NLP using BERT.
+              I help teams turn <strong>messy data into clear decisions</strong> — building
+              Python pipelines, SQL analytics, and BERT-powered NLP. Backed by a Master&apos;s
+              in Computer Information Systems and published fairness research.
             </p>
 
             <div className="hero-status">
@@ -64,15 +45,15 @@ export function Hero() {
             <div className="hero-panel">
               <div className="hero-stat">
                 <p className="stat-label">Currently</p>
-                <p className="stat-value">M.CIS thesis — <span>bias in mental-health NLP</span></p>
+                <p className="stat-value">M.CIS (3.71 GPA) · <span>Published NLP Research</span></p>
               </div>
               <div className="hero-stat">
                 <p className="stat-label">Stack</p>
                 <p className="stat-value">Python · BERT · FastAPI · React · SQL</p>
               </div>
               <div className="hero-stat">
-                <p className="stat-label">Background</p>
-                <p className="stat-value">Teaching · Consulting · Research</p>
+                <p className="stat-label">Recent Work</p>
+                <p className="stat-value">IEEE NLP Paper · BERT Fine-Tuning · Analytics Dashboards</p>
               </div>
               <div className="hero-stat">
                 <p className="stat-label">Interests</p>

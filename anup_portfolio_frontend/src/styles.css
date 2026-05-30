@@ -230,7 +230,60 @@ html[data-theme="light"] .navbar-scrolled {
 
 .navbar-nav { display: flex; gap: 2px; }
 
-@media (max-width: 720px) { .navbar-nav { display: none; } }
+/* Hamburger button — hidden on desktop, visible on mobile */
+.nav-hamburger {
+  display: none;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  background: transparent;
+  border-radius: 8px;
+  padding: 0;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+}
+.nav-hamburger span {
+  display: block;
+  width: 16px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.nav-hamburger.is-open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-hamburger.is-open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.is-open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+@media (max-width: 720px) {
+  .nav-hamburger { display: inline-flex; }
+
+  /* Mobile drawer: hidden by default, slides down when open */
+  .navbar-nav {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 20px 24px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35);
+    transform: translateY(-130%);
+    transition: transform 0.25s ease;
+    z-index: 49;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+  }
+  .navbar-nav.is-open { transform: translateY(0); }
+  .navbar-nav .navbar-link {
+    font-size: 16px;
+    padding: 12px 14px;
+  }
+}
 
 .navbar-link {
   font-size: 13px;
@@ -347,6 +400,9 @@ html[data-theme="light"] .navbar-scrolled {
 .hero .container { padding-top: 48px; padding-bottom: 32px; }
 
 .section .container { padding-top: 24px; padding-bottom: 24px; }
+
+/* Offset anchor jumps for the sticky navbar so headings aren't hidden under it. */
+section[id] { scroll-margin-top: 72px; }
 
 .hero-layout {
   display: grid;
