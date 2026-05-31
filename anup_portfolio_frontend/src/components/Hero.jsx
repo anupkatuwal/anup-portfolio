@@ -49,7 +49,7 @@ export function Hero() {
             <p className="hero-bio">
               I turn messy data into <strong>decisions</strong> — dashboards,
               pipelines, and automation tools built with Python, SQL, and AI.
-              M.CIS graduate (3.8 GPA) with published NLP research on fairness
+              M.CIS graduate (3.71 GPA) with published NLP research on fairness
               in mental-health AI.
             </p>
 
@@ -85,7 +85,7 @@ export function Hero() {
               <div className="hero-stat">
                 <p className="stat-label">Credentials</p>
                 <p className="stat-value">
-                  M.CIS · <span>3.8 GPA</span> · Published Research
+                  M.CIS · <span>3.71 GPA</span> · Published Research
                 </p>
               </div>
 
