@@ -89,12 +89,12 @@ export function ContactSection() {
             <li className="contact-meta-item">
               <span className="meta-label">Upwork</span>
               <a
-                href="https://www.upwork.com/freelancers/anupkatuwal"
+                href="https://www.upwork.com/freelancers/~01fe60c948627059d5"
                 target="_blank"
                 rel="noreferrer"
                 className="meta-link"
               >
-                upwork.com/fl/anupkatuwal
+                upwork.com/freelancers/~01fe60c948627059d5
               </a>
             </li>
 

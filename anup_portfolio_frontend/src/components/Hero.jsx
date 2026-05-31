@@ -64,7 +64,7 @@ export function Hero() {
               <a href="#projects"                              className="btn btn-primary">View Projects</a>
               <a href="#contact"                               className="btn btn-ghost">Get in touch</a>
               <a
-                href="https://www.upwork.com/freelancers/anupkatuwal"
+                href="https://www.upwork.com/freelancers/~01fe60c948627059d5"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-upwork"

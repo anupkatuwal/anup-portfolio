@@ -95,7 +95,7 @@ export function Navbar() {
           </a>
         ))}
         <a
-          href="https://www.upwork.com/freelancers/anupkatuwal"
+          href="https://www.upwork.com/freelancers/~01fe60c948627059d5"
           target="_blank"
           rel="noopener noreferrer"
           className="navbar-mobile-link navbar-mobile-cta"
