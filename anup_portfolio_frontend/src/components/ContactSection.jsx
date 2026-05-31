@@ -1,15 +1,25 @@
+// src/components/ContactSection.jsx
+//
+// Uses Formspree for reliable email delivery — no backend, no lost messages.
+//
+// SETUP (one-time, 2 minutes):
+//   1. Go to https://formspree.io and sign up free
+//   2. Create a new form → copy the form ID (looks like "xpwzgkqr")
+//   3. Replace "mjgzdegv" below with your actual ID
+//   4. Formspree emails every submission directly to katuwalanup@gmail.com
+//   5. Free tier: 50 submissions/month — more than enough for a portfolio
+
 import React, { useState } from "react";
 import { Section } from "./Section";
-import { sendContactMessage } from "../api/contact";
+
+const FORMSPREE_ID = "mjgzdegv"; // ← replace this after signing up
+const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
+
+const EMPTY_FORM = { name: "", email: "", subject: "", message: "" };
 
 export function ContactSection() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-  const [status, setStatus] = useState({ type: null, message: "" });
+  const [form,    setForm]    = useState(EMPTY_FORM);
+  const [status,  setStatus]  = useState({ type: null, message: "" });
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -20,18 +30,32 @@ export function ContactSection() {
     e.preventDefault();
     setStatus({ type: null, message: "" });
     setLoading(true);
+
     try {
-      await sendContactMessage(form);
-      setStatus({
-        type: "success",
-        message: "Thank you for reaching out. I will get back to you soon.",
+      const res = await fetch(FORMSPREE_URL, {
+        method:  "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body:    JSON.stringify(form),
       });
-      setForm({ name: "", email: "", subject: "", message: "" });
-    } catch (err) {
-      console.error(err);
+
+      if (res.ok) {
+        setStatus({
+          type:    "success",
+          message: "Message sent — I'll get back to you soon.",
+        });
+        setForm(EMPTY_FORM);
+      } else {
+        // Formspree returns structured errors — surface them if present
+        const data = await res.json().catch(() => ({}));
+        setStatus({
+          type:    "error",
+          message: data?.error ?? "Something went wrong. Please try again.",
+        });
+      }
+    } catch {
       setStatus({
-        type: "error",
-        message: "Something went wrong. Please try again later.",
+        type:    "error",
+        message: "Network error. Check your connection and try again.",
       });
     } finally {
       setLoading(false);
@@ -39,13 +63,16 @@ export function ContactSection() {
   };
 
   return (
-    <Section id="contact" title="Contact" eyebrow="Let us collaborate">
+    <Section id="contact" title="Contact" eyebrow="Let's collaborate">
       <div className="contact-layout">
+
+        {/* ── Left: contact info ── */}
         <div className="contact-text">
           <p className="card-text" style={{ marginBottom: "20px" }}>
-            Whether you want to discuss data analytics, NLP projects, teaching,
-            or potential collaborations, feel free to send me a message.
+            Available for freelance data analytics, Python automation, and API
+            integration projects. Reach out and I'll reply within 24 hours.
           </p>
+
           <ul className="contact-meta">
             <li className="contact-meta-item">
               <span className="meta-label">Email</span>
@@ -53,10 +80,24 @@ export function ContactSection() {
                 katuwalanup@gmail.com
               </a>
             </li>
+
             <li className="contact-meta-item">
               <span className="meta-label">Location</span>
               <span>Kathmandu, Nepal</span>
             </li>
+
+            <li className="contact-meta-item">
+              <span className="meta-label">Upwork</span>
+              <a
+                href="https://www.upwork.com/freelancers/anupkatuwal"
+                target="_blank"
+                rel="noreferrer"
+                className="meta-link"
+              >
+                upwork.com/fl/anupkatuwal
+              </a>
+            </li>
+
             <li className="contact-meta-item">
               <span className="meta-label">GitHub</span>
               <a
@@ -68,6 +109,7 @@ export function ContactSection() {
                 github.com/anupkatuwal
               </a>
             </li>
+
             <li className="contact-meta-item">
               <span className="meta-label">LinkedIn</span>
               <a
@@ -76,80 +118,89 @@ export function ContactSection() {
                 rel="noreferrer"
                 className="meta-link"
               >
-                linkedin.com/in/anup-katuwal-004b7884
+                linkedin.com/in/anup-katuwal
               </a>
             </li>
+
             <li className="contact-meta-item">
-              <span className="meta-label">Focus</span>
-              <span>Data analytics, NLP, academic roles</span>
+              <span className="meta-label">Open to</span>
+              <span>Data analytics · Python automation · AI integration</span>
             </li>
           </ul>
         </div>
 
-        <form className="card contact-form" onSubmit={handleSubmit}>
+        {/* ── Right: contact form ── */}
+        <form className="card contact-form" onSubmit={handleSubmit} noValidate>
           <div className="field-row">
             <div className="field">
-              <label htmlFor="name">Name</label>
+              <label htmlFor="cf-name">Name</label>
               <input
-                id="name"
+                id="cf-name"
                 name="name"
                 value={form.name}
                 onChange={handleChange}
+                placeholder="Your name"
                 required
+                autoComplete="name"
               />
             </div>
+
             <div className="field">
-              <label htmlFor="email">Email</label>
+              <label htmlFor="cf-email">Email</label>
               <input
-                id="email"
+                id="cf-email"
                 name="email"
                 type="email"
                 value={form.email}
                 onChange={handleChange}
+                placeholder="you@example.com"
                 required
+                autoComplete="email"
               />
             </div>
           </div>
 
           <div className="field">
-            <label htmlFor="subject">Subject</label>
+            <label htmlFor="cf-subject">Subject</label>
             <input
-              id="subject"
+              id="cf-subject"
               name="subject"
               value={form.subject}
               onChange={handleChange}
+              placeholder="What's this about?"
               required
             />
           </div>
 
           <div className="field">
-            <label htmlFor="message">Message</label>
+            <label htmlFor="cf-message">Message</label>
             <textarea
-              id="message"
+              id="cf-message"
               name="message"
-              rows="4"
+              rows="5"
               value={form.message}
               onChange={handleChange}
+              placeholder="Tell me about your project or question..."
               required
             />
           </div>
 
           {status.type && (
-            <p
-              className={
-                status.type === "success"
-                  ? "form-status success"
-                  : "form-status error"
-              }
-            >
+            <p className={`form-status ${status.type}`} role="alert">
               {status.message}
             </p>
           )}
 
-          <button className="btn btn-primary" type="submit" disabled={loading}>
-            {loading ? "Sending..." : "Send Message"}
+          <button
+            className="btn btn-primary"
+            type="submit"
+            disabled={loading}
+            style={{ width: "100%", justifyContent: "center" }}
+          >
+            {loading ? "Sending…" : "Send Message"}
           </button>
         </form>
+
       </div>
     </Section>
   );
