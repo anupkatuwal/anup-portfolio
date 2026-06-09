@@ -25,6 +25,15 @@ const STATIC_PROJECTS = [
     live_link: "",
   },
   {
+    id: "s-5",
+    title: "Personal Portfolio — anup-portfolio",
+    description:
+      "This site. React + Vite frontend with a FastAPI backend, JWT-protected admin panel, and SQLite DB. Deployed serverless on Vercel. Features dark/light theme, animated hero, scroll-aware navbar, skills table with primary-chip highlighting, and a Certifications & Training section. Built and iterated entirely with Claude Code.",
+    tech_stack: "React,Vite,FastAPI,Python,SQLite,JWT,Vercel,Claude Code",
+    github_link: "https://github.com/anupkatuwal/anup-portfolio",
+    live_link: "https://anup-portfolio-one.vercel.app",
+  },
+  {
     id: "s-4",
     title: "AI Daily Briefing",
     description:
