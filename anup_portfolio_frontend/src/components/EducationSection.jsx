@@ -14,6 +14,12 @@ const EDUCATION = [
     period: "2010 – 2014",
     details: "GPA 3.34 · Focus on information systems and programming.",
   },
+  {
+    degree: "Advanced Data Analysis with Python",
+    inst: "Broadway Infosys",
+    period: "May 2026 – Aug 2026",
+    details: "3-month intensive training · Python, data analysis, and applied data science workflows.",
+  },
 ];
 
 export function EducationSection() {
