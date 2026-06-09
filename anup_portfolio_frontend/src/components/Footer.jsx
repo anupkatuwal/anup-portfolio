@@ -20,7 +20,7 @@ export function Footer() {
             <span>GitHub</span>
           </a>
           <a
-            href="https://www.linkedin.com/in/anup-katuwal-004b7884"
+            href="https://www.linkedin.com/in/anupkatuwal1989"
             target="_blank"
             rel="noreferrer"
             aria-label="LinkedIn"
