@@ -1,5 +1,8 @@
+// src/components/ExperienceSection.jsx
+
 import React from "react";
 import { Section } from "./Section";
+<<<<<<< Updated upstream
 
 const EXPERIENCES = [
   {
@@ -56,7 +59,45 @@ export function ExperienceSection() {
             <p className="timeline-meta">{exp.period} · {exp.location}</p>
             <ul className="bullet-list">
               {exp.bullets.map((b) => <li key={b}>{b}</li>)}
+=======
+import experience from "../data/experience";
+
+export function ExperienceSection() {
+  return (
+    <Section
+      id="experience"
+      title="Work Experience"
+      eyebrow="Professional & Academic Roles"
+    >
+      <div className="experience-list">
+        {experience.map((exp) => (
+          <article key={exp.id} className="card experience-card">
+            <header className="experience-header">
+              <h3 className="card-title">
+                {exp.role}
+              </h3>
+              <p className="experience-meta">
+                {exp.company} · {exp.location}
+              </p>
+              <p className="experience-period">{exp.period}</p>
+            </header>
+
+            <ul className="experience-points">
+              {exp.description.map((point, idx) => (
+                <li key={idx}>{point}</li>
+              ))}
+>>>>>>> Stashed changes
             </ul>
+
+            {exp.skills && (
+              <ul className="pill-list">
+                {exp.skills.map((skill) => (
+                  <li key={skill} className="pill">
+                    {skill}
+                  </li>
+                ))}
+              </ul>
+            )}
           </article>
         ))}
       </div>
