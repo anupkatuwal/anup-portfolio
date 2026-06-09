@@ -53,7 +53,7 @@ const CERTIFICATIONS = [
     issuer: "Amazon Web Services (AWS)",
     date: "Jan 2022",
     status: null,
-    url: null,
+    url: "https://coursera.org/share/28d3e6ca9e7dd3b819459f047bea25a2",
   },
   {
     title: "Intro to Business Analysis Using Spreadsheets",
