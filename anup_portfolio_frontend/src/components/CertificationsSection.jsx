@@ -70,7 +70,7 @@ const CERTIFICATIONS = [
     url: "https://coursera.org/verify/6L926FGW6DT3",
   },
   {
-    title: "Java SE 8 — TestPrep & Fundamentals",
+    title: "Java SE 8 & 11 — Skillsoft Courses",
     issuer: "Metrix Learning / Skillsoft",
     date: "Dec 2021",
     status: null,
@@ -79,6 +79,7 @@ const CERTIFICATIONS = [
       { name: "TestPrep 1Z0-808 Java SE 8 Programmer I", url: "/cert-java-se8.pdf" },
       { name: "Java SE 8 Fundamentals: Classes and Objects", url: "/cert-java-se8-fundamentals.pdf" },
       { name: "Java SE 8 Fundamentals: Methods, Encapsulation, and Conditionals", url: "/cert-java-se8-methods.pdf" },
+      { name: "1Z0-806 Java SE 11 Programmer II: Arrays & Program Flow Control", url: "/cert-java-se11-arrays.pdf" },
     ],
   },
 ];
