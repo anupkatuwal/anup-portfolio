@@ -5,7 +5,7 @@ const EXPERIENCES = [
   {
     role: "Graduate Researcher",
     org: "NCIT, Pokhara University",
-    period: "2022 – 2026",
+    period: "2022 – Apr 2026",
     location: "Kathmandu, Nepal",
     bullets: [
       "Thesis on bias mitigation in mental-health sentiment analysis using fine-tuned BERT.",
