@@ -1,12 +1,6 @@
-<<<<<<< Updated upstream
 import React, { useEffect, useState } from "react";
-=======
-// src/components/ProjectsSection.jsx
-
-import React from "react";
->>>>>>> Stashed changes
 import { Section } from "./Section";
-import projects from "../data/projects";
+import { fetchProjects } from "../api/client";
 
 // Always-shown projects (kept even if the backend is down/empty).
 const STATIC_PROJECTS = [
@@ -38,10 +32,18 @@ const STATIC_PROJECTS = [
     github_link: "https://github.com/anupkatuwal/mood-board",
     live_link: "https://mood-board-five-theta.vercel.app",
   },
+  {
+    id: "s-4",
+    title: "AI Daily Briefing",
+    description:
+      "Automated personal assistant that fetches unread emails, Google Calendar events, and news headlines every morning, generates a structured briefing with Claude AI, and emails it at 10 AM. Replies to the briefing email trigger Claude to reply or delete emails on your behalf.",
+    tech_stack: "Python,Claude AI,Gmail API,Google Calendar API,GitHub Actions,RSS",
+    github_link: "https://github.com/anupkatuwal/daily-briefing",
+    live_link: "",
+  },
 ];
 
 export function ProjectsSection() {
-<<<<<<< Updated upstream
   const [apiProjects, setApiProjects] = useState([]);
 
   useEffect(() => {
@@ -105,66 +107,6 @@ export function ProjectsSection() {
           </article>
         ))}
       </div>
-=======
-  return (
-    <Section
-      id="projects"
-      title="Projects"
-      eyebrow="Things I am building"
-    >
-      {projects.length === 0 && (
-        <p className="card-text">No projects added yet.</p>
-      )}
-
-      {projects.length > 0 && (
-        <div className="projects-grid">
-          {projects.map((p) => (
-            <article key={p.id} className="card project-card">
-              <div className="project-header">
-                <h3 className="card-title">{p.title}</h3>
-
-                {(p.github || p.demo) && (
-                  <div className="project-links">
-                    {p.github && (
-                      <a
-                        href={p.github}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="project-link"
-                      >
-                        GitHub
-                      </a>
-                    )}
-                    {p.demo && (
-                      <a
-                        href={p.demo}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="project-link"
-                      >
-                        Live
-                      </a>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              <p className="project-tagline">{p.description}</p>
-
-              {p.tech && (
-                <ul className="pill-list">
-                  {p.tech.map((t) => (
-                    <li key={t} className="pill">
-                      {t}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </article>
-          ))}
-        </div>
-      )}
->>>>>>> Stashed changes
     </Section>
   );
 }
