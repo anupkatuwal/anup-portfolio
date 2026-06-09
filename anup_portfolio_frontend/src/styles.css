@@ -161,6 +161,7 @@ a:hover { text-decoration: underline; }
 .page {
   position: relative;
   z-index: 1;
+  background: linear-gradient(to bottom, #0d0d0d 0%, #0f1520 100%);
 }
 
 .container {
@@ -173,6 +174,9 @@ a:hover { text-decoration: underline; }
 .section .container {
   padding-top: 64px;
   padding-bottom: 64px;
+}
+#skills .container {
+  padding-top: 24px;
 }
 
 /* FIX: scroll-margin-top on every anchored section so sticky nav
@@ -706,6 +710,11 @@ html[data-theme="light"] .navbar-scrolled {
   background: transparent;
   transition: color 0.15s, border-color 0.15s, background 0.15s;
 }
+.skill-chip--primary {
+  font-weight: 600;
+  border-color: rgba(212, 160, 23, 0.6);
+  color: var(--text);
+}
 .skill-row:hover .skill-chip {
   color: var(--text);
   border-color: var(--border-hover);
@@ -819,6 +828,14 @@ html[data-theme="light"] .navbar-scrolled {
 }
 .timeline-item:hover { border-left-color: var(--accent); }
 .timeline-item:hover::before { box-shadow: 0 0 14px var(--accent-glow); }
+
+.role--minor {
+  opacity: 0.5;
+  font-size: 0.875rem;
+}
+.role--minor .role-title {
+  font-size: 0.9rem;
+}
 
 .timeline-header { margin-bottom: 2px; }
 

@@ -8,29 +8,21 @@ const STATIC_PROJECTS = [
     id: "s-1",
     title: "Bias-Aware Mental Health Sentiment Analysis",
     description:
-      "Fine-tuned BERT on Reddit mental-health posts to classify sentiment while measuring and mitigating demographic bias. Published as IEEE paper.",
+      "Fine-tuned BERT on 52,000+ Reddit mental-health posts for sentiment classification. Achieved 84% F1-score. Reduced demographic parity gap by 56% (ΔDP: 0.211 → 0.098). Published as IEEE-format research paper.",
     tech_stack: "Python,BERT,HuggingFace,Pandas,Scikit-learn,Reddit API",
     github_link:
       "https://github.com/anupkatuwal/bias-aware-sentiment-analysis-mental-health",
     live_link: "",
-  },
-  {
-    id: "s-2",
-    title: "This Portfolio",
-    description:
-      "Full-stack personal site — React frontend, FastAPI backend, SQLite DB, JWT admin panel. Deployed serverless on Vercel.",
-    tech_stack: "React,Vite,FastAPI,Python,SQLite,Vercel",
-    github_link: "https://github.com/anupkatuwal/anup-portfolio",
-    live_link: "https://anup-portfolio-one.vercel.app",
+    featured: true,
   },
   {
     id: "s-3",
-    title: "Mood Board",
+    title: "Upwork Proposal Automation Agent",
     description:
-      "Full-stack Mood Board app that generates a color palette, quote, and emoji based on how you feel. Built with FastAPI and React, deployed serverless on Vercel.",
-    tech_stack: "Python,FastAPI,React,JavaScript,CSS",
-    github_link: "https://github.com/anupkatuwal/mood-board",
-    live_link: "https://mood-board-five-theta.vercel.app",
+      "Python agent that reads job listings, generates tailored proposals using the Claude API, and exports to Google Docs. Reduces proposal time from 20 min to under 2 min.",
+    tech_stack: "Python,Claude API,Google Docs API,Automation",
+    github_link: "https://github.com/anupkatuwal/upwork-proposal-agent",
+    live_link: "",
   },
   {
     id: "s-4",
@@ -62,7 +54,9 @@ export function ProjectsSection() {
     };
   }, []);
 
-  const projects = [...STATIC_PROJECTS, ...apiProjects];
+  const projects = [...STATIC_PROJECTS, ...apiProjects].sort(
+    (a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0)
+  );
 
   return (
     <Section id="projects" title="Projects" eyebrow="// things I've built">

@@ -5,10 +5,11 @@ const projects = [
     id: 1,
     title: "Bias-Aware Sentiment Analysis (Master’s Thesis)",
     description:
-      "Fairness-aware sentiment analysis on Reddit mental health data using BERT, counterfactual data augmentation, and adversarial debiasing.",
+      "Fine-tuned BERT on 52,000+ Reddit mental-health posts for sentiment classification. Achieved 84% F1-score. Reduced demographic parity gap by 56% (ΔDP: 0.211 → 0.098). Published as IEEE-format research paper.",
     tech: ["Python", "BERT", "NLP", "Fairlearn", "IEEE"],
     github: "https://github.com/anupkatuwal/rmh-bias-fairbert",
     demo: null,
+    featured: true,
   },
   {
     id: 2,

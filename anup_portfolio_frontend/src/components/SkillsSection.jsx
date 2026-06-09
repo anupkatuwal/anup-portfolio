@@ -1,6 +1,8 @@
 import React from "react";
 import { Section } from "./Section";
 
+const PRIMARY = new Set(["Python", "SQL", "BERT", "Pandas", "FastAPI"]);
+
 const SKILLS = [
   { domain: "data",   items: ["Python", "Pandas", "NumPy", "SQL", "Data Visualization"] },
   { domain: "ml/nlp", items: ["BERT", "Transformers", "Scikit-learn", "Sentiment Analysis", "Fairness Metrics"] },
@@ -17,7 +19,7 @@ export function SkillsSection() {
             <div className="skill-domain">{row.domain}</div>
             <div className="skill-items">
               {row.items.map((item) => (
-                <span key={item} className="skill-chip">{item}</span>
+                <span key={item} className={`skill-chip${PRIMARY.has(item) ? " skill-chip--primary" : ""}`}>{item}</span>
               ))}
             </div>
           </div>
