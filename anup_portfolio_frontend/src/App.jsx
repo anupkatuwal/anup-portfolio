@@ -6,6 +6,7 @@ import { Hero } from "./components/Hero";
 import { SkillsSection } from "./components/SkillsSection";
 import { ExperienceSection } from "./components/ExperienceSection";
 import { EducationSection } from "./components/EducationSection";
+import { CertificationsSection } from "./components/CertificationsSection";
 import { ResumeSection } from "./components/ResumeSection";
 import { ProjectsSection } from "./components/ProjectsSection";
 import { ContactSection } from "./components/ContactSection"; // or ContactForm if that is what you named it
@@ -48,6 +49,7 @@ function HomePage() {
         <SkillsSection />
         <ExperienceSection />
         <EducationSection />
+        <CertificationsSection />
         <ResumeSection />
         <ProjectsSection />
         <ContactSection />

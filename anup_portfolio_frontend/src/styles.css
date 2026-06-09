@@ -833,8 +833,13 @@ html[data-theme="light"] .navbar-scrolled {
   opacity: 0.5;
   font-size: 0.875rem;
 }
-.role--minor .role-title {
+.role--minor .card-title {
   font-size: 0.9rem;
+}
+.timeline-description {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
 }
 
 .timeline-header { margin-bottom: 2px; }
@@ -853,6 +858,60 @@ html[data-theme="light"] .navbar-scrolled {
   color: var(--muted);
   margin-bottom: 5px;
   line-height: 1.55;
+}
+
+/* =========================================================
+   CERTIFICATIONS & TRAINING
+========================================================= */
+.cert-group { margin-bottom: 28px; }
+.cert-group:last-child { margin-bottom: 0; }
+
+.cert-group-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.cert-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+}
+@media (max-width: 900px) { .cert-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .cert-grid { grid-template-columns: 1fr; } }
+
+.cert-card { padding: 14px 16px; }
+
+.cert-card--training {
+  border-left-color: var(--accent);
+  border-left-width: 3px;
+}
+
+.cert-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.cert-title {
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.cert-badge {
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--accent);
+  border: 1px solid rgba(212,160,23,0.4);
+  border-radius: 4px;
+  padding: 1px 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* =========================================================

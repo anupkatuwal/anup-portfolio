@@ -4,11 +4,12 @@ import { ThemeToggle } from "./ThemeToggle";
 
 // Trimmed from 7 → 5. Logo handles "Home". Education folds into Experience.
 const LINKS = [
-  { href: "#skills",     label: "Skills"     },
-  { href: "#experience", label: "Experience" },
-  { href: "#projects",   label: "Projects"   },
-  { href: "#resume",     label: "Resume"     },
-  { href: "#contact",    label: "Contact"    },
+  { href: "#skills",          label: "Skills"         },
+  { href: "#experience",      label: "Experience"     },
+  { href: "#certifications",  label: "Certifications" },
+  { href: "#projects",        label: "Projects"       },
+  { href: "#resume",          label: "Resume"         },
+  { href: "#contact",         label: "Contact"        },
 ];
 
 export function Navbar() {
