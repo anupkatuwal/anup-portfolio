@@ -39,7 +39,7 @@ const CERTIFICATIONS = [
     issuer: "University of Michigan on Coursera",
     date: "Dec 2020",
     status: null,
-    url: null,
+    url: "https://www.coursera.org/account/accomplishments/specialization/certificate/V8DVHVZAA3ZE",
   },
   {
     title: "Building Modern Java Applications on AWS",
