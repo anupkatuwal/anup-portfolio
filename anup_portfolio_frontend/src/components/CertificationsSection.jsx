@@ -31,7 +31,7 @@ const CERTIFICATIONS = [
     issuer: "Google Cloud",
     date: "Nov 2023",
     status: null,
-    url: null,
+    url: "https://www.coursera.org/account/accomplishments/verify/FY87A6MQPE2S",
   },
   {
     title: "Python for Everybody Specialization",
