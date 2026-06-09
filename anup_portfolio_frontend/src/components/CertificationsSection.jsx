@@ -46,7 +46,7 @@ const CERTIFICATIONS = [
     issuer: "Amazon Web Services (AWS)",
     date: "Mar 2022",
     status: null,
-    url: null,
+    url: "https://coursera.org/verify/VY4V3AXMX2S7",
   },
   {
     title: "AWS Cloud Technical Essentials",
