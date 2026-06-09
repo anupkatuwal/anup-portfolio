@@ -18,7 +18,7 @@ const EDUCATION = [
     degree: "Advanced Data Analysis with Python",
     inst: "Broadway Infosys",
     period: "May 2026 – Aug 2026",
-    details: "3-month intensive training · Python, data analysis, and applied data science workflows.",
+    details: "3-month intensive training · Python, EDA, SQL, statistics, data cleaning, visualization, dashboarding, and real-world applied projects.",
   },
 ];
 
