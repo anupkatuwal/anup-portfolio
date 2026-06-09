@@ -76,6 +76,13 @@ const CERTIFICATIONS = [
     status: null,
     url: "/cert-java-se8.pdf",
   },
+  {
+    title: "Java SE 8 Fundamentals: Classes and Objects",
+    issuer: "Metrix Learning / Skillsoft",
+    date: "Dec 2021",
+    status: null,
+    url: "/cert-java-se8-fundamentals.pdf",
+  },
 ];
 
 function CourseList({ courses }) {
