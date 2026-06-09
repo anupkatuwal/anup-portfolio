@@ -19,6 +19,7 @@ const CERTIFICATIONS = [
     status: "In Progress — 6/9 courses",
     url: null,
     courses: [
+      { name: "Foundations: Data, Data, Everywhere", url: "https://www.coursera.org/account/accomplishments/verify/3K9MUNSMKTL6" },
       { name: "Ask Questions to Make Data-Driven Decisions", url: "https://www.coursera.org/account/accomplishments/verify/E5GVZM2NBSJL" },
       { name: "Prepare Data for Exploration", url: "https://www.coursera.org/account/accomplishments/verify/E5K9V4XED72M" },
       { name: "Process Data from Dirty to Clean", url: "https://www.coursera.org/account/accomplishments/verify/FHWS68LTF9PD" },
