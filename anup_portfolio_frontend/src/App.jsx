@@ -8,7 +8,6 @@ import { ExperienceSection } from "./components/ExperienceSection";
 import { EducationSection } from "./components/EducationSection";
 import { CertificationsSection } from "./components/CertificationsSection";
 import { ResumeSection } from "./components/ResumeSection";
-import { CertificationsSection } from "./components/CertificationsSection";
 import { ProjectsSection } from "./components/ProjectsSection";
 import { ContactSection } from "./components/ContactSection"; // or ContactForm if that is what you named it
 
