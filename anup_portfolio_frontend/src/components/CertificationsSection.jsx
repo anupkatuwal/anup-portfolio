@@ -67,7 +67,7 @@ const CERTIFICATIONS = [
     issuer: "Coursera",
     date: "Dec 2020",
     status: null,
-    url: null,
+    url: "https://coursera.org/verify/6L926FGW6DT3",
   },
 ];
 
