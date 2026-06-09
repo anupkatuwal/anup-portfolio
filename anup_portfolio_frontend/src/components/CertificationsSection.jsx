@@ -69,6 +69,13 @@ const CERTIFICATIONS = [
     status: null,
     url: "https://coursera.org/verify/6L926FGW6DT3",
   },
+  {
+    title: "TestPrep 1Z0-808 Java SE 8 Programmer I",
+    issuer: "Metrix Learning / Skillsoft",
+    date: "Dec 2021",
+    status: null,
+    url: "/cert-java-se8.pdf",
+  },
 ];
 
 function CourseList({ courses }) {
