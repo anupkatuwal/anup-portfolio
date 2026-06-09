@@ -30,7 +30,7 @@ export function Hero() {
             {/* Eyebrow ABOVE the name — not floating below the photo */}
             <p className="hero-eyebrow">
               <span className="eyebrow-line" aria-hidden="true" />
-              Kathmandu, Nepal · Available for freelance
+              Kathmandu, Nepal · Open to Work
             </p>
 
             <h1 className="hero-name">

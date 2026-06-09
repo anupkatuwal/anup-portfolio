@@ -37,9 +37,9 @@ const EXPERIENCES = [
     org: "Fine Dining Italian Restaurant",
     period: "2012 – 2016",
     location: "Denver, Colorado",
-    bullets: [
-      "Day-to-day operations, team management, and customer experience.",
-    ],
+    description: "Operations, team management, and front-of-house at a fine dining venue.",
+    bullets: [],
+    minor: true,
   },
 ];
 
@@ -48,15 +48,19 @@ export function ExperienceSection() {
     <Section id="experience" title="Experience" eyebrow="// professional background">
       <div className="timeline">
         {EXPERIENCES.map((exp) => (
-          <article key={exp.role + exp.org} className="card timeline-item">
+          <article key={exp.role + exp.org} className={`card timeline-item${exp.minor ? " role--minor" : ""}`}>
             <div className="timeline-header">
               <h3 className="card-title">{exp.role}</h3>
               <p className="card-subtitle">{exp.org}</p>
             </div>
             <p className="timeline-meta">{exp.period} · {exp.location}</p>
-            <ul className="bullet-list">
-              {exp.bullets.map((b) => <li key={b}>{b}</li>)}
-            </ul>
+            {exp.minor ? (
+              <p className="timeline-description">{exp.description}</p>
+            ) : (
+              <ul className="bullet-list">
+                {exp.bullets.map((b) => <li key={b}>{b}</li>)}
+              </ul>
+            )}
           </article>
         ))}
       </div>
