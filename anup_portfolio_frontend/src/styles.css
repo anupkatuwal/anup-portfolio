@@ -1257,3 +1257,12 @@ html[data-theme="light"] .navbar-scrolled {
 .admin-msg-body { margin: 10px 0; white-space: pre-wrap; }
 .admin-msg-actions { display: flex; gap: 8px; }
 .admin-delete:hover { border-color: #c86464; color: #c86464; }
+
+.cert-verify {
+  font-family: var(--mono);
+  font-size: 11px;
+  display: inline-block;
+  margin-top: 8px;
+}
+.cert-foundations + .cert-foundations { border-top: none; padding-top: 6px; }
+.cert-foundations-note { color: var(--muted); font-size: 12px; }

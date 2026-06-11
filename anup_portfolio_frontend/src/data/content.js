@@ -118,29 +118,44 @@ export const CERTIFICATIONS = [
     name: "Building Modern Java Applications on AWS",
     org: "Amazon Web Services (AWS)",
     period: "Mar 2022",
-    id: "VY4V3AXMX2S7",
+    link: "https://coursera.org/verify/VY4V3AXMX2S7",
     tag: "cert",
   },
   {
     name: "AWS Cloud Technical Essentials",
     org: "Amazon Web Services (AWS)",
     period: "Jan 2022",
-    id: "6L926FGW6DT3",
+    link: "https://coursera.org/share/28d3e6ca9e7dd3b819459f047bea25a2",
     tag: "cert",
   },
 ];
 
-export const FOUNDATIONS = {
-  label: "Foundations",
-  items: [
-    "Python for Everybody (Univ. of Michigan)",
-    "Intro to Generative AI (Google Cloud)",
-    "Business Analysis with Spreadsheets (Coursera)",
-    "WordPress Website Build (Coursera)",
-  ],
-  link: "https://www.linkedin.com/in/anupkatuwal1989/details/certifications/",
-  linkLabel: "view credentials ↗",
-};
+export const FOUNDATIONS = [
+  {
+    label: "Java foundations",
+    items: [
+      "TestPrep Java SE 8 Programmer I",
+      "SE 8 Classes & Objects",
+      "SE 8 Methods & Encapsulation",
+      "SE 11 Arrays & Program Flow",
+    ],
+    note: "Skillsoft / Metrix Learning · Dec 2021",
+    link: "/cert-java-se8.pdf",
+    linkLabel: "download certificate ↗",
+  },
+  {
+    label: "Foundations",
+    items: [
+      "Python for Everybody (Univ. of Michigan)",
+      "Intro to Generative AI (Google Cloud)",
+      "Business Analysis with Spreadsheets (Coursera)",
+      "WordPress Website Build (Coursera)",
+    ],
+    note: "",
+    link: "https://www.linkedin.com/in/anupkatuwal1989/details/certifications/",
+    linkLabel: "view credentials ↗",
+  },
+];
 
 /* ── RESUME HIGHLIGHTS ────────────────────────────────────────────────────────
    Bullet list shown next to the Download PDF button.                         */

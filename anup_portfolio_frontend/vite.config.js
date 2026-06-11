@@ -7,7 +7,7 @@ import { writeFileSync } from 'node:fs'
 // generated sitemap.xml/robots.txt. When the .com.np domain goes live, set
 // VITE_SITE_URL in Vercel (or change the fallback here) and rebuild.
 const SITE_URL = (
-  process.env.VITE_SITE_URL || 'https://anup-portfolio-one.vercel.app'
+  process.env.VITE_SITE_URL || 'https://anupkat.com.np'
 ).replace(/\/+$/, '')
 
 function siteUrl() {

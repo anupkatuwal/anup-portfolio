@@ -19,19 +19,10 @@ export function ResumeSection() {
         </div>
 
         <div className="resume-actions">
-          <a
-            href="/resume.pdf"
-            download
-            className="btn btn-primary"
-          >
+          <a href="/resume.pdf" download className="btn btn-primary">
             Download PDF
           </a>
-          <a
-            href="/resume.pdf"
-            target="_blank"
-            rel="noreferrer"
-            className="btn btn-ghost"
-          >
+          <a href="/resume.pdf" target="_blank" rel="noreferrer" className="btn btn-ghost">
             View in browser
           </a>
         </div>

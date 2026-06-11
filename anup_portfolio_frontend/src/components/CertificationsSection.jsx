@@ -11,6 +11,11 @@ function CertCard({ item }) {
       </div>
       <p className="card-subtitle">{item.org}</p>
       <p className="card-meta">{item.period}</p>
+      {item.link && (
+        <a href={item.link} target="_blank" rel="noreferrer" className="cert-verify">
+          verify ↗
+        </a>
+      )}
     </article>
   );
 }
@@ -30,13 +35,20 @@ export function CertificationsSection() {
           {CERTIFICATIONS.map((item) => <CertCard key={item.name + item.period} item={item} />)}
         </div>
       </div>
-      <p className="cert-foundations">
-        <span className="cert-foundations-label">{FOUNDATIONS.label}:</span>{" "}
-        {FOUNDATIONS.items.join(" · ")}{" "}
-        <a href={FOUNDATIONS.link} target="_blank" rel="noreferrer">
-          {FOUNDATIONS.linkLabel}
-        </a>
-      </p>
+      {FOUNDATIONS.map((line) => (
+        <p key={line.label} className="cert-foundations">
+          <span className="cert-foundations-label">{line.label}:</span>{" "}
+          {line.items.join(" · ")}
+          {line.note && <span className="cert-foundations-note"> — {line.note}</span>}{" "}
+          <a
+            href={line.link}
+            target={line.link.startsWith("/") ? undefined : "_blank"}
+            rel="noreferrer"
+          >
+            {line.linkLabel}
+          </a>
+        </p>
+      ))}
     </Section>
   );
 }
