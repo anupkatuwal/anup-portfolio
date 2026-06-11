@@ -1,16 +1,78 @@
-# React + Vite
+# anup-portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio of Anup Katuwal — React + Vite frontend with a FastAPI
+backend (contact form storage + admin), deployed on Vercel with Neon Postgres.
 
-Currently, two official plugins are available:
+## Architecture
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```
+Browser ── https://<site>/            static React build (Vercel CDN)
+        ── https://<site>/admin       same SPA, lazy-loaded admin chunk
+        ── https://<site>/api/*       FastAPI serverless function (api/index.py)
+                                          │
+                                          └── Neon Postgres (pooled, table: contact_messages)
+```
 
-## React Compiler
+- The public page is a single React bundle; `/admin` is code-split and only
+  downloaded when visited. Auth is a 12h JWT kept in `sessionStorage`.
+- The contact form posts to `/api/contact` (validation, honeypot, 5/hour rate
+  limit). Messages are read/managed at `/admin`.
+- Performance budget (checked against `npm run build`): JS ≤ 75 KB gzip,
+  CSS ≤ 8 KB gzip, hero image ≤ 60 KB.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Environment variables
 
-## Expanding the ESLint configuration
+| Variable | Where | What |
+|---|---|---|
+| `DATABASE_URL` | Vercel + local `.env` | Neon **pooled** connection string (host contains `-pooler`) |
+| `SECRET_KEY` | Vercel + local `.env` | JWT signing key — `python -c "import secrets; print(secrets.token_hex(32))"` |
+| `ADMIN_USERNAME` | Vercel + local `.env` | Admin login name |
+| `ADMIN_PASSWORD_HASH` | Vercel + local `.env` | bcrypt hash of the admin password (never the plaintext) |
+| `VITE_SITE_URL` | Vercel (optional) | Public site URL; falls back to the value in `vite.config.js` |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Editing site content
+
+All text content (projects, skills, experience, education, certifications,
+resume highlights) lives in **`src/data/content.js`** — edit that one file and
+push; nothing else needs touching. The file has an editing guide at the top.
+
+If you change the hero name/role/bio, also update the static fallback markup
+inside `<div id="root">` in `index.html` (it's what crawlers and no-JS
+visitors see).
+
+## Changing the site URL (.com.np switch)
+
+The public URL is defined in **one place**: the `VITE_SITE_URL` environment
+variable, with a fallback in `vite.config.js`. It feeds the canonical tag,
+Open Graph/Twitter tags, JSON-LD, `sitemap.xml`, and `robots.txt` (the last
+two are regenerated on every build with the current date).
+
+To move to `https://anupkatuwal.com.np`:
+1. Add `VITE_SITE_URL=https://anupkatuwal.com.np` in Vercel → Project →
+   Settings → Environment Variables (or edit the fallback in `vite.config.js`).
+2. Redeploy. Done.
+
+## Local development
+
+```bash
+# frontend
+npm install
+npm run dev            # http://localhost:5173
+
+# backend (separate terminal)
+python3 -m venv .venv && .venv/bin/pip install -r api/requirements.txt uvicorn
+set -a && source .env && set +a
+.venv/bin/uvicorn api.index:app --port 8000
+```
+
+Copy `.env.example` to `.env` and fill in the four variables (Neon pooled
+`DATABASE_URL`, `SECRET_KEY`, `ADMIN_USERNAME`, `ADMIN_PASSWORD_HASH`). The
+same four must be set in Vercel for production. `.env` is gitignored — never
+commit it.
+
+## Stack
+
+- **Frontend:** React 19, Vite 7, plain CSS (`src/styles.css`), Vercel Analytics (cookieless)
+- **Backend:** FastAPI (single file, `api/index.py`), SQLAlchemy 2 + psycopg, JWT auth, slowapi rate limiting
+- **Database:** Neon Postgres (pooled connection string, NullPool on the app side)
+- **Hosting:** Vercel — static frontend + Python serverless function under `/api`

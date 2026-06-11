@@ -5,7 +5,10 @@ export function Footer() {
     <footer className="footer">
       <div className="container footer-inner">
         <p className="footer-text">
-          © {new Date().getFullYear()} Anup Katuwal. All rights reserved.
+          © {new Date().getFullYear()} Anup Katuwal · Built with React + FastAPI —{" "}
+          <a href="https://github.com/anupkatuwal/anup-portfolio" target="_blank" rel="noreferrer">
+            view source
+          </a>
         </p>
         <div className="footer-links">
           <a

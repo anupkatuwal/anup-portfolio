@@ -2,11 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/jpeg" href="/logo.jpg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Primary SEO -->
-    <title>Anup Katuwal | Data Analyst & NLP Researcher</title>
+    <title>Anup Katuwal — Data Analyst &amp; NLP Researcher | Kathmandu, Nepal</title>
     <meta
       name="description"
       content="Anup Katuwal — Data Analyst and NLP Researcher in Kathmandu, Nepal. Master's in Computer Information Systems specializing in Python, SQL, machine learning, and fairness in AI. Open to roles in Data Analysis, Business Analytics, and Software Development."
@@ -18,28 +20,31 @@
     <meta name="author" content="Anup Katuwal" />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#0e0d0b" />
-    <link rel="canonical" href="https://anup-portfolio-one.vercel.app/" />
+    <link rel="canonical" href="%SITE_URL%/" />
 
     <!-- Open Graph (Facebook, LinkedIn, etc.) -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Anup Katuwal" />
-    <meta property="og:title" content="Anup Katuwal | Data Analyst & NLP Researcher" />
+    <meta property="og:title" content="Anup Katuwal — Data Analyst &amp; NLP Researcher | Kathmandu, Nepal" />
     <meta
       property="og:description"
       content="Data Analyst and NLP Researcher in Kathmandu, Nepal. Master's in Computer Information Systems — Python, SQL, machine learning, and fairness in AI."
     />
-    <meta property="og:url" content="https://anup-portfolio-one.vercel.app/" />
-    <meta property="og:image" content="https://anup-portfolio-one.vercel.app/profile.jpg" />
-    <meta property="og:image:alt" content="Anup Katuwal" />
+    <meta property="og:url" content="%SITE_URL%/" />
+    <meta property="og:image" content="%SITE_URL%/og.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Anup Katuwal — Data Analyst &amp; NLP Researcher" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Anup Katuwal | Data Analyst & NLP Researcher" />
+    <meta name="twitter:title" content="Anup Katuwal — Data Analyst &amp; NLP Researcher | Kathmandu, Nepal" />
     <meta
       name="twitter:description"
       content="Data Analyst and NLP Researcher in Kathmandu, Nepal. Python, SQL, machine learning, and fairness in AI."
     />
-    <meta name="twitter:image" content="https://anup-portfolio-one.vercel.app/profile.jpg" />
+    <meta name="twitter:image" content="%SITE_URL%/og.png" />
 
     <!-- Structured data: Person -->
     <script type="application/ld+json">
@@ -47,8 +52,8 @@
         "@context": "https://schema.org",
         "@type": "Person",
         "name": "Anup Katuwal",
-        "url": "https://anup-portfolio-one.vercel.app/",
-        "image": "https://anup-portfolio-one.vercel.app/profile.jpg",
+        "url": "%SITE_URL%/",
+        "image": "%SITE_URL%/profile.jpg",
         "jobTitle": "Data Analyst & NLP Researcher",
         "email": "mailto:katuwalanup@gmail.com",
         "address": {
@@ -83,12 +88,46 @@
       }
     </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Static fallback content: real HTML for crawlers and no-JS visitors.
+           React replaces this on mount. Keep the text in sync with
+           src/components/Hero.jsx / src/data/content.js. -->
+      <header class="navbar">
+        <div class="navbar-inner">
+          <a href="#top" class="navbar-brand"><span class="brand-text">Anup Katuwal</span></a>
+          <nav class="navbar-nav" aria-label="Main navigation">
+            <a href="#skills" class="navbar-link">Skills</a>
+            <a href="#experience" class="navbar-link">Experience</a>
+            <a href="#certifications" class="navbar-link">Certifications</a>
+            <a href="#projects" class="navbar-link">Projects</a>
+            <a href="#resume" class="navbar-link">Resume</a>
+            <a href="#contact" class="navbar-link">Contact</a>
+          </nav>
+        </div>
+      </header>
+      <main>
+        <section id="top" class="hero">
+          <div class="container">
+            <p class="hero-eyebrow">Kathmandu, Nepal · Open to Work</p>
+            <h1 class="hero-name">Anup <em>Katuwal.</em></h1>
+            <p class="hero-roles">Data Analyst &amp; NLP Researcher</p>
+            <p class="hero-bio">
+              I turn messy data into decisions — dashboards, pipelines, and
+              automation tools built with Python, SQL, and AI. M.CIS graduate
+              (3.71 GPA) with published NLP research on fairness in
+              mental-health AI.
+            </p>
+            <p>
+              <a href="https://github.com/anupkatuwal">GitHub</a> ·
+              <a href="https://www.linkedin.com/in/anupkatuwal1989">LinkedIn</a> ·
+              <a href="mailto:katuwalanup@gmail.com">katuwalanup@gmail.com</a>
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

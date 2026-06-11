@@ -1,51 +1,12 @@
 import React from "react";
 import { Section } from "./Section";
+import { EXPERIENCES, EDUCATION } from "../data/content";
 
-const EXPERIENCES = [
-  {
-    role: "Graduate Researcher",
-    org: "NCIT, Pokhara University",
-    period: "2022 – 2026",
-    location: "Kathmandu, Nepal",
-    bullets: [
-      "Thesis on bias mitigation in mental-health sentiment analysis using fine-tuned BERT.",
-      "Published IEEE paper; worked with Reddit datasets and demographic fairness metrics.",
-    ],
-  },
-  {
-    role: "Consultant Supervisor",
-    org: "Bhatta IT Consultancy Services (Remote — Austin, TX)",
-    period: "2021 – 2022",
-    location: "Kathmandu, Nepal",
-    bullets: [
-      "Supervised junior developers on Java and Spring Boot projects.",
-      "Code review, mentorship, and pair-programming to improve team quality.",
-    ],
-  },
-  {
-    role: "Teaching Assistant — DBMS",
-    org: "College of Applied Business",
-    period: "2020 – 2021",
-    location: "Kathmandu, Nepal",
-    bullets: [
-      "Full semester DBMS instruction — SQL labs, schema design, assessments.",
-      "Followed Tribhuvan University syllabus; maintained open availability for students.",
-    ],
-  },
-  {
-    role: "Assistant Manager",
-    org: "Fine Dining Italian Restaurant",
-    period: "2012 – 2016",
-    location: "Denver, Colorado",
-    description: "Operations, team management, and front-of-house at a fine dining venue.",
-    bullets: [],
-    minor: true,
-  },
-];
-
+// One vertical timeline: work entries first (newest first, as ordered in
+// content.js), then education entries tagged "education".
 export function ExperienceSection() {
   return (
-    <Section id="experience" title="Experience" eyebrow="// professional background">
+    <Section id="experience" title="Experience & Education" eyebrow="// background">
       <div className="timeline">
         {EXPERIENCES.map((exp) => (
           <article key={exp.role + exp.org} className={`card timeline-item${exp.minor ? " role--minor" : ""}`}>
@@ -61,6 +22,17 @@ export function ExperienceSection() {
                 {exp.bullets.map((b) => <li key={b}>{b}</li>)}
               </ul>
             )}
+          </article>
+        ))}
+
+        {EDUCATION.map((ed) => (
+          <article key={ed.degree} className="card timeline-item timeline-item--edu">
+            <div className="timeline-header">
+              <h3 className="card-title">{ed.degree}</h3>
+              <p className="card-subtitle">{ed.inst}</p>
+            </div>
+            <p className="timeline-meta">{ed.period} · education</p>
+            <p className="timeline-description">{ed.details}</p>
           </article>
         ))}
       </div>

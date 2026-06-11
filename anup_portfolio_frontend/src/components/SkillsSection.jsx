@@ -1,14 +1,8 @@
 import React from "react";
 import { Section } from "./Section";
+import { SKILLS, PRIMARY_SKILLS } from "../data/content";
 
-const PRIMARY = new Set(["Python", "SQL", "BERT", "Pandas", "FastAPI"]);
-
-const SKILLS = [
-  { domain: "data",   items: ["Python", "Pandas", "NumPy", "SQL", "Data Visualization"] },
-  { domain: "ml/nlp", items: ["BERT", "Transformers", "Scikit-learn", "Sentiment Analysis", "Fairness Metrics"] },
-  { domain: "web",    items: ["FastAPI", "React", "Vite", "REST APIs", "SQLite"] },
-  { domain: "tools",  items: ["Git", "Jupyter", "Google Colab", "VS Code", "Linux"] },
-];
+const PRIMARY = new Set(PRIMARY_SKILLS);
 
 export function SkillsSection() {
   return (

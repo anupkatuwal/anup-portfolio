@@ -1,69 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Section } from "./Section";
-import { fetchProjects } from "../api/client";
-
-// Always-shown projects (kept even if the backend is down/empty).
-const STATIC_PROJECTS = [
-  {
-    id: "s-1",
-    title: "Bias-Aware Mental Health Sentiment Analysis",
-    description:
-      "Fine-tuned BERT on 52,000+ Reddit mental-health posts for sentiment classification. Achieved 84% F1-score. Reduced demographic parity gap by 56% (ΔDP: 0.211 → 0.098). Published as IEEE-format research paper.",
-    tech_stack: "Python,BERT,HuggingFace,Pandas,Scikit-learn,Reddit API",
-    github_link:
-      "https://github.com/anupkatuwal/bias-aware-sentiment-analysis-mental-health",
-    live_link: "",
-    featured: true,
-  },
-  {
-    id: "s-3",
-    title: "Upwork Proposal Automation Agent",
-    description:
-      "Python agent that reads job listings, generates tailored proposals using the Claude API, and exports to Google Docs. Reduces proposal time from 20 min to under 2 min.",
-    tech_stack: "Python,Claude API,Google Docs API,Automation",
-    github_link: "https://github.com/anupkatuwal/upwork-proposal-agent",
-    live_link: "",
-  },
-  {
-    id: "s-5",
-    title: "Personal Portfolio — anup-portfolio",
-    description:
-      "This site. React + Vite frontend with a FastAPI backend, JWT-protected admin panel, and SQLite DB. Deployed serverless on Vercel. Features dark/light theme, animated hero, scroll-aware navbar, skills table with primary-chip highlighting, and a Certifications & Training section. Built and iterated entirely with Claude Code.",
-    tech_stack: "React,Vite,FastAPI,Python,SQLite,JWT,Vercel,Claude Code",
-    github_link: "https://github.com/anupkatuwal/anup-portfolio",
-    live_link: "https://anup-portfolio-one.vercel.app",
-  },
-  {
-    id: "s-4",
-    title: "AI Daily Briefing",
-    description:
-      "Automated personal assistant that fetches unread emails, Google Calendar events, and news headlines every morning, generates a structured briefing with Claude AI, and emails it at 10 AM. Replies to the briefing email trigger Claude to reply or delete emails on your behalf.",
-    tech_stack: "Python,Claude AI,Gmail API,Google Calendar API,GitHub Actions,RSS",
-    github_link: "https://github.com/anupkatuwal/daily-briefing",
-    live_link: "",
-  },
-];
+import { PROJECTS } from "../data/content";
 
 export function ProjectsSection() {
-  const [apiProjects, setApiProjects] = useState([]);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetchProjects()
-      .then((data) => {
-        if (cancelled || !Array.isArray(data)) return;
-        // Prefix API ids to avoid collisions with static ids
-        setApiProjects(data.map((p) => ({ ...p, id: `api-${p.id}` })));
-      })
-      .catch(() => {
-        // Backend unreachable — fine, static still renders
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const projects = [...STATIC_PROJECTS, ...apiProjects].sort(
+  const projects = [...PROJECTS].sort(
     (a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0)
   );
 
@@ -75,9 +15,9 @@ export function ProjectsSection() {
             <div className="project-header">
               <h3 className="card-title">{p.title}</h3>
               <div className="project-links">
-                {p.github_link && (
+                {p.github && (
                   <a
-                    href={p.github_link}
+                    href={p.github}
                     target="_blank"
                     rel="noreferrer"
                     className="project-link"
@@ -85,9 +25,9 @@ export function ProjectsSection() {
                     github ↗
                   </a>
                 )}
-                {p.live_link && (
+                {p.live && (
                   <a
-                    href={p.live_link}
+                    href={p.live}
                     target="_blank"
                     rel="noreferrer"
                     className="project-link"
@@ -97,12 +37,13 @@ export function ProjectsSection() {
                 )}
               </div>
             </div>
+            {p.metric && <p className="project-metric">{p.metric}</p>}
             <p className="project-tagline">{p.description}</p>
-            {p.tech_stack && (
+            {p.tech?.length > 0 && (
               <ul className="pill-list">
-                {p.tech_stack.split(",").map((t) => (
+                {p.tech.map((t) => (
                   <li key={t} className="pill">
-                    {t.trim()}
+                    {t}
                   </li>
                 ))}
               </ul>

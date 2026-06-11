@@ -1,14 +1,6 @@
 import React from "react";
 import { Section } from "./Section";
-
-const HIGHLIGHTS = [
-  "Master's in Computer Information Systems — CGPA 3.71 (NCIT, Pokhara University)",
-  "FairBERT thesis: fine-tuned BERT on 52,000+ Reddit posts · 84% F1 · 56% bias reduction · IEEE paper",
-  "Data analytics pipelines & dashboards (Python, Pandas, SQL, Tableau)",
-  "Upwork Proposal Automation Agent · cuts proposal time from 20 min to under 2 min",
-  "Google Data Analytics (6/9) · Python for Everybody · AWS · Intro to GenAI certified",
-  "Currently training: Advanced Data Analysis with Python at Broadway Infosys (May–Aug 2026)",
-];
+import { RESUME_HIGHLIGHTS } from "../data/content";
 
 export function ResumeSection() {
   return (
@@ -20,7 +12,7 @@ export function ResumeSection() {
             full PDF for the details.
           </p>
           <ul className="resume-highlights">
-            {HIGHLIGHTS.map((item) => (
+            {RESUME_HIGHLIGHTS.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>

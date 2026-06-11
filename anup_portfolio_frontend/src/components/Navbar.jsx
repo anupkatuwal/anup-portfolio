@@ -83,7 +83,7 @@ export function Navbar() {
       <nav
         className={`navbar-mobile-nav${menuOpen ? " open" : ""}`}
         aria-label="Mobile navigation"
-        aria-hidden={!menuOpen}
+        inert={!menuOpen}
       >
         {LINKS.map((link) => (
           <a

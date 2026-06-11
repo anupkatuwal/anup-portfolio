@@ -10,6 +10,7 @@ export function Hero() {
   const [roleVisible, setRoleVisible] = useState(true);
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const interval = setInterval(() => {
       setRoleVisible(false);
       setTimeout(() => {
@@ -27,7 +28,6 @@ export function Hero() {
 
           {/* ── LEFT ── */}
           <div className="hero-left">
-            {/* Eyebrow ABOVE the name — not floating below the photo */}
             <p className="hero-eyebrow">
               <span className="eyebrow-line" aria-hidden="true" />
               Kathmandu, Nepal · Open to Work
@@ -45,7 +45,7 @@ export function Hero() {
               </span>
             </p>
 
-            {/* Client-facing bio — outcomes, not CV bullet points */}
+            {/* Client-facing bio — two sentences max */}
             <p className="hero-bio">
               I turn messy data into <strong>decisions</strong> — dashboards,
               pipelines, and automation tools built with Python, SQL, and AI.
@@ -53,35 +53,34 @@ export function Hero() {
               in mental-health AI.
             </p>
 
-            {/* Single clear availability signal */}
             <div className="hero-status">
               <span className="status-dot" aria-hidden="true" />
               Open to freelance · Data Analysis · Python Automation · AI Integration
             </div>
 
-            {/* Three CTAs: projects, contact, AND Upwork for instant credibility */}
             <div className="hero-actions">
-              <a href="#projects"                              className="btn btn-primary">View Projects</a>
-              <a href="#contact"                               className="btn btn-ghost">Get in touch</a>
-              <a
-                href="https://www.upwork.com/freelancers/~01fe60c948627059d5"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-upwork"
-              >
-                Upwork ↗
-              </a>
+              <a href="#projects" className="btn btn-primary">View projects</a>
+              <a href="mailto:katuwalanup@gmail.com" className="btn btn-ghost">Email me</a>
             </div>
           </div>
 
           {/* ── RIGHT ── */}
           <div className="hero-aside hero-right">
             <div className="hero-photo-wrap">
-              <img src="/profile.jpg" alt="Anup Katuwal" className="hero-photo" />
+              <picture>
+                <source srcSet="/profile.webp" type="image/webp" />
+                <img
+                  src="/profile-sm.jpg"
+                  alt="Anup Katuwal"
+                  className="hero-photo"
+                  width="380"
+                  height="380"
+                  fetchPriority="high"
+                />
+              </picture>
             </div>
 
             <div className="hero-panel">
-              {/* Credentials — graduate, not student */}
               <div className="hero-stat">
                 <p className="stat-label">Credentials</p>
                 <p className="stat-value">
@@ -89,7 +88,6 @@ export function Hero() {
                 </p>
               </div>
 
-              {/* What you've actually delivered */}
               <div className="hero-stat">
                 <p className="stat-label">Delivered</p>
                 <p className="stat-value">
@@ -97,13 +95,11 @@ export function Hero() {
                 </p>
               </div>
 
-              {/* Stack */}
               <div className="hero-stat">
                 <p className="stat-label">Stack</p>
                 <p className="stat-value">Python · SQL · BERT · FastAPI · React</p>
               </div>
 
-              {/* Interests — humanising, fine to keep */}
               <div className="hero-stat">
                 <p className="stat-label">Interests</p>
                 <p className="stat-value">Fairness in AI · Data storytelling · Automation</p>

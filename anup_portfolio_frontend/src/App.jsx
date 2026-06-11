@@ -1,21 +1,21 @@
-// src/App.jsx
+// src/App.jsx — the public home page.
+// The /admin page is a separate lazy chunk wired up in main.jsx so the
+// public bundle stays small.
 import { useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
 
 import { Hero } from "./components/Hero";
 import { SkillsSection } from "./components/SkillsSection";
 import { ExperienceSection } from "./components/ExperienceSection";
-import { EducationSection } from "./components/EducationSection";
 import { CertificationsSection } from "./components/CertificationsSection";
 import { ResumeSection } from "./components/ResumeSection";
 import { ProjectsSection } from "./components/ProjectsSection";
-import { ContactSection } from "./components/ContactSection"; // or ContactForm if that is what you named it
+import { ContactSection } from "./components/ContactSection";
 
 import { PageLayout } from "./layouts/PageLayout";
 import { Footer } from "./components/Footer";
 import { Navbar } from "./components/Navbar";
 
-function HomePage() {
+export default function App() {
   useEffect(() => {
     const sections = document.querySelectorAll("section[id]");
     const observer = new IntersectionObserver(
@@ -37,6 +37,7 @@ function HomePage() {
 
   return (
     <>
+      <a className="skip-link" href="#main">Skip to content</a>
       <div className="bg-fx" aria-hidden="true">
         <span className="bg-orb bg-orb-1" />
         <span className="bg-orb bg-orb-2" />
@@ -44,32 +45,18 @@ function HomePage() {
         <div className="bg-grid" />
       </div>
       <Navbar />
-      <PageLayout>
-        <Hero />
-        <SkillsSection />
-        <ExperienceSection />
-        <EducationSection />
-        <CertificationsSection />
-        <ResumeSection />
-        <ProjectsSection />
-        <ContactSection />
-      </PageLayout>
+      <main id="main">
+        <PageLayout>
+          <Hero />
+          <SkillsSection />
+          <ExperienceSection />
+          <CertificationsSection />
+          <ResumeSection />
+          <ProjectsSection />
+          <ContactSection />
+        </PageLayout>
+      </main>
       <Footer />
     </>
-  );
-}
-
-
-
-export default function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      {/* Admin routes intentionally removed from production: the Vercel
-          serverless DB is ephemeral so admin-created data cannot persist.
-          Re-enable when migrated to a persistent DB (Vercel Postgres,
-          Turso, Supabase, etc.) and proper credentials are configured. */}
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
   );
 }

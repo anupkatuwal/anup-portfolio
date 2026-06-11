@@ -1,21 +1,13 @@
 // src/components/ContactSection.jsx
-//
-// Uses Formspree for reliable email delivery — no backend, no lost messages.
-//
-// SETUP (one-time, 2 minutes):
-//   1. Go to https://formspree.io and sign up free
-//   2. Create a new form → copy the form ID (looks like "xpwzgkqr")
-//   3. Replace "mjgzdegv" below with your actual ID
-//   4. Formspree emails every submission directly to katuwalanup@gmail.com
-//   5. Free tier: 50 submissions/month — more than enough for a portfolio
+// Posts to our own API (/api/contact) which stores messages in Neon Postgres.
+// Includes a hidden "company" honeypot field that humans never see — bots
+// that fill it get a fake success and nothing is saved.
 
 import React, { useState } from "react";
 import { Section } from "./Section";
+import { apiFetch } from "../lib/api";
 
-const FORMSPREE_ID = "mjgzdegv"; // ← replace this after signing up
-const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
-
-const EMPTY_FORM = { name: "", email: "", subject: "", message: "" };
+const EMPTY_FORM = { name: "", email: "", subject: "", message: "", company: "" };
 
 export function ContactSection() {
   const [form,    setForm]    = useState(EMPTY_FORM);
@@ -29,34 +21,45 @@ export function ContactSection() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus({ type: null, message: "" });
-    setLoading(true);
 
-    try {
-      const res = await fetch(FORMSPREE_URL, {
-        method:  "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body:    JSON.stringify(form),
-      });
-
-      if (res.ok) {
-        setStatus({
-          type:    "success",
-          message: "Message sent — I'll get back to you soon.",
-        });
-        setForm(EMPTY_FORM);
-      } else {
-        // Formspree returns structured errors — surface them if present
-        const data = await res.json().catch(() => ({}));
-        setStatus({
-          type:    "error",
-          message: data?.error ?? "Something went wrong. Please try again.",
-        });
-      }
-    } catch {
+    if (form.message.trim().length < 10) {
       setStatus({
         type:    "error",
-        message: "Network error. Check your connection and try again.",
+        message: "Message is a bit short — please write at least 10 characters.",
       });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await apiFetch("/api/contact", { method: "POST", body: form });
+      setStatus({
+        type:    "success",
+        message: "Message sent — I'll get back to you soon.",
+      });
+      setForm(EMPTY_FORM);
+    } catch (err) {
+      if (err.status === 429) {
+        setStatus({
+          type:    "error",
+          message: "You've sent several messages recently — please wait an hour and try again.",
+        });
+      } else if (err.status === 422) {
+        setStatus({
+          type:    "error",
+          message: err.detail || "Please check the form — some fields look invalid.",
+        });
+      } else if (err.status) {
+        setStatus({
+          type:    "error",
+          message: "Something went wrong on the server. Please try again later.",
+        });
+      } else {
+        setStatus({
+          type:    "error",
+          message: "Network error. Check your connection and try again.",
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -182,6 +185,19 @@ export function ContactSection() {
               onChange={handleChange}
               placeholder="Tell me about your project or question..."
               required
+            />
+          </div>
+
+          {/* Honeypot — hidden from humans, bots auto-fill it */}
+          <div className="field" style={{ display: "none" }} aria-hidden="true">
+            <label htmlFor="cf-company">Company</label>
+            <input
+              id="cf-company"
+              name="company"
+              value={form.company}
+              onChange={handleChange}
+              tabIndex={-1}
+              autoComplete="off"
             />
           </div>
 
