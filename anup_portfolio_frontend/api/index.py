@@ -3,6 +3,7 @@
 # Projects/skills/etc. are NOT here — they live in src/data/content.js.
 
 import os
+import resend
 from datetime import datetime, timedelta, timezone
 
 from fastapi import Depends, FastAPI, HTTPException, Request, status
@@ -23,6 +24,10 @@ ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "")
 ADMIN_PASSWORD_HASH = os.environ.get("ADMIN_PASSWORD_HASH", "")
 JWT_ALGORITHM = "HS256"
 JWT_TTL_HOURS = 12
+
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
+NOTIFY_TO = "katuwalanup@gmail.com"
+NOTIFY_FROM = "Portfolio Contact <onboarding@resend.dev>"
 
 # ── Database ──────────────────────────────────────────────────────────────────
 
@@ -141,6 +146,31 @@ class MessageOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
+# ── Email notification ────────────────────────────────────────────────────────
+
+def _notify(msg: ContactMessage) -> None:
+    if not RESEND_API_KEY:
+        return
+    try:
+        resend.api_key = RESEND_API_KEY
+        body = msg.message.replace("\n", "<br>")
+        resend.Emails.send({
+            "from": NOTIFY_FROM,
+            "to": [NOTIFY_TO],
+            "reply_to": msg.email,
+            "subject": f"[Portfolio] {msg.name} — {msg.subject}",
+            "html": (
+                f"<p><strong>From:</strong> {msg.name} &lt;{msg.email}&gt;</p>"
+                f"<p><strong>Subject:</strong> {msg.subject}</p>"
+                f"<hr/><p>{body}</p>"
+                f"<hr/><p style='color:#888;font-size:12px'>"
+                f"Sent via anupkat.com.np contact form</p>"
+            ),
+        })
+    except Exception as exc:
+        print(f"Resend notification failed: {exc}")
+
+
 # ── Endpoints ─────────────────────────────────────────────────────────────────
 
 @app.get("/api/health")
@@ -167,6 +197,7 @@ def submit_contact(request: Request, payload: ContactIn, db: Session = Depends(g
     )
     db.add(msg)
     db.commit()
+    _notify(msg)
     return {"ok": True}
 
 
