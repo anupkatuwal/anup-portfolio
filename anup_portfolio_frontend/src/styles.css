@@ -1266,3 +1266,104 @@ html[data-theme="light"] .navbar-scrolled {
 }
 .cert-foundations + .cert-foundations { border-top: none; padding-top: 6px; }
 .cert-foundations-note { color: var(--muted); font-size: 12px; }
+
+/* =========================================================
+   CURSOR SPOTLIGHT
+========================================================= */
+.cursor-spotlight {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    600px circle at var(--cx, -999px) var(--cy, -999px),
+    rgba(201, 151, 95, 0.07),
+    transparent 40%
+  );
+}
+html[data-theme="light"] .cursor-spotlight {
+  background: radial-gradient(
+    600px circle at var(--cx, -999px) var(--cy, -999px),
+    rgba(138, 90, 22, 0.05),
+    transparent 40%
+  );
+}
+
+/* =========================================================
+   HERO ENTRANCE ANIMATIONS
+========================================================= */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes heroSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow    { animation: heroSlideUp 0.6s ease 0.05s both; }
+  .hero-name       { animation: heroSlideUp 0.7s ease 0.15s both; }
+  .hero-roles      { animation: heroSlideUp 0.6s ease 0.30s both; }
+  .hero-bio        { animation: heroSlideUp 0.6s ease 0.40s both; }
+  .hero-status     { animation: heroSlideUp 0.6s ease 0.48s both; }
+  .hero-actions    { animation: heroSlideUp 0.6s ease 0.55s both; }
+  .hero-photo-wrap { animation: heroSlideUp 0.7s ease 0.20s both; }
+  .hero-stat:nth-child(1) { animation: heroSlideUp 0.6s ease 0.35s both; }
+  .hero-stat:nth-child(2) { animation: heroSlideUp 0.6s ease 0.45s both; }
+  .hero-stat:nth-child(3) { animation: heroSlideUp 0.6s ease 0.55s both; }
+  .hero-stat:nth-child(4) { animation: heroSlideUp 0.6s ease 0.62s both; }
+}
+
+/* =========================================================
+   SCROLL REVEAL
+========================================================= */
+@media (prefers-reduced-motion: no-preference) {
+  .card,
+  .timeline-item,
+  .skill-row,
+  .section-title,
+  .section-eyebrow {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.55s ease, transform 0.55s ease,
+                border-color 0.2s, box-shadow 0.2s, background 0.15s;
+  }
+
+  /* Project cards get a snappier transform for hover lift */
+  .card.project-card {
+    transition: opacity 0.55s ease, transform 0.28s ease,
+                border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .card.is-visible,
+  .timeline-item.is-visible,
+  .skill-row.is-visible,
+  .section-title.is-visible,
+  .section-eyebrow.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Grid stagger */
+  .projects-grid .card:nth-child(2) { transition-delay: 0.10s; }
+  .projects-grid .card:nth-child(3) { transition-delay: 0.05s; }
+  .projects-grid .card:nth-child(4) { transition-delay: 0.15s; }
+  .cert-grid .card:nth-child(2)     { transition-delay: 0.08s; }
+  .cert-grid .card:nth-child(3)     { transition-delay: 0.16s; }
+
+  /* Timeline stagger */
+  .timeline-item:nth-child(2) { transition-delay: 0.08s; }
+  .timeline-item:nth-child(3) { transition-delay: 0.14s; }
+  .timeline-item:nth-child(4) { transition-delay: 0.20s; }
+
+  /* Skill row stagger */
+  .skill-row:nth-child(2) { transition-delay: 0.05s; }
+  .skill-row:nth-child(3) { transition-delay: 0.10s; }
+
+  /* Reset delay on hover so interaction is instant */
+  .card:hover,
+  .timeline-item:hover,
+  .skill-row:hover { transition-delay: 0s; }
+}
+
+/* Project card hover lift */
+@media (prefers-reduced-motion: no-preference) {
+  .project-card:hover { transform: translateY(-5px); }
+}
