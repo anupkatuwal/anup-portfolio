@@ -4,10 +4,10 @@ import { writeFileSync } from 'node:fs'
 
 // Single source of truth for the site's public URL — used by the canonical
 // tag, Open Graph tags, JSON-LD (via %SITE_URL% in index.html), and the
-// generated sitemap.xml/robots.txt. When the .com.np domain goes live, set
-// VITE_SITE_URL in Vercel (or change the fallback here) and rebuild.
+// generated sitemap.xml/robots.txt. Live domain is anup-katuwal.com.np; the
+// VITE_SITE_URL env var in Vercel (if set) overrides this fallback.
 const SITE_URL = (
-  process.env.VITE_SITE_URL || 'https://anupkat.com.np'
+  process.env.VITE_SITE_URL || 'https://anup-katuwal.com.np'
 ).replace(/\/+$/, '')
 
 function siteUrl() {

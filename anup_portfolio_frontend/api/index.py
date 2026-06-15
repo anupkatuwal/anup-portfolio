@@ -164,7 +164,7 @@ def _notify(msg: ContactMessage) -> None:
                 f"<p><strong>Subject:</strong> {msg.subject}</p>"
                 f"<hr/><p>{body}</p>"
                 f"<hr/><p style='color:#888;font-size:12px'>"
-                f"Sent via anupkat.com.np contact form</p>"
+                f"Sent via anup-katuwal.com.np contact form</p>"
             ),
         })
     except Exception as exc:

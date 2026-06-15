@@ -47,10 +47,9 @@ variable, with a fallback in `vite.config.js`. It feeds the canonical tag,
 Open Graph/Twitter tags, JSON-LD, `sitemap.xml`, and `robots.txt` (the last
 two are regenerated on every build with the current date).
 
-To move to `https://anupkatuwal.com.np`:
-1. Add `VITE_SITE_URL=https://anupkatuwal.com.np` in Vercel → Project →
-   Settings → Environment Variables (or edit the fallback in `vite.config.js`).
-2. Redeploy. Done.
+The live domain is `https://anup-katuwal.com.np` (the fallback in
+`vite.config.js`). To override it, set `VITE_SITE_URL` in Vercel → Project →
+Settings → Environment Variables and redeploy.
 
 ## Local development
 
