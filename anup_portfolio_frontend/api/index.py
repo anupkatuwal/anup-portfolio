@@ -2,6 +2,7 @@
 # Stores contact-form messages in Neon Postgres; admin endpoints are JWT-gated.
 # Projects/skills/etc. are NOT here — they live in src/data/content.js.
 
+import html
 import os
 import resend
 from datetime import datetime, timedelta, timezone
@@ -153,15 +154,20 @@ def _notify(msg: ContactMessage) -> None:
         return
     try:
         resend.api_key = RESEND_API_KEY
-        body = msg.message.replace("\n", "<br>")
+        # Escape all user-supplied fields — the contact form is public, so a
+        # submitter could otherwise inject arbitrary HTML into this email.
+        safe_name = html.escape(msg.name)
+        safe_email = html.escape(msg.email)
+        safe_subject = html.escape(msg.subject)
+        body = html.escape(msg.message).replace("\n", "<br>")
         resend.Emails.send({
             "from": NOTIFY_FROM,
             "to": [NOTIFY_TO],
             "reply_to": msg.email,
             "subject": f"[Portfolio] {msg.name} — {msg.subject}",
             "html": (
-                f"<p><strong>From:</strong> {msg.name} &lt;{msg.email}&gt;</p>"
-                f"<p><strong>Subject:</strong> {msg.subject}</p>"
+                f"<p><strong>From:</strong> {safe_name} &lt;{safe_email}&gt;</p>"
+                f"<p><strong>Subject:</strong> {safe_subject}</p>"
                 f"<hr/><p>{body}</p>"
                 f"<hr/><p style='color:#888;font-size:12px'>"
                 f"Sent via anup-katuwal.com.np contact form</p>"
