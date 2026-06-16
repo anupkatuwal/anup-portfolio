@@ -204,7 +204,7 @@ export const PROJECTS = [
       "This site. React + Vite frontend with a FastAPI backend, JWT-protected admin panel, and Postgres (Neon) DB. Deployed serverless on Vercel. Features dark/light theme, animated hero, scroll-aware navbar, skills table with primary-chip highlighting, and a Certifications & Training section. Built and iterated entirely with Claude Code.",
     tech: ["React", "Vite", "FastAPI", "Python", "PostgreSQL", "JWT", "Vercel", "Claude Code"],
     github: "https://github.com/anupkatuwal/anup-portfolio",
-    live: "https://anup-portfolio-one.vercel.app",
+    live: "https://anup-katuwal.com.np",
   },
   {
     id: "daily-briefing",
