@@ -80,6 +80,14 @@ def get_db():
 # ── App / rate limiting ───────────────────────────────────────────────────────
 
 def client_ip(request: Request) -> str:
+    # Prefer x-real-ip: on Vercel the platform sets it to the true client IP
+    # and overwrites any caller-supplied value, so it can't be spoofed to
+    # rotate the rate-limit key. x-forwarded-for's leftmost entry IS caller-
+    # controllable, so only use it as a fallback (e.g. behind other proxies);
+    # request.client.host covers local dev where neither header is set.
+    real_ip = request.headers.get("x-real-ip")
+    if real_ip:
+        return real_ip.strip()
     forwarded = request.headers.get("x-forwarded-for")
     if forwarded:
         return forwarded.split(",")[0].strip()
