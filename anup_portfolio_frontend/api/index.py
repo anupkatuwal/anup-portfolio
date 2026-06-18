@@ -7,9 +7,9 @@ import os
 import resend
 from datetime import datetime, timedelta, timezone
 
+import jwt
 from fastapi import Depends, FastAPI, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jose import JWTError, jwt
 from passlib.context import CryptContext
 from pydantic import BaseModel, EmailStr, Field
 from slowapi import Limiter, _rate_limit_exceeded_handler
@@ -125,7 +125,7 @@ def require_admin(token: str = Depends(oauth2_scheme)) -> str:
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[JWT_ALGORITHM])
-    except JWTError:
+    except jwt.PyJWTError:
         raise credentials_error
     username = payload.get("sub")
     if not username or username != ADMIN_USERNAME:
