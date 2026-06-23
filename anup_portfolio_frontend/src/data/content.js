@@ -208,11 +208,11 @@ export const PROJECTS = [
   },
   {
     id: "daily-briefing",
-    metric: "runs daily at 10:00 · zero-touch",
+    metric: "multi-account · runs daily · zero-touch",
     title: "AI Daily Briefing",
     description:
-      "Automated personal assistant that fetches unread emails, Google Calendar events, and news headlines every morning, generates a structured briefing with Claude AI, and emails it at 10 AM. Replies to the briefing email trigger Claude to reply or delete emails on your behalf.",
-    tech: ["Python", "Claude AI", "Gmail API", "Google Calendar API", "GitHub Actions", "RSS"],
+      "Automated personal assistant that aggregates unread email across multiple Gmail accounts, the day's Google Calendar, and news headlines each morning, then has Claude generate a structured briefing delivered as a formatted HTML email. Replying to that email triggers Claude to respond to or delete messages on your behalf, routed back to the right account. Runs serverless on GitHub Actions on a fixed schedule.",
+    tech: ["Python", "Claude AI", "Gmail API", "Google Calendar API", "GitHub Actions", "OAuth"],
     github: "https://github.com/anupkatuwal/daily-briefing",
     live: "",
   },
