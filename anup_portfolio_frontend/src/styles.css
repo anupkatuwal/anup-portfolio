@@ -1221,6 +1221,7 @@ html[data-theme="light"] .navbar-scrolled {
    ADMIN
 ========================================================= */
 .admin-page { min-height: 100vh; padding: 48px 0; }
+.admin-page .card { opacity: 1; transform: none; }
 
 .admin-login {
   max-width: 380px;
