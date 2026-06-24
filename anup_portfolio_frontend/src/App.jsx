@@ -3,6 +3,7 @@
 // public bundle stays small.
 import { useEffect, useRef } from "react";
 
+import { useContent } from "./context/ContentContext";
 import { Hero } from "./components/Hero";
 import { SkillsSection } from "./components/SkillsSection";
 import { ExperienceSection } from "./components/ExperienceSection";
@@ -17,6 +18,7 @@ import { Navbar } from "./components/Navbar";
 
 export default function App() {
   const spotlightRef = useRef(null);
+  const content = useContent();
 
   // Section background tint
   useEffect(() => {
@@ -50,7 +52,10 @@ export default function App() {
     return () => window.removeEventListener("mousemove", move);
   }, []);
 
-  // Scroll reveal — observe cards, timeline items, skill rows, section headings
+  // Scroll reveal — observe cards, timeline items, skill rows, section headings.
+  // Re-runs when `content` changes: content loads async from the API after the
+  // first paint, so any newly rendered cards must be (re)observed or they'd
+  // stay stuck at the CSS-default opacity: 0.
   useEffect(() => {
     const targets = document.querySelectorAll(
       ".card, .timeline-item, .skill-row, .section-title, .section-eyebrow"
@@ -68,7 +73,7 @@ export default function App() {
     );
     targets.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [content]);
 
   return (
     <>

@@ -1,8 +1,9 @@
 import React from "react";
 import { Section } from "./Section";
-import { PROJECTS } from "../data/content";
+import { useContent } from "../context/ContentContext";
 
 export function ProjectsSection() {
+  const { PROJECTS = [] } = useContent();
   const projects = [...PROJECTS].sort(
     (a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0)
   );

@@ -3,18 +3,20 @@
 # Projects/skills/etc. are NOT here — they live in src/data/content.js.
 
 import html
+import json as _json
 import os
+import re
 import resend
 from datetime import datetime, timedelta, timezone
 
 import jwt
-from fastapi import Depends, FastAPI, HTTPException, Request, status
+from fastapi import Body, Depends, FastAPI, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 from pydantic import BaseModel, EmailStr, Field
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
-from sqlalchemy import Boolean, DateTime, Integer, String, Text, create_engine, select, text
+from sqlalchemy import JSON, Boolean, DateTime, Integer, String, Text, create_engine, select, text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session, sessionmaker
 from sqlalchemy.pool import NullPool
 
@@ -61,6 +63,23 @@ class ContactMessage(Base):
         DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc)
     )
     is_read: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+
+
+class SiteContent(Base):
+    # Single-row document store: the entire editable site content (projects,
+    # skills, resume, etc.) lives as one JSON blob, keyed by CONTENT_KEY. The
+    # frontend falls back to its bundled defaults whenever this is absent, so
+    # the public site can never go blank if the DB is empty or unreachable.
+    __tablename__ = "site_content"
+
+    key: Mapped[str] = mapped_column(String(50), primary_key=True)
+    data: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
 
 
 try:
@@ -186,6 +205,66 @@ def _notify(msg: ContactMessage) -> None:
 
 
 # ── Endpoints ─────────────────────────────────────────────────────────────────
+
+# ── Site content (CMS) ────────────────────────────────────────────────────────
+
+CONTENT_KEY = "default"
+MAX_CONTENT_BYTES = 512_000  # generous cap; the whole site doc is a few KB
+
+# Only these object keys are ever rendered as href targets on the public site.
+# Anything stored there must be a safe scheme so a saved doc can't smuggle a
+# javascript:/data: URL into a link (defense in depth — only the authenticated
+# admin can write, but we never want a stored value to become an XSS vector).
+_URL_FIELDS = {"github", "live", "link"}
+_SAFE_URL = re.compile(r"^(https?://|mailto:|/)", re.IGNORECASE)
+
+
+def _validate_content(node, depth=0):
+    if depth > 12:
+        raise HTTPException(status_code=400, detail="Content nested too deeply")
+    if isinstance(node, dict):
+        for key, value in node.items():
+            if key in _URL_FIELDS and isinstance(value, str):
+                stripped = value.strip()
+                if stripped and not _SAFE_URL.match(stripped):
+                    raise HTTPException(
+                        status_code=400,
+                        detail=f"Unsafe URL in field '{key}'. Use http(s)://, mailto:, or a /relative path.",
+                    )
+            _validate_content(value, depth + 1)
+    elif isinstance(node, list):
+        for item in node:
+            _validate_content(item, depth + 1)
+
+
+@app.get("/api/content")
+def get_content(db: Session = Depends(get_db)):
+    """Public: the stored site content, or {} so the frontend uses its defaults."""
+    row = db.get(SiteContent, CONTENT_KEY)
+    return row.data if row else {}
+
+
+@app.put("/api/content")
+def put_content(
+    payload: dict = Body(...),
+    db: Session = Depends(get_db),
+    _admin: str = Depends(require_admin),
+):
+    """Admin: replace the entire site content document."""
+    if not isinstance(payload, dict):
+        raise HTTPException(status_code=400, detail="Content must be a JSON object")
+    if len(_json.dumps(payload)) > MAX_CONTENT_BYTES:
+        raise HTTPException(status_code=413, detail="Content too large")
+    _validate_content(payload)
+
+    row = db.get(SiteContent, CONTENT_KEY)
+    if row:
+        row.data = payload
+    else:
+        db.add(SiteContent(key=CONTENT_KEY, data=payload))
+    db.commit()
+    return {"ok": True}
+
 
 @app.get("/api/health")
 def health():

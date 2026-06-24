@@ -1,6 +1,6 @@
 import React from "react";
 import { Section } from "./Section";
-import { TRAINING, CERTIFICATIONS, FOUNDATIONS } from "../data/content";
+import { useContent } from "../context/ContentContext";
 
 function CertCard({ item }) {
   return (
@@ -21,6 +21,7 @@ function CertCard({ item }) {
 }
 
 export function CertificationsSection() {
+  const { TRAINING = [], CERTIFICATIONS = [], FOUNDATIONS = [] } = useContent();
   return (
     <Section id="certifications" title="Certifications & Training" eyebrow="// continuous learning">
       <div className="cert-group">
@@ -38,15 +39,17 @@ export function CertificationsSection() {
       {FOUNDATIONS.map((line) => (
         <p key={line.label} className="cert-foundations">
           <span className="cert-foundations-label">{line.label}:</span>{" "}
-          {line.items.join(" · ")}
+          {(line.items || []).join(" · ")}
           {line.note && <span className="cert-foundations-note"> — {line.note}</span>}{" "}
-          <a
-            href={line.link}
-            target={line.link.startsWith("/") ? undefined : "_blank"}
-            rel="noreferrer"
-          >
-            {line.linkLabel}
-          </a>
+          {line.link && (
+            <a
+              href={line.link}
+              target={line.link.startsWith("/") ? undefined : "_blank"}
+              rel="noreferrer"
+            >
+              {line.linkLabel || "view ↗"}
+            </a>
+          )}
         </p>
       ))}
     </Section>

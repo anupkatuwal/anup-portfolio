@@ -1,19 +1,14 @@
 // src/data/content.js
 //
-// ─── THIS IS THE ONLY FILE YOU EDIT TO UPDATE THE SITE ───────────────────────
+// ─── DEFAULT / FALLBACK SITE CONTENT ─────────────────────────────────────────
 //
-// Every section of the portfolio (Skills, Experience, Education,
-// Certifications, Resume highlights, Projects) reads its content from here.
-// The components in src/components/ only render what's in this file.
+// These exports are the *bundled defaults*. At runtime the site fetches any
+// saved content from the API (/api/content, editable in /admin) and overlays
+// it on top of these. If the API is empty or unreachable, the site renders
+// these defaults — so it can never go blank.
 //
-// HOW TO EDIT:
-//   • Each section below is an exported array (or object) of plain entries.
-//   • Copy an existing entry, change the text, save — the site updates.
-//   • Strings go in quotes. Lists go in [square brackets], separated by commas.
-//   • Don't delete the `export const ...` lines themselves.
-//   • Set a field to "" or remove an entry entirely if you don't want it shown.
-//
-// After editing, run `npm run build` locally (or just push — Vercel builds it)
+// You can still edit this file directly to change the baseline (then push,
+// Vercel rebuilds). For day-to-day edits, use the admin panel instead.
 // ──────────────────────────────────────────────────────────────────────────────
 
 /* ── SKILLS ───────────────────────────────────────────────────────────────────
@@ -217,3 +212,19 @@ export const PROJECTS = [
     live: "",
   },
 ];
+
+/* ── AGGREGATE ────────────────────────────────────────────────────────────────
+   The full content document, in the same shape the admin panel edits and the
+   API stores. Order of keys here defines the order sections appear in /admin. */
+
+export const DEFAULT_CONTENT = {
+  PRIMARY_SKILLS,
+  SKILLS,
+  EXPERIENCES,
+  EDUCATION,
+  TRAINING,
+  CERTIFICATIONS,
+  FOUNDATIONS,
+  RESUME_HIGHLIGHTS,
+  PROJECTS,
+};

@@ -1,8 +1,9 @@
 import React from "react";
 import { Section } from "./Section";
-import { RESUME_HIGHLIGHTS } from "../data/content";
+import { useContent } from "../context/ContentContext";
 
 export function ResumeSection() {
+  const { RESUME_HIGHLIGHTS = [] } = useContent();
   return (
     <Section id="resume" title="Resume" eyebrow="// my background, on one page">
       <div className="resume-card card">

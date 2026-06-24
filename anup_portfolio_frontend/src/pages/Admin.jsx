@@ -2,6 +2,7 @@
 // Token lives in sessionStorage; any 401 clears it and drops back to login.
 import React, { useCallback, useEffect, useState } from "react";
 import { apiFetch } from "../lib/api";
+import { ContentEditor } from "./ContentEditor";
 
 const TOKEN_KEY = "admin_token";
 
@@ -115,17 +116,6 @@ function Inbox({ token, onLogout }) {
 
   return (
     <>
-      <div className="admin-header">
-        <h1 className="section-title">Inbox</h1>
-        <button
-          className="btn btn-ghost"
-          type="button"
-          onClick={() => { window.sessionStorage.removeItem(TOKEN_KEY); onLogout(); }}
-        >
-          Sign out
-        </button>
-      </div>
-
       {error && <p className="form-status error" role="alert">{error}</p>}
       {messages === null && <p className="card-text">Loading…</p>}
       {messages?.length === 0 && <p className="card-text">No messages yet.</p>}
@@ -162,12 +152,50 @@ function Inbox({ token, onLogout }) {
 
 export default function Admin() {
   const [token, setToken] = useState(() => window.sessionStorage.getItem(TOKEN_KEY));
+  const [tab, setTab] = useState("content");
+
+  const logout = useCallback(() => {
+    window.sessionStorage.removeItem(TOKEN_KEY);
+    setToken(null);
+  }, []);
 
   return (
     <main id="main" className="admin-page">
       <div className="container">
         {token ? (
-          <Inbox token={token} onLogout={() => setToken(null)} />
+          <>
+            <div className="admin-header">
+              <div className="admin-tabs" role="tablist">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={tab === "content"}
+                  className={`admin-tab${tab === "content" ? " is-active" : ""}`}
+                  onClick={() => setTab("content")}
+                >
+                  Content
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={tab === "messages"}
+                  className={`admin-tab${tab === "messages" ? " is-active" : ""}`}
+                  onClick={() => setTab("messages")}
+                >
+                  Messages
+                </button>
+              </div>
+              <button className="btn btn-ghost" type="button" onClick={logout}>
+                Sign out
+              </button>
+            </div>
+
+            {tab === "content" ? (
+              <ContentEditor token={token} onAuthError={logout} />
+            ) : (
+              <Inbox token={token} onLogout={logout} />
+            )}
+          </>
         ) : (
           <LoginForm onLogin={setToken} />
         )}

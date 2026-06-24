@@ -1,10 +1,11 @@
 import React from "react";
 import { Section } from "./Section";
-import { EXPERIENCES, EDUCATION } from "../data/content";
+import { useContent } from "../context/ContentContext";
 
 // One vertical timeline: work entries first (newest first, as ordered in
 // content.js), then education entries tagged "education".
 export function ExperienceSection() {
+  const { EXPERIENCES = [], EDUCATION = [] } = useContent();
   return (
     <Section id="experience" title="Experience & Education" eyebrow="// background">
       <div className="timeline">
@@ -19,7 +20,7 @@ export function ExperienceSection() {
               <p className="timeline-description">{exp.description}</p>
             ) : (
               <ul className="bullet-list">
-                {exp.bullets.map((b) => <li key={b}>{b}</li>)}
+                {(exp.bullets || []).map((b) => <li key={b}>{b}</li>)}
               </ul>
             )}
           </article>

@@ -10,6 +10,7 @@ import "@fontsource/jetbrains-mono/latin-500.css";
 import "@fontsource/jetbrains-mono/latin-600.css";
 
 import App from "./App";
+import { ContentProvider } from "./context/ContentContext";
 import "./index.css";
 
 // Vercel Analytics — cookieless; deferred so it never blocks hydration
@@ -28,7 +29,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Admin />
       </Suspense>
     ) : (
-      <App />
+      <ContentProvider>
+        <App />
+      </ContentProvider>
     )}
   </React.StrictMode>
 );
