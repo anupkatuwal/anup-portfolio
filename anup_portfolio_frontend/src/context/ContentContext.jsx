@@ -35,6 +35,7 @@ export function ContentProvider({ children }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useContent() {
   return useContext(ContentContext);
 }
