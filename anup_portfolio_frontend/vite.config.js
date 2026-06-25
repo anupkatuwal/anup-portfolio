@@ -50,4 +50,9 @@ Sitemap: ${SITE_URL}/sitemap.xml
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), siteUrl()],
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: './src/test/setup.js',
+  },
 })

@@ -4,6 +4,7 @@
 
 import html
 import json as _json
+import logging
 import os
 import re
 import resend
@@ -19,6 +20,8 @@ from slowapi.errors import RateLimitExceeded
 from sqlalchemy import JSON, Boolean, DateTime, Integer, String, Text, create_engine, select, text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session, sessionmaker
 from sqlalchemy.pool import NullPool
+
+logger = logging.getLogger("portfolio-api")
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
@@ -85,7 +88,7 @@ class SiteContent(Base):
 try:
     Base.metadata.create_all(engine)
 except Exception as exc:  # DB unreachable at cold start — /api/health will report it
-    print(f"create_all failed: {exc}")
+    logger.error("startup.create_all_failed: %s", exc)
 
 
 def get_db():
@@ -178,6 +181,10 @@ class MessageOut(BaseModel):
 
 def _notify(msg: ContactMessage) -> None:
     if not RESEND_API_KEY:
+        logger.warning(
+            "notify.skipped: RESEND_API_KEY not set (message id=%s saved, no email sent)",
+            msg.id,
+        )
         return
     try:
         resend.api_key = RESEND_API_KEY
@@ -201,7 +208,9 @@ def _notify(msg: ContactMessage) -> None:
             ),
         })
     except Exception as exc:
-        print(f"Resend notification failed: {exc}")
+        # Don't fail the request (the message is already saved), but make the
+        # failure loud in logs so a broken notification pipeline is noticeable.
+        logger.error("notify.failed: message id=%s did not send: %s", msg.id, exc)
 
 
 # ── Endpoints ─────────────────────────────────────────────────────────────────
