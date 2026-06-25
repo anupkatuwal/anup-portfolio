@@ -11,7 +11,7 @@ import resend
 from datetime import datetime, timedelta, timezone
 
 import jwt
-from fastapi import Body, Depends, FastAPI, HTTPException, Request, status
+from fastapi import Body, Depends, FastAPI, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 from pydantic import BaseModel, EmailStr, Field
@@ -247,8 +247,12 @@ def _validate_content(node, depth=0):
 
 
 @app.get("/api/content")
-def get_content(db: Session = Depends(get_db)):
+def get_content(response: Response, db: Session = Depends(get_db)):
     """Public: the stored site content, or {} so the frontend uses its defaults."""
+    # Edge-cache at Vercel's CDN so visitors don't each trigger a serverless
+    # cold start (~11s). 5-min shared cache, then serve stale while it
+    # revalidates in the background. CMS edits go live within ~5 minutes.
+    response.headers["Cache-Control"] = "public, s-maxage=300, stale-while-revalidate=86400"
     row = db.get(SiteContent, CONTENT_KEY)
     return row.data if row else {}
 

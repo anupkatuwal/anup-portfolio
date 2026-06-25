@@ -67,6 +67,14 @@ def test_health_ok():
     assert r.json()["status"] == "ok"
 
 
+def test_content_is_edge_cached():
+    # The public content endpoint must be CDN-cached so visitors don't each
+    # pay a serverless cold start (perf regression guard).
+    r = client.get("/api/content")
+    assert r.status_code == 200
+    assert "s-maxage" in r.headers.get("cache-control", "")
+
+
 # ── contact form ────────────────────────────────────────────────────────────
 
 def test_contact_happy_path_saves_message():
