@@ -5,25 +5,27 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Primary SEO -->
     <title>Anup Katuwal — Data Analyst &amp; NLP Researcher | Kathmandu, Nepal</title>
     <meta
       name="description"
-      content="Anup Katuwal — Data Analyst and NLP Researcher in Kathmandu, Nepal. Master's in Computer Information Systems specializing in Python, SQL, machine learning, and fairness in AI. Open to roles in Data Analysis, Business Analytics, and Software Development."
+      content="Anup Katuwal — Data Analyst & NLP Researcher in Kathmandu, Nepal. Python, SQL, machine learning & AI automation. Open to data, analytics & software roles."
     />
     <meta
       name="keywords"
       content="Anup Katuwal, Data Analyst, NLP Researcher, Machine Learning, Python, SQL, BERT, Business Analytics, Data Science, Kathmandu, Nepal, Portfolio, FastAPI, React"
     />
     <meta name="author" content="Anup Katuwal" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="theme-color" content="#0e0d0b" />
     <link rel="canonical" href="%SITE_URL%/" />
 
     <!-- Open Graph (Facebook, LinkedIn, etc.) -->
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="Anup Katuwal" />
     <meta property="og:title" content="Anup Katuwal — Data Analyst &amp; NLP Researcher | Kathmandu, Nepal" />
     <meta
@@ -45,45 +47,75 @@
       content="Data Analyst and NLP Researcher in Kathmandu, Nepal. Python, SQL, machine learning, and fairness in AI."
     />
     <meta name="twitter:image" content="%SITE_URL%/og.png" />
+    <meta name="twitter:image:alt" content="Anup Katuwal — Data Analyst &amp; NLP Researcher" />
 
-    <!-- Structured data: Person -->
+    <!-- Structured data: Person + WebSite + ProfilePage (linked @graph) -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Anup Katuwal",
-        "url": "%SITE_URL%/",
-        "image": "%SITE_URL%/profile.jpg",
-        "jobTitle": "Data Analyst & NLP Researcher",
-        "email": "mailto:katuwalanup@gmail.com",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Kathmandu",
-          "addressCountry": "Nepal"
-        },
-        "alumniOf": [
+        "@graph": [
           {
-            "@type": "CollegeOrUniversity",
-            "name": "Nepal College of Information Technology (NCIT), Pokhara University"
+            "@type": "Person",
+            "@id": "%SITE_URL%/#person",
+            "name": "Anup Katuwal",
+            "url": "%SITE_URL%/",
+            "image": "%SITE_URL%/profile.jpg",
+            "jobTitle": "Data Analyst & NLP Researcher",
+            "description": "Data Analyst and NLP Researcher based in Kathmandu, Nepal — Python, SQL, machine learning, and AI automation, with published research on fairness in mental-health NLP.",
+            "email": "mailto:katuwalanup@gmail.com",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Kathmandu",
+              "addressCountry": "Nepal"
+            },
+            "alumniOf": [
+              {
+                "@type": "CollegeOrUniversity",
+                "name": "Nepal College of Information Technology (NCIT), Pokhara University"
+              },
+              {
+                "@type": "CollegeOrUniversity",
+                "name": "Columbia College, Denver, Colorado"
+              }
+            ],
+            "knowsAbout": [
+              "Data Analysis",
+              "Data Visualization",
+              "Natural Language Processing",
+              "Machine Learning",
+              "Python",
+              "SQL",
+              "Pandas",
+              "BERT",
+              "Business Analytics",
+              "FastAPI",
+              "Process Automation",
+              "Fairness in AI"
+            ],
+            "sameAs": [
+              "https://github.com/anupkatuwal",
+              "https://www.linkedin.com/in/anupkatuwal1989",
+              "https://www.upwork.com/freelancers/~01fe60c948627059d5"
+            ]
           },
           {
-            "@type": "CollegeOrUniversity",
-            "name": "Columbia College, Denver, Colorado"
+            "@type": "WebSite",
+            "@id": "%SITE_URL%/#website",
+            "url": "%SITE_URL%/",
+            "name": "Anup Katuwal",
+            "description": "Portfolio of Anup Katuwal — Data Analyst & NLP Researcher in Kathmandu, Nepal.",
+            "publisher": { "@id": "%SITE_URL%/#person" },
+            "inLanguage": "en"
+          },
+          {
+            "@type": "ProfilePage",
+            "@id": "%SITE_URL%/#webpage",
+            "url": "%SITE_URL%/",
+            "name": "Anup Katuwal — Data Analyst & NLP Researcher | Kathmandu, Nepal",
+            "isPartOf": { "@id": "%SITE_URL%/#website" },
+            "about": { "@id": "%SITE_URL%/#person" },
+            "inLanguage": "en"
           }
-        ],
-        "knowsAbout": [
-          "Data Analysis",
-          "Natural Language Processing",
-          "Machine Learning",
-          "Python",
-          "SQL",
-          "BERT",
-          "Business Analytics",
-          "Fairness in AI"
-        ],
-        "sameAs": [
-          "https://github.com/anupkatuwal",
-          "https://www.linkedin.com/in/anupkatuwal1989"
         ]
       }
     </script>
