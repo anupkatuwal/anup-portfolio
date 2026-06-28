@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from "react";
 
 // Single clear primary identity — not three competing roles
-const ROLE_STATIC  = "Data Analyst &";
-const ROLE_CYCLING = ["Automation Engineer", "Python Developer", "NLP Researcher"];
+const ROLE_STATIC  = "Data Engineer &";
+const ROLE_CYCLING = ["ETL Pipeline Builder", "NLP Researcher", "Python Developer"];
 
 export function Hero() {
   const [roleIndex, setRoleIndex]   = useState(0);
@@ -55,7 +55,7 @@ export function Hero() {
 
             <div className="hero-status">
               <span className="status-dot" aria-hidden="true" />
-              Open to freelance · Data Analysis · Python Automation · AI Integration
+              Open to freelance · ETL Pipelines · Data Engineering · Python Automation
             </div>
 
             <div className="hero-actions">
@@ -97,7 +97,7 @@ export function Hero() {
 
               <div className="hero-stat">
                 <p className="stat-label">Stack</p>
-                <p className="stat-value">Python · SQL · BERT · FastAPI · React</p>
+                <p className="stat-value">Python · MySQL · SQL · BERT · FastAPI</p>
               </div>
 
               <div className="hero-stat">

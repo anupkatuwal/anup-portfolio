@@ -14,12 +14,12 @@
 /* ── SKILLS ───────────────────────────────────────────────────────────────────
    Each row = one domain. `primary: true` items render highlighted chips.     */
 
-export const PRIMARY_SKILLS = ["Python", "SQL", "BERT", "Pandas", "FastAPI"];
+export const PRIMARY_SKILLS = ["Python", "MySQL", "ETL", "SQL", "Pandas"];
 
 export const SKILLS = [
-  { domain: "data & ml",    items: ["Python", "Pandas", "NumPy", "SQL", "BERT", "Transformers", "Scikit-learn", "Fairness Metrics"] },
-  { domain: "engineering",  items: ["FastAPI", "React", "Vite", "REST APIs", "PostgreSQL"] },
-  { domain: "tools",        items: ["Git", "Jupyter", "Google Colab", "VS Code", "Linux"] },
+  { domain: "data & ml",    items: ["Python", "Pandas", "NumPy", "SQL", "MySQL", "ETL Pipelines", "Data Warehousing", "Star Schema", "BERT", "Transformers", "Scikit-learn", "Fairness Metrics"] },
+  { domain: "engineering",  items: ["FastAPI", "React", "Vite", "REST APIs", "PostgreSQL", "MySQL", "GitHub Actions"] },
+  { domain: "tools",        items: ["Git", "Jupyter", "Google Colab", "VS Code", "Linux", "Power BI"] },
 ];
 
 /* ── EXPERIENCE ───────────────────────────────────────────────────────────────
@@ -28,13 +28,14 @@ export const SKILLS = [
 
 export const EXPERIENCES = [
   {
-    role: "Graduate Researcher",
+    role: "Graduate Researcher — NLP & Data Analytics",
     org: "NCIT, Pokhara University",
     period: "2022 – 2026",
     location: "Kathmandu, Nepal",
     bullets: [
-      "Thesis on bias mitigation in mental-health sentiment analysis using fine-tuned BERT.",
-      "Published IEEE paper; worked with Reddit datasets and demographic fairness metrics.",
+      "Built data pipelines to preprocess and analyze 52,000+ Reddit posts using Python and SQL.",
+      "Thesis: FairBERT — bias mitigation in mental-health sentiment analysis using fine-tuned BERT; published IEEE paper.",
+      "Designed and maintained structured databases for storing research outputs and experimental results.",
     ],
   },
   {
@@ -48,23 +49,14 @@ export const EXPERIENCES = [
     ],
   },
   {
-    role: "Teaching Assistant — DBMS",
-    org: "College of Applied Business",
-    period: "2020 – 2021",
+    role: "Teaching Assistant — Database Management Systems",
+    org: "College of Applied Business (CAB)",
+    period: "2018",
     location: "Kathmandu, Nepal",
     bullets: [
-      "Full semester DBMS instruction — SQL labs, schema design, assessments.",
-      "Followed Tribhuvan University syllabus; maintained open availability for students.",
+      "Delivered MySQL lab sessions covering database design, normalization, stored procedures, and complex SQL queries for 30+ students.",
+      "Developed hands-on exercises on relational schema design, data modeling, and ETL fundamentals.",
     ],
-  },
-  {
-    role: "Assistant Manager",
-    org: "Fine Dining Italian Restaurant",
-    period: "2012 – 2016",
-    location: "Denver, Colorado",
-    description: "Operations, team management, and front-of-house at a fine dining venue.",
-    bullets: [],
-    minor: true,
   },
 ];
 
@@ -158,7 +150,7 @@ export const FOUNDATIONS = [
 export const RESUME_HIGHLIGHTS = [
   "Master's in Computer Information Systems — CGPA 3.71 (NCIT, Pokhara University)",
   "FairBERT thesis: fine-tuned BERT on 52,000+ Reddit posts · 84% F1 · 54% bias reduction · IEEE paper",
-  "Data analytics pipelines & dashboards (Python, Pandas, SQL, Tableau)",
+  "End-to-End Food Order ETL Pipeline — MySQL stored procedures, star schema warehouse, Python orchestration, 20 automated tests, HTML dashboard · Available on Upwork",
   "Upwork Proposal Automation Agent · cuts proposal time from 20 min to under 2 min",
   "Google Data Analytics (6/9) · Python for Everybody · AWS · Intro to GenAI certified",
   "Currently training: Advanced Data Analysis with Python at Broadway Infosys (May–Aug 2026)",
@@ -170,6 +162,17 @@ export const RESUME_HIGHLIGHTS = [
    `tech` is a list of chip labels. Leave `live` as "" if there's no demo.    */
 
 export const PROJECTS = [
+  {
+    id: "food-etl",
+    metric: "MySQL · Star Schema · 20 tests · CI/CD",
+    title: "End-to-End Food Order ETL Pipeline",
+    description:
+      "Production-style ETL pipeline replicating the architecture used by DoorDash and Uber Eats. Extracts raw CSV orders into a MySQL staging DB, transforms via stored procedures into a star schema warehouse (fact_orders + 4 dim tables), and serves an interactive HTML analytics dashboard. Includes idempotent loading, ETL job logging, 20 automated pytest tests, and GitHub Actions CI/CD.",
+    tech: ["MySQL", "Python", "ETL", "Star Schema", "pytest", "GitHub Actions", "HTML", "Chart.js"],
+    github: "https://github.com/anupkatuwal/food-order-etl-pipeline",
+    live: "https://www.upwork.com/services/product/development-it-end-to-end-food-order-etl-pipeline-mysql-python-power-bi-2070932638680691364",
+    featured: true,
+  },
   {
     id: "thesis",
     metric: "84% F1 · ΔDP −54% · IEEE paper",

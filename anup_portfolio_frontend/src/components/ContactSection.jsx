@@ -72,8 +72,9 @@ export function ContactSection() {
         {/* ── Left: contact info ── */}
         <div className="contact-text">
           <p className="card-text" style={{ marginBottom: "20px" }}>
-            Available for freelance data analytics, Python automation, and API
-            integration projects. Reach out and I'll reply within 24 hours.
+            Available for freelance data engineering projects — ETL pipelines,
+            MySQL database design, data warehouses, Python automation, and BI
+            dashboards. Reach out and I'll reply within 24 hours.
           </p>
 
           <ul className="contact-meta">
@@ -127,7 +128,7 @@ export function ContactSection() {
 
             <li className="contact-meta-item">
               <span className="meta-label">Open to</span>
-              <span>Data analytics · Python automation · AI integration</span>
+              <span>ETL pipelines · Data engineering · Python automation · AI integration</span>
             </li>
           </ul>
         </div>
