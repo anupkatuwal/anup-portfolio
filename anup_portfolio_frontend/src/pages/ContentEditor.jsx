@@ -23,7 +23,6 @@ const SECTION_LABELS = {
 const MULTILINE_KEYS = new Set(["description", "details"]);
 
 const clone = (x) => JSON.parse(JSON.stringify(x));
-const isStringArray = (v) => Array.isArray(v) && v.every((x) => typeof x === "string");
 const isRecordArray = (v) =>
   Array.isArray(v) && v.length > 0 && v.every((x) => x && typeof x === "object" && !Array.isArray(x));
 

@@ -2,6 +2,7 @@
 import React, { Suspense, lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { inject } from "@vercel/analytics";
+import { injectSpeedInsights } from "@vercel/speed-insights";
 
 // Self-hosted fonts — only the weights the CSS actually uses
 import "@fontsource-variable/dm-sans";        // variable: covers 400–800
@@ -13,10 +14,14 @@ import App from "./App";
 import { ContentProvider } from "./context/ContentContext";
 import "./index.css";
 
-// Vercel Analytics — cookieless; deferred so it never blocks hydration
-const startAnalytics = () => inject();
-if ("requestIdleCallback" in window) requestIdleCallback(startAnalytics);
-else setTimeout(startAnalytics, 2000);
+// Vercel Analytics (cookieless) + Speed Insights (Core Web Vitals) — deferred
+// so they never block hydration.
+const startTelemetry = () => {
+  inject();
+  injectSpeedInsights();
+};
+if ("requestIdleCallback" in window) requestIdleCallback(startTelemetry);
+else setTimeout(startTelemetry, 2000);
 
 // /admin is code-split so the public page never pays for it.
 const Admin = lazy(() => import("./pages/Admin"));

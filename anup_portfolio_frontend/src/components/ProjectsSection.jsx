@@ -36,6 +36,9 @@ export function ProjectsSection() {
                     live ↗
                   </a>
                 )}
+                <a href={`/projects/${p.id}`} className="project-link">
+                  details →
+                </a>
               </div>
             </div>
             {p.metric && <p className="project-metric">{p.metric}</p>}
