@@ -11,11 +11,11 @@ os.environ.setdefault("DATABASE_URL", "sqlite:///./test_portfolio.db")
 os.environ.setdefault("SECRET_KEY", "test-secret-key-at-least-32-bytes-long-0123456789")
 os.environ.setdefault("ADMIN_USERNAME", "admin")
 
-from passlib.context import CryptContext  # noqa: E402
+import bcrypt  # noqa: E402
 
 os.environ.setdefault(
     "ADMIN_PASSWORD_HASH",
-    CryptContext(schemes=["bcrypt"], deprecated="auto").hash("testpass"),
+    bcrypt.hashpw(b"testpass", bcrypt.gensalt()).decode(),
 )
 
 import pytest  # noqa: E402

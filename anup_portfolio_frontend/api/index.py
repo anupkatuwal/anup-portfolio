@@ -10,10 +10,10 @@ import re
 import resend
 from datetime import datetime, timedelta, timezone
 
+import bcrypt
 import jwt
 from fastapi import Body, Depends, FastAPI, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from passlib.context import CryptContext
 from pydantic import BaseModel, EmailStr, Field
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -135,8 +135,22 @@ if not os.environ.get("VERCEL"):
 
 # ── Auth ──────────────────────────────────────────────────────────────────────
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
+
+
+def verify_password(password: str, password_hash: str) -> bool:
+    # bcrypt only reads the first 72 bytes; 5.x raises instead of truncating.
+    # Reject long inputs here so the except below can only mean a bad hash.
+    if len(password.encode()) > 72:
+        return False
+    try:
+        return bcrypt.checkpw(password.encode(), password_hash.encode())
+    except ValueError:
+        logger.error(
+            "auth.misconfigured: ADMIN_PASSWORD_HASH is not a valid bcrypt hash; "
+            "all logins will fail until it is fixed"
+        )
+        return False
 
 
 def require_admin(token: str = Depends(oauth2_scheme)) -> str:
@@ -316,7 +330,7 @@ def login(request: Request, form: OAuth2PasswordRequestForm = Depends()):
     username_ok = form.username == ADMIN_USERNAME
     # Always run the hash check so response timing doesn't leak whether the
     # username was right.
-    password_ok = pwd_context.verify(form.password, ADMIN_PASSWORD_HASH)
+    password_ok = verify_password(form.password, ADMIN_PASSWORD_HASH)
     if not (username_ok and password_ok):
         raise HTTPException(status_code=401, detail="Incorrect username or password")
 
