@@ -28,11 +28,12 @@ client = TestClient(index.app)
 
 @pytest.fixture(autouse=True)
 def _isolate():
-    """Disable rate limiting and start each test with an empty messages table."""
-    index.limiter.enabled = False
+    """Disable rate limiting and start each test with empty tables."""
+    index.RATE_LIMIT_ENABLED = False
     db = index.SessionLocal()
     try:
         db.query(index.ContactMessage).delete()
+        db.query(index.RateLimitHit).delete()
         db.commit()
     finally:
         db.close()
@@ -153,11 +154,29 @@ def test_notify_escapes_html(monkeypatch):
 
 # ── rate limiting ───────────────────────────────────────────────────────────
 
-def test_contact_rate_limited_after_five(monkeypatch):
-    index.limiter.enabled = True
+def test_contact_rate_limited_after_five():
+    index.RATE_LIMIT_ENABLED = True
     try:
         codes = [client.post("/api/contact", json=_payload()).status_code for _ in range(6)]
     finally:
-        index.limiter.enabled = False
+        index.RATE_LIMIT_ENABLED = False
     assert codes[:5] == [200, 200, 200, 200, 200]
+    assert codes[5] == 429
+
+
+def test_login_rate_limited_after_five():
+    # The DB-backed limiter is the durable backstop for brute-force login
+    # attempts (the edge WAF rule covers short bursts); the 6th try is capped
+    # before the password is even checked.
+    index.RATE_LIMIT_ENABLED = True
+    try:
+        codes = [
+            client.post(
+                "/api/auth/login", data={"username": "admin", "password": "nope"}
+            ).status_code
+            for _ in range(6)
+        ]
+    finally:
+        index.RATE_LIMIT_ENABLED = False
+    assert codes[:5] == [401, 401, 401, 401, 401]
     assert codes[5] == 429

@@ -15,9 +15,10 @@ import jwt
 from fastapi import Body, Depends, FastAPI, HTTPException, Request, Response, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel, EmailStr, Field
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.errors import RateLimitExceeded
-from sqlalchemy import JSON, Boolean, DateTime, Integer, String, Text, create_engine, select, text
+from sqlalchemy import (
+    JSON, Boolean, DateTime, Integer, String, Text,
+    create_engine, delete, func, select, text,
+)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session, sessionmaker
 from sqlalchemy.pool import NullPool
 
@@ -85,6 +86,25 @@ class SiteContent(Base):
     )
 
 
+class RateLimitHit(Base):
+    # One row per rate-limited attempt (login / contact), counted within a
+    # sliding time window. Durable across serverless cold starts and shared
+    # across concurrent lambdas — unlike in-memory counters, which reset on
+    # every cold start and so don't actually limit anything on Vercel. Rows
+    # that fall outside every window are dead weight; they're purged lazily
+    # per-bucket on each allowed request (see enforce_rate_limit).
+    __tablename__ = "rate_limit_hits"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    bucket: Mapped[str] = mapped_column(String(160), nullable=False, index=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+        index=True,
+    )
+
+
 try:
     Base.metadata.create_all(engine)
 except Exception as exc:  # DB unreachable at cold start — /api/health will report it
@@ -116,11 +136,48 @@ def client_ip(request: Request) -> str:
     return request.client.host if request.client else "unknown"
 
 
-limiter = Limiter(key_func=client_ip)
+# Toggled off in tests so unrelated cases can post repeatedly. Never flip this
+# in production — the DB limiter is the only durable rate limit the app has.
+RATE_LIMIT_ENABLED = True
+
+
+def enforce_rate_limit(
+    db: Session, request: Request, scope: str, limit: int, window_seconds: int
+) -> None:
+    """Reject the request with 429 if this client (per IP, per scope) has
+    already made `limit` attempts within the trailing `window_seconds`.
+
+    Counting is time-based (created_at >= cutoff), so the window slides even if
+    old rows linger; we still purge this bucket's expired rows on each allowed
+    request to keep the table small. On rejection we don't record the attempt —
+    otherwise a sustained flood would keep its own window from ever draining.
+    """
+    if not RATE_LIMIT_ENABLED:
+        return
+    bucket = f"{scope}:{client_ip(request)}"
+    now = datetime.now(timezone.utc)
+    cutoff = now - timedelta(seconds=window_seconds)
+    db.execute(
+        delete(RateLimitHit).where(
+            RateLimitHit.bucket == bucket, RateLimitHit.created_at < cutoff
+        )
+    )
+    recent = db.execute(
+        select(func.count())
+        .select_from(RateLimitHit)
+        .where(RateLimitHit.bucket == bucket, RateLimitHit.created_at >= cutoff)
+    ).scalar_one()
+    if recent >= limit:
+        # Roll back the purge (get_db closes the session) and reject.
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Too many requests. Please slow down and try again later.",
+        )
+    db.add(RateLimitHit(bucket=bucket, created_at=now))
+    db.commit()
+
 
 app = FastAPI(title="anup-portfolio API", docs_url=None, redoc_url=None)
-app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # Same-origin in production; CORS only for the Vite dev server.
 if not os.environ.get("VERCEL"):
@@ -304,8 +361,8 @@ def health():
 
 
 @app.post("/api/contact")
-@limiter.limit("5/hour")
 def submit_contact(request: Request, payload: ContactIn, db: Session = Depends(get_db)):
+    enforce_rate_limit(db, request, "contact", limit=5, window_seconds=3600)
     if payload.company.strip():
         return {"ok": True}  # bot filled the honeypot — pretend success, save nothing
 
@@ -322,8 +379,12 @@ def submit_contact(request: Request, payload: ContactIn, db: Session = Depends(g
 
 
 @app.post("/api/auth/login")
-@limiter.limit("5/15minutes")
-def login(request: Request, form: OAuth2PasswordRequestForm = Depends()):
+def login(
+    request: Request,
+    form: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db),
+):
+    enforce_rate_limit(db, request, "login", limit=5, window_seconds=900)
     if not (SECRET_KEY and ADMIN_USERNAME and ADMIN_PASSWORD_HASH):
         raise HTTPException(status_code=503, detail="Auth is not configured")
 
