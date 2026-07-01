@@ -46,7 +46,10 @@ export function Navbar() {
         {/* Brand */}
         <a href="#top" className="navbar-brand" onClick={handleLinkClick}>
           <span className="brand-mark">
-            <img src="/logo.jpg" alt="Anup Katuwal" />
+            <picture>
+              <source srcSet="/logo-sm.webp" type="image/webp" />
+              <img src="/logo-sm.jpg" alt="Anup Katuwal" width="34" height="34" />
+            </picture>
           </span>
           <span className="brand-text">Anup Katuwal</span>
         </a>
