@@ -199,7 +199,7 @@ export const PROJECTS = [
     metric: "React + FastAPI · serverless on Vercel",
     title: "Personal Portfolio — anup-portfolio",
     description:
-      "This site. React + Vite frontend with a FastAPI backend, JWT-protected admin panel, and Postgres (Neon) DB. Deployed serverless on Vercel. Features dark/light theme, animated hero, scroll-aware navbar, skills table with primary-chip highlighting, and a Certifications & Training section. Built and iterated entirely with Claude Code.",
+      "This site. A React + Vite single-page frontend on a FastAPI serverless backend (Vercel), with site content managed through a JWT-protected admin panel and stored as JSON in Postgres (Neon). Hardened on the backend with bcrypt auth and in-app password changes, Postgres-backed plus edge (WAF) rate limiting, a full set of security headers (CSP, HSTS, and more), and a spam-resistant contact form that emails on submit. Front end features a dark/light theme, animated hero, scroll-aware navbar, and a skills table with primary-chip highlighting. Built and iterated entirely with Claude Code.",
     tech: ["React", "Vite", "FastAPI", "Python", "PostgreSQL", "JWT", "Vercel", "Claude Code"],
     github: "https://github.com/anupkatuwal/anup-portfolio",
     live: "https://anup-katuwal.com.np",
