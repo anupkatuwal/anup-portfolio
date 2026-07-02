@@ -105,6 +105,23 @@ class RateLimitHit(Base):
     )
 
 
+class AdminCredential(Base):
+    # The admin password hash, once it has been changed in-app. Until then this
+    # table is empty and login falls back to the ADMIN_PASSWORD_HASH env var
+    # (see active_password_hash). Single row, id=1. The env var stays as the
+    # recovery path: clear this row in the DB and the env hash takes over again.
+    __tablename__ = "admin_credential"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
+
+
 try:
     Base.metadata.create_all(engine)
 except Exception as exc:  # DB unreachable at cold start — /api/health will report it
@@ -204,10 +221,17 @@ def verify_password(password: str, password_hash: str) -> bool:
         return bcrypt.checkpw(password.encode(), password_hash.encode())
     except ValueError:
         logger.error(
-            "auth.misconfigured: ADMIN_PASSWORD_HASH is not a valid bcrypt hash; "
+            "auth.misconfigured: password hash is not a valid bcrypt hash; "
             "all logins will fail until it is fixed"
         )
         return False
+
+
+def active_password_hash(db: Session) -> str:
+    """The current admin password hash: the in-app one if it's been changed,
+    otherwise the ADMIN_PASSWORD_HASH env var (bootstrap / recovery)."""
+    row = db.get(AdminCredential, 1)
+    return row.password_hash if row else ADMIN_PASSWORD_HASH
 
 
 def require_admin(token: str = Depends(oauth2_scheme)) -> str:
@@ -246,6 +270,11 @@ class MessageOut(BaseModel):
     is_read: bool
 
     model_config = {"from_attributes": True}
+
+
+class PasswordChangeIn(BaseModel):
+    current_password: str = Field(min_length=1)
+    new_password: str = Field(min_length=8, max_length=72)
 
 
 # ── Email notification ────────────────────────────────────────────────────────
@@ -385,19 +414,47 @@ def login(
     db: Session = Depends(get_db),
 ):
     enforce_rate_limit(db, request, "login", limit=5, window_seconds=900)
-    if not (SECRET_KEY and ADMIN_USERNAME and ADMIN_PASSWORD_HASH):
+    pw_hash = active_password_hash(db)
+    if not (SECRET_KEY and ADMIN_USERNAME and pw_hash):
         raise HTTPException(status_code=503, detail="Auth is not configured")
 
     username_ok = form.username == ADMIN_USERNAME
     # Always run the hash check so response timing doesn't leak whether the
     # username was right.
-    password_ok = verify_password(form.password, ADMIN_PASSWORD_HASH)
+    password_ok = verify_password(form.password, pw_hash)
     if not (username_ok and password_ok):
         raise HTTPException(status_code=401, detail="Incorrect username or password")
 
     expires = datetime.now(timezone.utc) + timedelta(hours=JWT_TTL_HOURS)
     token = jwt.encode({"sub": ADMIN_USERNAME, "exp": expires}, SECRET_KEY, algorithm=JWT_ALGORITHM)
     return {"access_token": token, "token_type": "bearer"}
+
+
+@app.post("/api/admin/password")
+def change_password(
+    payload: PasswordChangeIn,
+    db: Session = Depends(get_db),
+    _admin: str = Depends(require_admin),
+):
+    # Verify the current password against the active hash (DB or env fallback)
+    # before accepting a new one.
+    if not verify_password(payload.current_password, active_password_hash(db)):
+        raise HTTPException(status_code=401, detail="Current password is incorrect")
+    if payload.new_password == payload.current_password:
+        raise HTTPException(status_code=400, detail="New password must differ from the current one")
+    if len(payload.new_password.encode()) > 72:
+        # bcrypt only hashes the first 72 bytes; reject rather than silently
+        # truncate (multibyte chars can exceed 72 bytes under the 72-char cap).
+        raise HTTPException(status_code=400, detail="Password must be at most 72 bytes")
+
+    new_hash = bcrypt.hashpw(payload.new_password.encode(), bcrypt.gensalt()).decode()
+    row = db.get(AdminCredential, 1)
+    if row:
+        row.password_hash = new_hash
+    else:
+        db.add(AdminCredential(id=1, password_hash=new_hash))
+    db.commit()
+    return {"ok": True}
 
 
 @app.get("/api/admin/messages", response_model=list[MessageOut])

@@ -34,10 +34,16 @@ def _isolate():
     try:
         db.query(index.ContactMessage).delete()
         db.query(index.RateLimitHit).delete()
+        db.query(index.AdminCredential).delete()  # back to env-var password
         db.commit()
     finally:
         db.close()
     yield
+
+
+def _login(password="testpass"):
+    r = client.post("/api/auth/login", data={"username": "admin", "password": password})
+    return r.json().get("access_token") if r.status_code == 200 else None
 
 
 def _payload(**over):
@@ -122,6 +128,50 @@ def test_login_success_returns_token_and_unlocks_admin():
 
 def test_admin_requires_token():
     assert client.get("/api/admin/messages").status_code == 401
+
+
+# ── change password ───────────────────────────────────────────────────────────
+
+def test_change_password_requires_auth():
+    r = client.post("/api/admin/password",
+                    json={"current_password": "testpass", "new_password": "brandnew123"})
+    assert r.status_code == 401
+
+
+def test_change_password_wrong_current_is_401():
+    token = _login()
+    r = client.post("/api/admin/password",
+                    headers={"Authorization": f"Bearer {token}"},
+                    json={"current_password": "WRONG", "new_password": "brandnew123"})
+    assert r.status_code == 401
+
+
+def test_change_password_rejects_short_new():
+    token = _login()
+    r = client.post("/api/admin/password",
+                    headers={"Authorization": f"Bearer {token}"},
+                    json={"current_password": "testpass", "new_password": "short"})
+    assert r.status_code == 422  # Pydantic min_length
+
+
+def test_change_password_rejects_same_password():
+    token = _login()
+    r = client.post("/api/admin/password",
+                    headers={"Authorization": f"Bearer {token}"},
+                    json={"current_password": "testpass", "new_password": "testpass"})
+    assert r.status_code == 400
+
+
+def test_change_password_happy_path_switches_credential():
+    token = _login()
+    r = client.post("/api/admin/password",
+                    headers={"Authorization": f"Bearer {token}"},
+                    json={"current_password": "testpass", "new_password": "brandnew123"})
+    assert r.status_code == 200
+
+    # New password now works; the old env-var password no longer does.
+    assert _login("brandnew123") is not None
+    assert _login("testpass") is None
 
 
 def test_admin_rejects_garbage_token():
