@@ -30,10 +30,10 @@ export const EXPERIENCES = [
   {
     role: "Graduate Researcher — NLP & Data Analytics",
     org: "NCIT, Pokhara University",
-    period: "2022 – 2026",
+    period: "2021 – 2026",
     location: "Kathmandu, Nepal",
     bullets: [
-      "Built data pipelines to preprocess and analyze 52,000+ Reddit posts using Python and SQL.",
+      "Built data pipelines to preprocess and analyze 10,000 Reddit posts using Python and SQL.",
       "Thesis: FairBERT — bias mitigation in mental-health sentiment analysis using fine-tuned BERT; published IEEE paper.",
       "Designed and maintained structured databases for storing research outputs and experimental results.",
     ],
@@ -64,10 +64,10 @@ export const EXPERIENCES = [
 
 export const EDUCATION = [
   {
-    degree: "Master of Computer Information Systems (MCIS)",
+    degree: "Master of Computer Information System (MCIS)",
     inst: "NCIT, Pokhara University",
-    period: "2022 – Apr 2026",
-    details: "CGPA 3.71 · Thesis: Bias Mitigation in Mental Health Sentiment Analysis using BERT.",
+    period: "2021 – Apr 2026",
+    details: "CGPA 3.71 · Thesis: Bias Mitigation in Mental Health Sentiment Analysis using BERT with Fairness Techniques.",
   },
   {
     degree: "B.Sc. in Computer Information Systems",
@@ -85,7 +85,7 @@ export const TRAINING = [
   {
     name: "Advanced Data Analysis with Python",
     org: "Broadway Infosys",
-    period: "May 2026 – Aug 2026",
+    period: "May 2026 – Running",
     note: "In Progress",
     tag: "training",
   },
@@ -149,11 +149,11 @@ export const FOUNDATIONS = [
 
 export const RESUME_HIGHLIGHTS = [
   "Master's in Computer Information Systems — CGPA 3.71 (NCIT, Pokhara University)",
-  "FairBERT thesis: fine-tuned BERT on 52,000+ Reddit posts · 84% F1 · 54% bias reduction · IEEE paper",
+  "FairBERT thesis: fine-tuned BERT on 10,000 Reddit posts · 84% F1 · 54% bias reduction · IEEE paper",
   "End-to-End Food Order ETL Pipeline — MySQL stored procedures, star schema warehouse, Python orchestration, 20 automated tests, HTML dashboard · Available on Upwork",
   "Upwork Proposal Automation Agent · cuts proposal time from 20 min to under 2 min",
   "Google Data Analytics (6/9) · Python for Everybody · AWS · Intro to GenAI certified",
-  "Currently training: Advanced Data Analysis with Python at Broadway Infosys (May–Aug 2026)",
+  "Currently training: Advanced Data Analysis with Python at Broadway Infosys (started May 2026)",
 ];
 
 /* ── PROJECTS ─────────────────────────────────────────────────────────────────
@@ -178,7 +178,7 @@ export const PROJECTS = [
     metric: "84% F1 · ΔDP −54% · IEEE paper",
     title: "Bias-Aware Mental Health Sentiment Analysis",
     description:
-      "Fine-tuned BERT on 52,000+ Reddit mental-health posts for sentiment classification. Achieved 84% F1-score. Reduced demographic parity gap by 54% (ΔDP: 0.211 → 0.098). Published as IEEE-format research paper.",
+      "Fine-tuned BERT on 10,000 Reddit mental-health posts for sentiment classification. Achieved 84% F1-score. Reduced demographic parity gap by 54% (ΔDP: 0.211 → 0.098). Published as IEEE-format research paper.",
     tech: ["Python", "BERT", "HuggingFace", "Pandas", "Scikit-learn", "Reddit API"],
     github: "https://github.com/anupkatuwal/bias-aware-sentiment-analysis-mental-health",
     live: "",
