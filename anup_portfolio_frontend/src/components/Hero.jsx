@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from "react";
 
 // Single clear primary identity — not three competing roles
-const ROLE_STATIC  = "Data Engineer &";
-const ROLE_CYCLING = ["ETL Pipeline Builder", "NLP Researcher", "Python Developer"];
+const ROLE_STATIC  = "Data Analyst &";
+const ROLE_CYCLING = ["Aspiring Data Engineer", "NLP Researcher", "Python Developer"];
 
 export function Hero() {
   const [roleIndex, setRoleIndex]   = useState(0);
@@ -47,10 +47,11 @@ export function Hero() {
 
             {/* Client-facing bio — two sentences max */}
             <p className="hero-bio">
-              I turn messy data into <strong>decisions</strong> — dashboards,
-              pipelines, and automation tools built with Python, SQL, and AI.
-              M.CIS graduate (3.71 GPA) with published NLP research on fairness
-              in mental-health AI.
+              Recent M.CIS graduate (3.71 GPA) with thesis research on fairness
+              in mental-health NLP. I&apos;m early in my career, building real
+              skills through hands-on projects — <strong>ETL pipelines,
+              dashboards, and Python automation</strong> — and working toward
+              data analyst and data engineer roles.
             </p>
 
             <div className="hero-status">
@@ -84,12 +85,12 @@ export function Hero() {
               <div className="hero-stat">
                 <p className="stat-label">Credentials</p>
                 <p className="stat-value">
-                  M.CIS · <span>3.71 GPA</span> · Published Research
+                  M.CIS · <span>3.71 GPA</span> · NLP Thesis Research
                 </p>
               </div>
 
               <div className="hero-stat">
-                <p className="stat-label">Delivered</p>
+                <p className="stat-label">Built</p>
                 <p className="stat-value">
                   <span>Dashboards · Pipelines · API Integrations</span>
                 </p>
