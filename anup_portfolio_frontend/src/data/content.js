@@ -30,7 +30,7 @@ export const EXPERIENCES = [
   {
     role: "Graduate Researcher — NLP & Data Analytics",
     org: "NCIT, Pokhara University",
-    period: "2021 – 2026",
+    period: "2020 – 2026",
     location: "Kathmandu, Nepal",
     bullets: [
       "Built data pipelines to preprocess and analyze 10,000 Reddit posts using Python and SQL.",
@@ -66,7 +66,7 @@ export const EDUCATION = [
   {
     degree: "Master of Computer Information System (MCIS)",
     inst: "NCIT, Pokhara University",
-    period: "2021 – Apr 2026",
+    period: "Sep 2020 – Apr 2026",
     details: "CGPA 3.71 · Thesis: Bias Mitigation in Mental Health Sentiment Analysis using BERT with Fairness Techniques.",
   },
   {
