@@ -30,11 +30,11 @@ export const EXPERIENCES = [
   {
     role: "Graduate Researcher — NLP & Data Analytics",
     org: "NCIT, Pokhara University",
-    period: "2021 – 2026",
+    period: "2020 – 2026",
     location: "Kathmandu, Nepal",
     bullets: [
       "Built data pipelines to preprocess and analyze 10,000 Reddit posts using Python and SQL.",
-      "Thesis: FairBERT — bias mitigation in mental-health sentiment analysis using fine-tuned BERT; published IEEE paper.",
+      "Thesis: FairBERT — bias mitigation in mental-health sentiment analysis using fine-tuned BERT (84% accuracy, macro-F1 0.688, written in IEEE format).",
       "Designed and maintained structured databases for storing research outputs and experimental results.",
     ],
   },
@@ -66,7 +66,7 @@ export const EDUCATION = [
   {
     degree: "Master of Computer Information System (MCIS)",
     inst: "NCIT, Pokhara University",
-    period: "2021 – Apr 2026",
+    period: "Sep 2020 – Apr 2026",
     details: "CGPA 3.71 · Thesis: Bias Mitigation in Mental Health Sentiment Analysis using BERT with Fairness Techniques.",
   },
   {
@@ -149,7 +149,7 @@ export const FOUNDATIONS = [
 
 export const RESUME_HIGHLIGHTS = [
   "Master's in Computer Information Systems — CGPA 3.71 (NCIT, Pokhara University)",
-  "FairBERT thesis: fine-tuned BERT on 10,000 Reddit posts · 84% F1 · 54% bias reduction · IEEE paper",
+  "FairBERT thesis: fine-tuned BERT on 10,000 Reddit posts · 84% accuracy · 35% mean bias reduction (80% on dialect)",
   "End-to-End Food Order ETL Pipeline — MySQL stored procedures, star schema warehouse, Python orchestration, 20 automated tests, HTML dashboard · Available on Upwork",
   "Upwork Proposal Automation Agent · cuts proposal time from 20 min to under 2 min",
   "Google Data Analytics (6/9) · Python for Everybody · AWS · Intro to GenAI certified",
@@ -175,10 +175,10 @@ export const PROJECTS = [
   },
   {
     id: "thesis",
-    metric: "84% F1 · ΔDP −54% · IEEE paper",
+    metric: "84% accuracy · DPD −35.4% · Master's thesis",
     title: "Bias-Aware Mental Health Sentiment Analysis",
     description:
-      "Fine-tuned BERT on 10,000 Reddit mental-health posts for sentiment classification. Achieved 84% F1-score. Reduced demographic parity gap by 54% (ΔDP: 0.211 → 0.098). Published as IEEE-format research paper.",
+      "Master's thesis (FairBERT): fine-tuned BERT with adversarial debiasing and counterfactual augmentation on RMH-Bias-10K, a 10,000-post Reddit mental-health dataset built for this research. Achieved 84.0% accuracy, macro-F1 0.688, and ROC-AUC 0.843 — outperforming BiLSTM and vanilla BERT baselines — while reducing mean demographic parity difference by 35.4% and dialect DPD by 79.8% (0.327 → 0.066). Written as an IEEE-format thesis at NCIT, Pokhara University.",
     tech: ["Python", "BERT", "HuggingFace", "Pandas", "Scikit-learn", "Reddit API"],
     github: "https://github.com/anupkatuwal/bias-aware-sentiment-analysis-mental-health",
     live: "",
