@@ -28,7 +28,33 @@ Browser ── https://<site>/            static React build (Vercel CDN)
 | `SECRET_KEY` | Vercel + local `.env` | JWT signing key — `python -c "import secrets; print(secrets.token_hex(32))"` |
 | `ADMIN_USERNAME` | Vercel + local `.env` | Admin login name |
 | `ADMIN_PASSWORD_HASH` | Vercel + local `.env` | bcrypt hash of the admin password (never the plaintext) |
+| `RESEND_API_KEY` | Vercel + local `.env` (optional) | Resend API key — enables email notification on each contact-form submit. Without it, messages are still saved and readable at `/admin`; no email is sent. |
+| `CONTACT_NOTIFY_TO` | Vercel (optional) | Where notifications are delivered. Default: `katuwalanup@gmail.com` |
+| `CONTACT_NOTIFY_FROM` | Vercel (optional) | Sender for notifications. Default: `Portfolio Contact <onboarding@resend.dev>` |
 | `VITE_SITE_URL` | Vercel (optional) | Public site URL; falls back to the value in `vite.config.js` |
+
+## Contact-form email notifications
+
+Every valid submit is stored in Neon (`contact_messages`, visible at `/admin`)
+and — when `RESEND_API_KEY` is set — also emailed via
+[Resend](https://resend.com), with the visitor's address as **Reply-To** so
+replying in the mail client answers them directly.
+
+The defaults use Resend's shared `onboarding@resend.dev` sender, which Resend
+only delivers to the email that owns the Resend account. To route
+notifications to the custom-domain inbox instead
+(`anupkatuwal@anup-katuwal.com.np`, hosted on Zoho):
+
+1. In Resend, add and verify the domain `anup-katuwal.com.np` (it walks you
+   through the DNS records: SPF, DKIM, and a verification TXT).
+2. In Vercel, set `CONTACT_NOTIFY_FROM` to e.g.
+   `Portfolio Contact <contact@anup-katuwal.com.np>` and `CONTACT_NOTIFY_TO`
+   to `anupkatuwal@anup-katuwal.com.np`, then redeploy.
+
+Both steps are required — with the shared sender, Resend refuses delivery to
+any address other than the account owner's. Receiving at the Zoho address is
+free (Zoho's free plan only restricts IMAP/SMTP client access, not incoming
+mail).
 
 ## Editing site content
 
