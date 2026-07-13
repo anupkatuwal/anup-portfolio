@@ -1,0 +1,34 @@
+# Manual smoke test for the live contact-form pipeline.
+# Posts one clearly-labelled test message to /api/contact on production and
+# fails if the API doesn't accept it. The email leg is verified out-of-band
+# (a "[Portfolio]" notification should arrive in the inbox within a minute).
+name: contact-smoke
+
+# Also runs on push, but only when this file itself changes — that's what
+# makes it runnable from a feature branch (workflow_dispatch only registers
+# once the file reaches the default branch).
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/contact-smoke.yml"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: POST a test submission to the live contact endpoint
+        run: |
+          code=$(curl -sS -o /tmp/resp.json -w "%{http_code}" \
+            -X POST https://anup-katuwal.com.np/api/contact \
+            -H "Content-Type: application/json" \
+            -d '{
+              "name": "Smoke Test (GitHub Actions)",
+              "email": "katuwalanup@gmail.com",
+              "subject": "Contact-form pipeline smoke test",
+              "message": "Automated end-to-end test of the contact form. If a [Portfolio] email arrived with this text, notifications work. Safe to delete from /admin.",
+              "company": ""
+            }')
+          echo "HTTP $code"
+          cat /tmp/resp.json
+          [ "$code" = "200" ]

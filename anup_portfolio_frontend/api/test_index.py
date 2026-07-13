@@ -202,6 +202,26 @@ def test_notify_escapes_html(monkeypatch):
     assert "&lt;img" in captured["html"]
 
 
+def test_notify_routes_to_inbox_with_visitor_reply_to(monkeypatch):
+    """Notifications go to the configured inbox, with the visitor as Reply-To
+    so hitting reply in the mail client answers them directly."""
+    captured = {}
+    monkeypatch.setattr(index, "RESEND_API_KEY", "test-key")
+    import resend
+    monkeypatch.setattr(
+        resend.Emails, "send",
+        lambda payload: captured.update(payload) or {"id": "x"},
+    )
+    msg = index.ContactMessage(
+        name="Jane", email="jane@example.com", subject="Hello",
+        message="A perfectly ordinary message.",
+    )
+    index._notify(msg)
+    assert captured["to"] == [index.NOTIFY_TO]
+    assert captured["reply_to"] == "jane@example.com"
+    assert captured["from"] == index.NOTIFY_FROM
+
+
 # ── rate limiting ───────────────────────────────────────────────────────────
 
 def test_contact_rate_limited_after_five():

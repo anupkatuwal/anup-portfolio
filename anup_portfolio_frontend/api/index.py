@@ -33,8 +33,17 @@ JWT_ALGORITHM = "HS256"
 JWT_TTL_HOURS = 12
 
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
-NOTIFY_TO = "katuwalanup@gmail.com"
-NOTIFY_FROM = "Portfolio Contact <onboarding@resend.dev>"
+# Resend's shared onboarding sender only delivers to the Resend account's own
+# email, so the defaults below work as a pair. To route notifications to the
+# custom-domain inbox (anupkatuwal@anup-katuwal.com.np), verify the domain in
+# Resend first, then override BOTH vars in Vercel — a domain sender is required
+# before Resend will deliver to any other recipient.
+# `or` (not a get() default) so the blank placeholders in .env.example don't
+# override the working defaults with an empty address.
+NOTIFY_TO = os.environ.get("CONTACT_NOTIFY_TO") or "katuwalanup@gmail.com"
+NOTIFY_FROM = (
+    os.environ.get("CONTACT_NOTIFY_FROM") or "Portfolio Contact <onboarding@resend.dev>"
+)
 
 # ── Database ──────────────────────────────────────────────────────────────────
 
