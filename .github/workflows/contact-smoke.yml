@@ -4,8 +4,14 @@
 # (a "[Portfolio]" notification should arrive in the inbox within a minute).
 name: contact-smoke
 
+# Also runs on push, but only when this file itself changes — that's what
+# makes it runnable from a feature branch (workflow_dispatch only registers
+# once the file reaches the default branch).
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/contact-smoke.yml"
 
 jobs:
   smoke:
