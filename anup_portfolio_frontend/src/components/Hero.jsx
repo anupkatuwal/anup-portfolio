@@ -98,7 +98,7 @@ export function Hero() {
 
               <div className="hero-stat">
                 <p className="stat-label">Stack</p>
-                <p className="stat-value">Python · MySQL · SQL · BERT · FastAPI</p>
+                <p className="stat-value">Python · SQL (MySQL) · BERT · FastAPI</p>
               </div>
 
               <div className="hero-stat">
