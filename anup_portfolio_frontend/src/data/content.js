@@ -14,10 +14,10 @@
 /* ── SKILLS ───────────────────────────────────────────────────────────────────
    Each row = one domain. `primary: true` items render highlighted chips.     */
 
-export const PRIMARY_SKILLS = ["Python", "MySQL", "ETL", "SQL", "Pandas"];
+export const PRIMARY_SKILLS = ["Python", "SQL (MySQL)", "ETL", "Pandas"];
 
 export const SKILLS = [
-  { domain: "data & ml",    items: ["Python", "Pandas", "NumPy", "SQL", "MySQL", "ETL Pipelines", "Data Warehousing", "Star Schema", "BERT", "Transformers", "Scikit-learn", "Fairness Metrics"] },
+  { domain: "data & ml",    items: ["Python", "Pandas", "NumPy", "SQL (MySQL)", "ETL Pipelines", "Data Warehousing", "Star Schema", "BERT", "Transformers", "Scikit-learn", "Fairness Metrics"] },
   { domain: "engineering",  items: ["FastAPI", "React", "Vite", "REST APIs", "PostgreSQL", "MySQL", "GitHub Actions"] },
   { domain: "tools",        items: ["Git", "Jupyter", "Google Colab", "VS Code", "Linux", "Power BI"] },
 ];
