@@ -61,7 +61,7 @@ export function Hero() {
 
             <div className="hero-actions">
               <a href="#projects" className="btn btn-primary">View projects</a>
-              <a href="mailto:katuwalanup@gmail.com" className="btn btn-ghost">Email me</a>
+              <a href="mailto:contact@anup-katuwal.com.np" className="btn btn-ghost">Email me</a>
             </div>
           </div>
 

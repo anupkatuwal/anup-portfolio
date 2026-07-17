@@ -80,9 +80,15 @@ export function ContactSection() {
           <ul className="contact-meta">
             <li className="contact-meta-item">
               <span className="meta-label">Email</span>
-              <a href="mailto:katuwalanup@gmail.com" className="meta-link">
-                katuwalanup@gmail.com
-              </a>
+              <span>
+                <a href="mailto:contact@anup-katuwal.com.np" className="meta-link">
+                  contact@anup-katuwal.com.np
+                </a>
+                <br />
+                <a href="mailto:katuwalanup@gmail.com" className="meta-link">
+                  katuwalanup@gmail.com
+                </a>
+              </span>
             </li>
 
             <li className="contact-meta-item">

@@ -33,7 +33,7 @@ export function Footer() {
             </svg>
             <span>LinkedIn</span>
           </a>
-          <a href="mailto:katuwalanup@gmail.com" aria-label="Email">
+          <a href="mailto:contact@anup-katuwal.com.np" aria-label="Email">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <rect x="2" y="4" width="20" height="16" rx="2" />
               <path d="m2 6 10 7L22 6" />

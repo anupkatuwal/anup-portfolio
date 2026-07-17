@@ -217,7 +217,7 @@ def test_notify_routes_to_inbox_with_visitor_reply_to(monkeypatch):
         message="A perfectly ordinary message.",
     )
     index._notify(msg)
-    assert captured["to"] == [index.NOTIFY_TO]
+    assert captured["to"] == index.NOTIFY_TO
     assert captured["reply_to"] == "jane@example.com"
     assert captured["from"] == index.NOTIFY_FROM
 

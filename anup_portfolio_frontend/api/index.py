@@ -40,7 +40,12 @@ RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
 # before Resend will deliver to any other recipient.
 # `or` (not a get() default) so the blank placeholders in .env.example don't
 # override the working defaults with an empty address.
-NOTIFY_TO = os.environ.get("CONTACT_NOTIFY_TO") or "katuwalanup@gmail.com"
+# Comma-separated, e.g. "contact@anup-katuwal.com.np,katuwalanup@gmail.com"
+NOTIFY_TO = [
+    addr.strip()
+    for addr in (os.environ.get("CONTACT_NOTIFY_TO") or "katuwalanup@gmail.com").split(",")
+    if addr.strip()
+]
 NOTIFY_FROM = (
     os.environ.get("CONTACT_NOTIFY_FROM") or "Portfolio Contact <onboarding@resend.dev>"
 )
@@ -305,7 +310,7 @@ def _notify(msg: ContactMessage) -> None:
         body = html.escape(msg.message).replace("\n", "<br>")
         resend.Emails.send({
             "from": NOTIFY_FROM,
-            "to": [NOTIFY_TO],
+            "to": NOTIFY_TO,
             "reply_to": msg.email,
             "subject": f"[Portfolio] {msg.name} — {msg.subject}",
             "html": (
