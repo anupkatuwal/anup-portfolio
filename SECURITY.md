@@ -43,17 +43,30 @@ Without this, anyone can send mail that appears to come from
 MX sets, no DMARC** — two SPF records is a hard PermError, so SPF effectively
 does not work at all right now.
 
-**Pick one mail provider and delete the other's records entirely.** iCloud is
-the further-along one (its `sig1` DKIM key is already published), so these
-examples assume iCloud; swap the values if you keep Zoho instead.
+**Zoho is the mail host to keep; the iCloud records get deleted.** DKIM is
+already in place under the selector `anup` — the audit reported it missing, but
+DKIM selectors cannot be enumerated, so a scanner guessing `zoho` would have
+found nothing regardless. Confirm the record's host is `anup._domainkey` (not
+bare `anup`), since receivers look it up at that exact name and nowhere else.
 
-| Type | Host | Value |
-|---|---|---|
-| MX | `@` | `mx01.mail.icloud.com` (priority 10) |
-| MX | `@` | `mx02.mail.icloud.com` (priority 10) |
-| TXT | `@` | `v=spf1 include:icloud.com ~all` |
-| CNAME | `sig1._domainkey` | `sig1.dkim.anup-katuwal.com.np.at.icloudmailadmin.com` |
-| TXT | `_dmarc` | `v=DMARC1; p=none; rua=mailto:dmarc@anup-katuwal.com.np; pct=100` |
+Target state:
+
+| Type | Host | Value | Note |
+|---|---|---|---|
+| MX | `@` | `mx.zoho.com` (priority 10) | confirm the data centre in Zoho's console first — an EU/IN account uses `zoho.eu` / `zoho.in` |
+| MX | `@` | `mx2.zoho.com` (priority 20) | |
+| MX | `@` | `mx3.zoho.com` (priority 50) | |
+| TXT | `@` | `v=spf1 include:zoho.com ~all` | exactly one such record |
+| TXT | `anup._domainkey` | (Zoho's DKIM key) | already published |
+| TXT | `_dmarc` | `v=DMARC1; p=none; rua=mailto:contact@anup-katuwal.com.np; fo=1` | new |
+
+Delete: both iCloud MX records (`mx01`/`mx02.mail.icloud.com`), the
+`include:icloud.com` SPF record, the `sig1._domainkey` CNAME, and any
+`apple-domain=` TXT. Remove the domain from iCloud's Custom Email Domain
+settings too, so Apple stops accepting mail for it.
+
+Order matters: fix SPF and MX, confirm a test message reaches the Zoho inbox,
+*then* add DMARC and clean up the Apple side.
 
 Rules that matter:
 
@@ -75,11 +88,14 @@ before switching, or the notifications will fail DMARC.
 Verify from a machine with DNS access:
 
 ```bash
-dig +short TXT anup-katuwal.com.np      # exactly one v=spf1 line
-dig +short MX  anup-katuwal.com.np      # one provider's set
+dig +short TXT anup-katuwal.com.np           # exactly one v=spf1 line
+dig +short MX  anup-katuwal.com.np           # Zoho's set only, no icloud.com
 dig +short TXT _dmarc.anup-katuwal.com.np
-dig +short CNAME sig1._domainkey.anup-katuwal.com.np
+dig +short TXT anup._domainkey.anup-katuwal.com.np   # the Zoho DKIM key
 ```
+
+A step-by-step version of this, written for the register.com.np panel, is at
+<https://claude.ai/code/artifact/a512f6b3-66d1-415d-b56e-eb247c6583c9>.
 
 ### 2. Vercel dashboard
 
