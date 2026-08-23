@@ -13,6 +13,7 @@ from datetime import datetime, timedelta, timezone
 import bcrypt
 import jwt
 from fastapi import Body, Depends, FastAPI, HTTPException, Request, Response, status
+from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy import (
@@ -31,6 +32,10 @@ ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "")
 ADMIN_PASSWORD_HASH = os.environ.get("ADMIN_PASSWORD_HASH", "")
 JWT_ALGORITHM = "HS256"
 JWT_TTL_HOURS = 12
+# Bind every admin token to this app: a token minted for anything else (or with
+# no iss/aud at all) is rejected, even if it was signed with the same key.
+JWT_ISSUER = "anup-katuwal.com.np"
+JWT_AUDIENCE = "portfolio-admin"
 
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
 # Resend's shared onboarding sender only delivers to the Resend account's own
@@ -49,6 +54,19 @@ NOTIFY_TO = [
 NOTIFY_FROM = (
     os.environ.get("CONTACT_NOTIFY_FROM") or "Portfolio Contact <onboarding@resend.dev>"
 )
+
+# Extra origins allowed to make writes, beyond whichever hostname this
+# deployment is actually being served on (see _self_origin). Comma-separated.
+EXTRA_ALLOWED_ORIGINS = {
+    o.strip().rstrip("/").lower()
+    for o in os.environ.get("ALLOWED_ORIGINS", "").split(",")
+    if o.strip()
+} | {
+    "https://anup-katuwal.com.np",
+    "https://www.anup-katuwal.com.np",
+    "http://localhost:5173",   # Vite dev server
+    "http://127.0.0.1:5173",
+}
 
 # ── Database ──────────────────────────────────────────────────────────────────
 
@@ -221,6 +239,73 @@ if not os.environ.get("VERCEL"):
         allow_headers=["*"],
     )
 
+# ── Cross-origin write guard (CSRF) ───────────────────────────────────────────
+
+WRITE_METHODS = {"POST", "PUT", "PATCH", "DELETE"}
+
+# Toggled off only in tests that exercise the guard itself.
+ORIGIN_CHECK_ENABLED = True
+
+
+def _origin_of(url: str) -> str:
+    """The scheme://host[:port] prefix of a URL, lowercased; "" if it has none."""
+    match = re.match(r"^(https?://[^/?#]+)", url.strip(), re.IGNORECASE)
+    return match.group(1).rstrip("/").lower() if match else ""
+
+
+def _self_origin(request: Request) -> str:
+    """The origin this deployment is being served on for THIS request.
+
+    Derived from the platform's forwarded headers rather than hard-coded, so
+    the custom domain, the .vercel.app alias and preview URLs all work without
+    a list to maintain. Not attacker-controllable in the way it matters here:
+    Vercel only routes a request to this project when its Host is one of the
+    project's own domains, and Origin is set by the browser, not the page.
+    """
+    host = request.headers.get("x-forwarded-host") or request.headers.get("host", "")
+    proto = request.headers.get("x-forwarded-proto") or request.url.scheme
+    host = host.split(",")[0].strip()
+    return f"{proto.split(',')[0].strip()}://{host}".lower() if host else ""
+
+
+@app.middleware("http")
+async def guard_cross_origin_writes(request: Request, call_next):
+    """Reject state-changing requests that don't come from this site.
+
+    A plain HTML form on another site can POST here and CORS won't stop it —
+    CORS gates *reading* the response, not sending the request. Browsers do
+    send Origin on those posts, so checking it server-side is what actually
+    closes the hole. Requests carrying neither Origin nor Referer are rejected
+    too: nothing legitimate writes here without one (the CI smoke test sends an
+    explicit Origin header).
+    """
+    if (
+        ORIGIN_CHECK_ENABLED
+        and request.method in WRITE_METHODS
+        and request.url.path.startswith("/api/")
+    ):
+        origin = request.headers.get("origin", "").strip()
+        if origin.lower() == "null":
+            origin = ""  # sandboxed iframe / opaque origin — never one of ours
+        candidate = _origin_of(origin) or _origin_of(request.headers.get("referer", ""))
+        allowed = EXTRA_ALLOWED_ORIGINS | {o for o in (_self_origin(request),) if o}
+        if candidate not in allowed:
+            logger.warning(
+                "csrf.blocked: %s %s from origin=%r referer=%r",
+                request.method, request.url.path, origin,
+                request.headers.get("referer", ""),
+            )
+            return JSONResponse(
+                status_code=status.HTTP_403_FORBIDDEN,
+                content={"detail": "Cross-origin request rejected."},
+            )
+
+    response = await call_next(request)
+    # Never let a shared cache or the browser retain admin/auth payloads.
+    if request.url.path.startswith(("/api/admin", "/api/auth")):
+        response.headers["Cache-Control"] = "no-store"
+    return response
+
 # ── Auth ──────────────────────────────────────────────────────────────────────
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
@@ -255,7 +340,14 @@ def require_admin(token: str = Depends(oauth2_scheme)) -> str:
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[JWT_ALGORITHM])
+        payload = jwt.decode(
+            token,
+            SECRET_KEY,
+            algorithms=[JWT_ALGORITHM],
+            audience=JWT_AUDIENCE,
+            issuer=JWT_ISSUER,
+            options={"require": ["exp", "sub", "iss", "aud"]},
+        )
     except jwt.PyJWTError:
         raise credentials_error
     username = payload.get("sub")
@@ -439,8 +531,18 @@ def login(
     if not (username_ok and password_ok):
         raise HTTPException(status_code=401, detail="Incorrect username or password")
 
-    expires = datetime.now(timezone.utc) + timedelta(hours=JWT_TTL_HOURS)
-    token = jwt.encode({"sub": ADMIN_USERNAME, "exp": expires}, SECRET_KEY, algorithm=JWT_ALGORITHM)
+    now = datetime.now(timezone.utc)
+    token = jwt.encode(
+        {
+            "sub": ADMIN_USERNAME,
+            "iss": JWT_ISSUER,
+            "aud": JWT_AUDIENCE,
+            "iat": now,
+            "exp": now + timedelta(hours=JWT_TTL_HOURS),
+        },
+        SECRET_KEY,
+        algorithm=JWT_ALGORITHM,
+    )
     return {"access_token": token, "token_type": "bearer"}
 
 
