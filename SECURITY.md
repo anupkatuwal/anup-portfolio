@@ -50,38 +50,33 @@ Without this, anyone can send mail that appears to come from
 MX sets, no DMARC** — two SPF records is a hard PermError, so SPF effectively
 does not work at all right now.
 
-Verified against live DNS (2026-08-23). DKIM is **already correct** — a valid
-RSA key resolves at `anup._domainkey.anup-katuwal.com.np`, so the audit's
-"Zoho DKIM is not present" was a false negative (selectors can't be enumerated;
-a scanner guessing `zoho` finds nothing). What is actually wrong:
+**Status: done — verified against live DNS on 2026-08-23.** Current state:
 
-| Published now | Problem |
+| Record | Value |
 |---|---|
-| `v=spf1 include:zohomail.com ~all` **and** `v=spf1 include:icloud.com ~all` | Two SPF records = PermError; SPF is ignored entirely |
-| MX: `mx.zoho.com` (10), `mx2` (20), `mx3` (50), **`mx01.mail.icloud.com` (10), `mx02.mail.icloud.com` (10)** | Apple tied with Zoho at priority 10 — incoming mail is split between providers |
-| `_dmarc` — NXDOMAIN | No policy published |
-| `sig1._domainkey` CNAME + `apple-domain=` TXT | Leftover iCloud records |
+| MX | `mx.zoho.com` (10), `mx2.zoho.com` (20), `mx3.zoho.com` (50) — Zoho only |
+| SPF | exactly one: `v=spf1 include:zohomail.com ~all` (1 of 10 permitted DNS lookups) |
+| DKIM | valid RSA key at `anup._domainkey` |
+| DMARC | `v=DMARC1; p=none; rua=mailto:contact@anup-katuwal.com.np; fo=1` |
 
-The fix is three deletions and one addition — Zoho's own records are all
-already correct, so nothing needs retyping:
+The iCloud records (both `mx0*.mail.icloud.com` MX, the `include:icloud.com`
+SPF, the `sig1._domainkey` CNAME and the `apple-domain=` TXT) are all gone.
 
-1. Delete the `include:icloud.com` SPF TXT. (Keep the zohomail.com one, and
-   keep `zoho-verification=…`.)
-2. Delete the two `mx0*.mail.icloud.com` MX records.
-3. Add TXT `_dmarc` = `v=DMARC1; p=none; rua=mailto:contact@anup-katuwal.com.np; fo=1`
-4. Clean up: delete the `sig1._domainkey` CNAME and the `apple-domain=` TXT,
-   and remove the domain from iCloud's Custom Email Domain settings.
+Note on the audit that prompted this: its "Zoho DKIM is not present" finding
+was a false negative. The key is published under the selector `anup`, and DKIM
+selectors cannot be enumerated — a scanner guessing the conventional `zoho`
+selector finds nothing whether or not a key exists.
 
-Rules that matter:
+Remaining work is the staged tightening, not a fix:
 
-- **Exactly one** `v=spf1` TXT record on `@`. Two is a PermError; receivers
-  then treat SPF as broken, not as "one of them passed".
-- **One** MX set. Two providers' MX records split delivery unpredictably.
-- Start DMARC at `p=none` and read the `rua` reports for a week or two. Once
-  nothing legitimate is failing, move to `p=quarantine`, then `p=reject`, and
-  only then tighten SPF from `~all` to `-all`. Going straight to
-  `p=quarantine; adkim=s; aspf=s` before the reports are clean will quietly
-  quarantine your own mail.
+1. Read the `rua` aggregate reports for ~2 weeks. Once nothing legitimate is
+   failing, move `p=none` → `p=quarantine`, then later → `p=reject`.
+2. Only after `p=reject` is stable, tighten SPF `~all` → `-all`.
+3. Do not jump to `p=quarantine; adkim=s; aspf=s` before the reports are
+   clean — that quarantines your own mail with no warning.
+
+Invariants to preserve: exactly one `v=spf1` record, one provider's MX
+set, and the `zoho-verification=` TXT left in place.
 
 If contact-form notifications are ever sent **from** the domain (setting
 `CONTACT_NOTIFY_FROM` to a `@anup-katuwal.com.np` address instead of the
