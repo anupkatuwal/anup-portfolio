@@ -1,6 +1,17 @@
 {
   "redirects": [
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "anup-portfolio-one.vercel.app"
+        }
+      ],
+      "destination": "https://anup-katuwal.com.np/",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [
         {
