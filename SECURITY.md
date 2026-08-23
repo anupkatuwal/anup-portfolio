@@ -50,30 +50,27 @@ Without this, anyone can send mail that appears to come from
 MX sets, no DMARC** — two SPF records is a hard PermError, so SPF effectively
 does not work at all right now.
 
-**Zoho is the mail host to keep; the iCloud records get deleted.** DKIM is
-already in place under the selector `anup` — the audit reported it missing, but
-DKIM selectors cannot be enumerated, so a scanner guessing `zoho` would have
-found nothing regardless. Confirm the record's host is `anup._domainkey` (not
-bare `anup`), since receivers look it up at that exact name and nowhere else.
+Verified against live DNS (2026-08-23). DKIM is **already correct** — a valid
+RSA key resolves at `anup._domainkey.anup-katuwal.com.np`, so the audit's
+"Zoho DKIM is not present" was a false negative (selectors can't be enumerated;
+a scanner guessing `zoho` finds nothing). What is actually wrong:
 
-Target state:
+| Published now | Problem |
+|---|---|
+| `v=spf1 include:zohomail.com ~all` **and** `v=spf1 include:icloud.com ~all` | Two SPF records = PermError; SPF is ignored entirely |
+| MX: `mx.zoho.com` (10), `mx2` (20), `mx3` (50), **`mx01.mail.icloud.com` (10), `mx02.mail.icloud.com` (10)** | Apple tied with Zoho at priority 10 — incoming mail is split between providers |
+| `_dmarc` — NXDOMAIN | No policy published |
+| `sig1._domainkey` CNAME + `apple-domain=` TXT | Leftover iCloud records |
 
-| Type | Host | Value | Note |
-|---|---|---|---|
-| MX | `@` | `mx.zoho.com` (priority 10) | confirm the data centre in Zoho's console first — an EU/IN account uses `zoho.eu` / `zoho.in` |
-| MX | `@` | `mx2.zoho.com` (priority 20) | |
-| MX | `@` | `mx3.zoho.com` (priority 50) | |
-| TXT | `@` | `v=spf1 include:zoho.com ~all` | exactly one such record |
-| TXT | `anup._domainkey` | (Zoho's DKIM key) | already published |
-| TXT | `_dmarc` | `v=DMARC1; p=none; rua=mailto:contact@anup-katuwal.com.np; fo=1` | new |
+The fix is three deletions and one addition — Zoho's own records are all
+already correct, so nothing needs retyping:
 
-Delete: both iCloud MX records (`mx01`/`mx02.mail.icloud.com`), the
-`include:icloud.com` SPF record, the `sig1._domainkey` CNAME, and any
-`apple-domain=` TXT. Remove the domain from iCloud's Custom Email Domain
-settings too, so Apple stops accepting mail for it.
-
-Order matters: fix SPF and MX, confirm a test message reaches the Zoho inbox,
-*then* add DMARC and clean up the Apple side.
+1. Delete the `include:icloud.com` SPF TXT. (Keep the zohomail.com one, and
+   keep `zoho-verification=…`.)
+2. Delete the two `mx0*.mail.icloud.com` MX records.
+3. Add TXT `_dmarc` = `v=DMARC1; p=none; rua=mailto:contact@anup-katuwal.com.np; fo=1`
+4. Clean up: delete the `sig1._domainkey` CNAME and the `apple-domain=` TXT,
+   and remove the domain from iCloud's Custom Email Domain settings.
 
 Rules that matter:
 
