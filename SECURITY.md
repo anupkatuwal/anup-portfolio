@@ -36,6 +36,13 @@ CSP is ever relaxed, revisit this first.
 
 These live in DNS and the Vercel dashboard, so a commit can't change them.
 
+The domain is registered at register.com.np, but its nameservers are delegated
+to Vercel (`ns1`/`ns2.vercel-dns.com`), so **every DNS record below is edited in
+the Vercel dashboard** under Domains → anup-katuwal.com.np, not at the
+registrar. Vercel's form takes an empty Name field for records on the root
+domain — `@` creates a record at `@.anup-katuwal.com.np` and silently does
+nothing. Leave TTL at the default 60.
+
 ### 1. Email authentication (highest impact)
 
 Without this, anyone can send mail that appears to come from
