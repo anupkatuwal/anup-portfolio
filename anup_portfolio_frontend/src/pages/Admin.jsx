@@ -248,6 +248,26 @@ export default function Admin() {
   const [token, setToken] = useState(() => window.sessionStorage.getItem(TOKEN_KEY));
   const [tab, setTab] = useState("content");
 
+  // The panel is served from the same index.html as the public site, whose
+  // <meta name="robots"> says "index, follow". Override it here so the admin
+  // route stays out of search results (the X-Robots-Tag header on /admin says
+  // the same thing for crawlers that never run the JS). robots.txt is
+  // deliberately silent about this path — listing it there would only
+  // advertise it.
+  useEffect(() => {
+    const previous = document.querySelector('meta[name="robots"]');
+    const tag = document.createElement("meta");
+    tag.name = "robots";
+    tag.content = "noindex, nofollow, noarchive";
+    previous?.remove();
+    document.head.appendChild(tag);
+    document.title = "Admin";
+    return () => {
+      tag.remove();
+      if (previous) document.head.appendChild(previous);
+    };
+  }, []);
+
   const logout = useCallback(() => {
     window.sessionStorage.removeItem(TOKEN_KEY);
     setToken(null);

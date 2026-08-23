@@ -23,7 +23,11 @@ from fastapi.testclient import TestClient  # noqa: E402
 
 import index  # noqa: E402
 
-client = TestClient(index.app)
+# Every request carries an Origin matching TestClient's own host, the way a
+# browser on the real site would — the cross-origin write guard rejects writes
+# without one. Tests that exercise the guard override the header per-request.
+SELF_ORIGIN = "http://testserver"
+client = TestClient(index.app, headers={"Origin": SELF_ORIGIN})
 
 
 @pytest.fixture(autouse=True)
@@ -250,3 +254,112 @@ def test_login_rate_limited_after_five():
         index.RATE_LIMIT_ENABLED = False
     assert codes[:5] == [401, 401, 401, 401, 401]
     assert codes[5] == 429
+
+
+# ── cross-origin write guard (CSRF) ─────────────────────────────────────────
+
+def test_contact_rejects_foreign_origin():
+    # A form on another site POSTing here is the classic CSRF shape; CORS does
+    # not stop the request from arriving, so the Origin check has to.
+    r = client.post(
+        "/api/contact", json=_payload(), headers={"Origin": "https://evil.example"}
+    )
+    assert r.status_code == 403
+    assert _count() == 0
+
+
+def test_contact_rejects_missing_origin_and_referer():
+    r = client.post("/api/contact", json=_payload(), headers={"Origin": ""})
+    assert r.status_code == 403
+    assert _count() == 0
+
+
+def test_contact_accepts_referer_when_origin_absent():
+    r = client.post(
+        "/api/contact",
+        json=_payload(),
+        headers={"Origin": "", "Referer": f"{SELF_ORIGIN}/#contact"},
+    )
+    assert r.status_code == 200
+    assert _count() == 1
+
+
+def test_contact_accepts_configured_extra_origin():
+    r = client.post(
+        "/api/contact",
+        json=_payload(),
+        headers={"Origin": "https://anup-katuwal.com.np"},
+    )
+    assert r.status_code == 200
+
+
+def test_opaque_origin_is_rejected():
+    # Sandboxed iframes and some redirects send the literal string "null".
+    r = client.post("/api/contact", json=_payload(), headers={"Origin": "null"})
+    assert r.status_code == 403
+
+
+def test_login_rejects_foreign_origin():
+    r = client.post(
+        "/api/auth/login",
+        data={"username": "admin", "password": "testpass"},
+        headers={"Origin": "https://evil.example"},
+    )
+    assert r.status_code == 403
+
+
+def test_admin_write_rejects_foreign_origin():
+    token = _login()
+    r = client.put(
+        "/api/content",
+        json={"hello": "world"},
+        headers={"Authorization": f"Bearer {token}", "Origin": "https://evil.example"},
+    )
+    assert r.status_code == 403
+
+
+def test_reads_are_not_origin_checked():
+    # GETs change nothing, and the public site has to stay readable everywhere.
+    assert client.get("/api/content", headers={"Origin": "https://evil.example"}).status_code == 200
+
+
+# ── token claims ────────────────────────────────────────────────────────────
+
+def test_token_carries_issuer_and_audience():
+    import jwt
+
+    claims = jwt.decode(
+        _login(),
+        index.SECRET_KEY,
+        algorithms=[index.JWT_ALGORITHM],
+        audience=index.JWT_AUDIENCE,
+        issuer=index.JWT_ISSUER,
+    )
+    assert claims["sub"] == "admin"
+    assert claims["iss"] == index.JWT_ISSUER
+    assert claims["aud"] == index.JWT_AUDIENCE
+    assert "exp" in claims and "iat" in claims
+
+
+def test_token_without_audience_is_rejected():
+    # Same signing key, different (or missing) aud/iss — e.g. a token minted by
+    # some other service that happens to share the secret.
+    import datetime as _dt
+    import jwt
+
+    forged = jwt.encode(
+        {
+            "sub": "admin",
+            "exp": _dt.datetime.now(_dt.timezone.utc) + _dt.timedelta(hours=1),
+        },
+        index.SECRET_KEY,
+        algorithm=index.JWT_ALGORITHM,
+    )
+    r = client.get("/api/admin/messages", headers={"Authorization": f"Bearer {forged}"})
+    assert r.status_code == 401
+
+
+def test_admin_responses_are_not_cacheable():
+    token = _login()
+    r = client.get("/api/admin/messages", headers={"Authorization": f"Bearer {token}"})
+    assert r.headers["cache-control"] == "no-store"

@@ -2,6 +2,10 @@
 # Posts one clearly-labelled test message to /api/contact on production and
 # fails if the API doesn't accept it. The email leg is verified out-of-band
 # (a "[Portfolio]" notification should arrive in the inbox within a minute).
+#
+# The Origin header below is required: /api/contact rejects cross-origin writes
+# and curl sends no Origin of its own (see guard_cross_origin_writes in
+# api/index.py).
 name: contact-smoke
 
 # Also runs on push, but only when this file itself changes — that's what
@@ -22,6 +26,7 @@ jobs:
           code=$(curl -sS -o /tmp/resp.json -w "%{http_code}" \
             -X POST https://anup-katuwal.com.np/api/contact \
             -H "Content-Type: application/json" \
+            -H "Origin: https://anup-katuwal.com.np" \
             -d '{
               "name": "Smoke Test (GitHub Actions)",
               "email": "katuwalanup@gmail.com",

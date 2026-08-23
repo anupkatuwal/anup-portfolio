@@ -1,6 +1,6 @@
 # Anup Katuwal — Portfolio
 
-Full-stack portfolio site showcasing projects, skills, and certifications. Built with React/Vite frontend. Live at **[anup-katuwal.com.np](https://anup-katuwal.com.np)** and **[anup-portfolio-one.vercel.app](https://anup-portfolio-one.vercel.app)**.
+Full-stack portfolio site showcasing projects, skills, and certifications. Built with React/Vite frontend. Live at **[anup-katuwal.com.np](https://anup-katuwal.com.np)**.
 
 ## Tech Stack
 
