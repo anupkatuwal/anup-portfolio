@@ -71,7 +71,7 @@ export function Hero() {
               <picture>
                 <source srcSet="/profile.webp" type="image/webp" />
                 <img
-                  src="/profile-sm.jpg"
+                  src="/profile-sm.png"
                   alt="Anup Katuwal"
                   className="hero-photo"
                   width="380"

@@ -48,7 +48,7 @@ export function Navbar() {
           <span className="brand-mark">
             <picture>
               <source srcSet="/logo-sm.webp" type="image/webp" />
-              <img src="/logo-sm.jpg" alt="Anup Katuwal" width="34" height="34" />
+              <img src="/logo-sm.png" alt="Anup Katuwal" width="34" height="34" />
             </picture>
           </span>
           <span className="brand-text">Anup Katuwal</span>
