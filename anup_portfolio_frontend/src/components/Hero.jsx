@@ -72,7 +72,7 @@ export function Hero() {
                 <source srcSet="/profile.webp" type="image/webp" />
                 <img
                   src="/profile-sm.png"
-                  alt="Anup Katuwal"
+                  alt="Anup Katuwal — Data Analyst and NLP Researcher, Kathmandu, Nepal"
                   className="hero-photo"
                   width="380"
                   height="380"
