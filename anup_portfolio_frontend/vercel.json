@@ -120,7 +120,11 @@
       "destination": "/api/index"
     },
     {
-      "source": "/((?!api/)(?!.*\\.[a-zA-Z0-9]+$).*)",
+      "source": "/admin",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/admin/",
       "destination": "/index.html"
     }
   ]
