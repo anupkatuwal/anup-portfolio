@@ -1,14 +1,23 @@
 {
-  "name": "Anup Katuwal — Data Analyst & NLP Researcher",
+  "name": "Anup Katuwal — CIS Graduate & Data Enthusiast",
   "short_name": "Anup Katuwal",
-  "description": "Portfolio of Anup Katuwal, Data Analyst & NLP Researcher in Kathmandu, Nepal.",
+  "description": "Portfolio of Anup Katuwal — CIS graduate, data engineer and NLP researcher in Kathmandu, Nepal.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#0e0d0b",
-  "theme_color": "#0e0d0b",
+  "background_color": "#f5f7fa",
+  "theme_color": "#0a1f44",
   "icons": [
-    { "src": "/favicon.png", "sizes": "any", "type": "image/png" },
-    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
+    {
+      "src": "/favicon.png",
+      "sizes": "any",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
   ]
 }

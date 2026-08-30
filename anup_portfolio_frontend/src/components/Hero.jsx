@@ -1,26 +1,9 @@
-// src/components/Hero.jsx
-import React, { useState, useEffect } from "react";
-
-// Single clear primary identity — not three competing roles
-const ROLE_STATIC  = "Data Analyst &";
-const ROLE_CYCLING = ["Aspiring Data Engineer", "NLP Researcher", "Python Developer"];
+// src/components/Hero.jsx — vertically centred academic hero.
+// NOTE: the copy here is mirrored by hand in scripts/prerender-home.mjs so the
+// crawlable HTML matches what React renders. Keep the two in step.
+import React from "react";
 
 export function Hero() {
-  const [roleIndex, setRoleIndex]   = useState(0);
-  const [roleVisible, setRoleVisible] = useState(true);
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const interval = setInterval(() => {
-      setRoleVisible(false);
-      setTimeout(() => {
-        setRoleIndex((prev) => (prev + 1) % ROLE_CYCLING.length);
-        setRoleVisible(true);
-      }, 400);
-    }, 2800);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section id="top" className="hero">
       <div className="container">
@@ -30,38 +13,36 @@ export function Hero() {
           <div className="hero-left">
             <p className="hero-eyebrow">
               <span className="eyebrow-line" aria-hidden="true" />
-              Kathmandu, Nepal · Open to Work
+              Kathmandu, Nepal · Open to research &amp; data roles
             </p>
 
             <h1 className="hero-name">
-              Anup<br />
-              <em>Katuwal.</em>
+              Anup Katuwal
+              <span className="hero-name-role">CIS Graduate &amp; Data Enthusiast</span>
             </h1>
 
-            <p className="hero-roles" aria-live="polite">
-              <span className="role-static">{ROLE_STATIC} </span>
-              <span className={`role-word${roleVisible ? " is-visible" : ""}`}>
-                {ROLE_CYCLING[roleIndex]}
-              </span>
+            <p className="hero-tagline">
+              Bridging academic research with real-world data solutions.
             </p>
 
-            {/* Client-facing bio — two sentences max */}
             <p className="hero-bio">
-              Recent M.CIS graduate (3.71 GPA) with thesis research on fairness
-              in mental-health NLP. I&apos;m early in my career, building real
-              skills through hands-on projects — <strong>ETL pipelines,
-              dashboards, and Python automation</strong> — and working toward
-              data analyst and data engineer roles.
+              M.Sc. in Computer Information Systems (CGPA 3.71) with thesis
+              research on fairness in mental-health NLP, and hands-on work
+              building <strong>ETL pipelines, star-schema warehouses and Python
+              automation</strong> that put research methods to work on
+              production data.
             </p>
 
             <div className="hero-status">
               <span className="status-dot" aria-hidden="true" />
-              Open to freelance · ETL Pipelines · Data Engineering · Python Automation
+              Python · SQL · ETL · BERT · FastAPI
             </div>
 
             <div className="hero-actions">
-              <a href="#projects" className="btn btn-primary">View projects</a>
-              <a href="mailto:contact@anup-katuwal.com.np" className="btn btn-ghost">Email me</a>
+              <a href="/resume.pdf" className="btn btn-primary" target="_blank" rel="noreferrer">
+                View Resume
+              </a>
+              <a href="#projects" className="btn btn-ghost">Explore Projects</a>
             </div>
           </div>
 
@@ -72,7 +53,7 @@ export function Hero() {
                 <source srcSet="/profile.webp" type="image/webp" />
                 <img
                   src="/profile-sm.png"
-                  alt="Anup Katuwal — Data Analyst and NLP Researcher, Kathmandu, Nepal"
+                  alt="Anup Katuwal — Computer Information Systems graduate and data researcher, Kathmandu, Nepal"
                   className="hero-photo"
                   width="380"
                   height="380"
@@ -83,27 +64,16 @@ export function Hero() {
 
             <div className="hero-panel">
               <div className="hero-stat">
-                <p className="stat-label">Credentials</p>
-                <p className="stat-value">
-                  M.CIS · <span>3.71 GPA</span> · NLP Thesis Research
-                </p>
+                <p className="stat-label">Education</p>
+                <p className="stat-value">M.Sc. CIS · <span>CGPA 3.71</span></p>
               </div>
-
               <div className="hero-stat">
-                <p className="stat-label">Built</p>
-                <p className="stat-value">
-                  <span>Dashboards · Pipelines · API Integrations</span>
-                </p>
+                <p className="stat-label">Thesis</p>
+                <p className="stat-value">FairBERT — <span>84% accuracy</span>, bias −35%</p>
               </div>
-
               <div className="hero-stat">
-                <p className="stat-label">Stack</p>
-                <p className="stat-value">Python · SQL (MySQL) · BERT · FastAPI</p>
-              </div>
-
-              <div className="hero-stat">
-                <p className="stat-label">Interests</p>
-                <p className="stat-value">Fairness in AI · Data storytelling · Automation</p>
+                <p className="stat-label">Focus</p>
+                <p className="stat-value">Data engineering · NLP · Fairness in AI</p>
               </div>
             </div>
           </div>

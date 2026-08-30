@@ -1,27 +1,22 @@
 // src/components/Navbar.jsx
+// Sticky header: AK monogram + primary navigation + theme toggle.
 import React, { useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
+import { NAV_LINKS, resolveHref, currentPath } from "../lib/nav";
 
-// Trimmed from 7 → 5. Logo handles "Home". Education folds into Experience.
-const LINKS = [
-  { href: "#skills",          label: "Skills"         },
-  { href: "#experience",      label: "Experience"     },
-  { href: "#certifications",  label: "Certifications" },
-  { href: "#projects",        label: "Projects"       },
-  { href: "#resume",          label: "Resume"         },
-  { href: "#contact",         label: "Contact"        },
-];
-
-export function Navbar() {
-  const [scrolled,  setScrolled]  = useState(false);
-  const [menuOpen,  setMenuOpen]  = useState(false);
+export function Navbar({ path = "/" }) {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
-  // Scroll detection
+  const here = path || currentPath();
+  const isHome = here === "/";
+
+  // Scroll detection — drives the header shadow
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 10);
     handler();
-    window.addEventListener("scroll", handler);
+    window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
@@ -36,28 +31,30 @@ export function Navbar() {
     return () => document.removeEventListener("mousedown", handleClick);
   }, [menuOpen]);
 
-  // Close mobile menu when a link is clicked
   const handleLinkClick = () => setMenuOpen(false);
+
+  const linkProps = (link) => ({
+    href: resolveHref(link, isHome),
+    ...(link.kind === "page" && here === link.href ? { "aria-current": "page" } : {}),
+  });
 
   return (
     <header className={`navbar${scrolled ? " navbar-scrolled" : ""}`} ref={menuRef}>
       <div className="navbar-inner">
 
-        {/* Brand */}
-        <a href="#top" className="navbar-brand" onClick={handleLinkClick}>
-          <span className="brand-mark">
-            <picture>
-              <source srcSet="/logo-sm.webp" type="image/webp" />
-              <img src="/logo-sm.png" alt="Anup Katuwal" width="34" height="34" />
-            </picture>
+        {/* Brand — AK monogram */}
+        <a href={isHome ? "#top" : "/"} className="navbar-brand" onClick={handleLinkClick}>
+          <span className="brand-mark" aria-hidden="true"><span>AK</span></span>
+          <span className="brand-text">
+            Anup Katuwal
+            <span className="brand-sub">CIS Graduate &amp; Data Enthusiast</span>
           </span>
-          <span className="brand-text">Anup Katuwal</span>
         </a>
 
         {/* Desktop nav */}
         <nav className="navbar-nav" aria-label="Main navigation">
-          {LINKS.map((link) => (
-            <a key={link.href} href={link.href} className="navbar-link">
+          {NAV_LINKS.map((link) => (
+            <a key={link.label} className="navbar-link" {...linkProps(link)}>
               {link.label}
             </a>
           ))}
@@ -67,14 +64,12 @@ export function Navbar() {
         <div className="navbar-actions">
           <ThemeToggle />
 
-          {/* Hamburger — mobile only */}
           <button
             className="navbar-hamburger"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((prev) => !prev)}
           >
-            {/* Simple 3-line / X icon in pure CSS */}
             <span className={`hamburger-icon${menuOpen ? " open" : ""}`}>
               <span /><span /><span />
             </span>
@@ -88,24 +83,22 @@ export function Navbar() {
         aria-label="Mobile navigation"
         inert={!menuOpen}
       >
-        {LINKS.map((link) => (
+        {NAV_LINKS.map((link) => (
           <a
-            key={link.href}
-            href={link.href}
+            key={link.label}
             className="navbar-mobile-link"
             onClick={handleLinkClick}
+            {...linkProps(link)}
           >
             {link.label}
           </a>
         ))}
         <a
-          href="https://www.upwork.com/freelancers/~01fe60c948627059d5"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/resume.pdf"
           className="navbar-mobile-link navbar-mobile-cta"
           onClick={handleLinkClick}
         >
-          Upwork ↗
+          Resume (PDF) ↗
         </a>
       </nav>
     </header>

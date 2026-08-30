@@ -16,8 +16,9 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import {
-  SKILLS, EXPERIENCES, EDUCATION, TRAINING, CERTIFICATIONS,
-  FOUNDATIONS, RESUME_HIGHLIGHTS, PROJECTS,
+  ABOUT, SKILLS, EXPERIENCES, EDUCATION, TRAINING, CERTIFICATIONS,
+  FOUNDATIONS, RESUME_HIGHLIGHTS, PROJECTS, RESEARCH, BLOG_POSTS,
+  SKILL_MATRIX,
 } from "../src/data/content.js";
 
 const dist = join(dirname(fileURLToPath(import.meta.url)), "..", "dist");
@@ -29,18 +30,20 @@ const esc = (s = "") =>
 
 // ── Hero copy — mirrors src/components/Hero.jsx ──────────────────────────────
 const HERO = {
-  eyebrow: "Kathmandu, Nepal · Open to Work",
-  roles: "Data Analyst & NLP Researcher",
-  bio: "Recent M.CIS graduate (3.71 GPA) with thesis research on fairness in " +
-       "mental-health NLP. I'm early in my career, building real skills through " +
-       "hands-on projects — ETL pipelines, dashboards, and Python automation — " +
-       "and working toward data analyst and data engineer roles.",
-  status: "Open to freelance · ETL Pipelines · Data Engineering · Python Automation",
+  eyebrow: "Kathmandu, Nepal · Open to research & data roles",
+  headline: "Anup Katuwal — CIS Graduate & Data Enthusiast",
+  tagline: "Bridging academic research with real-world data solutions.",
+  bio: "M.Sc. in Computer Information Systems (CGPA 3.71) with thesis research " +
+       "on fairness in mental-health NLP, and hands-on work building ETL " +
+       "pipelines, star-schema warehouses and Python automation that put " +
+       "research methods to work on production data.",
+  status: "Python · SQL · ETL · BERT · FastAPI",
 };
 
+// Mirrors src/lib/nav.js
 const NAV = [
-  ["skills", "Skills"], ["experience", "Experience"], ["certifications", "Certifications"],
-  ["projects", "Projects"], ["resume", "Resume"], ["contact", "Contact"],
+  ["/#top", "Home"], ["/research", "Research"], ["/#projects", "Projects"],
+  ["/#experience", "Experience"], ["/blog", "Blog"], ["/#contact", "Contact"],
 ];
 
 const li = (items) => items.map((t) => `<li>${esc(t)}</li>`).join("");
@@ -57,9 +60,9 @@ const section = (id, eyebrow, title, body) => `
 const html = `
       <header class="navbar">
         <div class="navbar-inner">
-          <a href="#top" class="navbar-brand"><span class="brand-text">Anup Katuwal</span></a>
+          <a href="#top" class="navbar-brand"><span class="brand-mark"><span>AK</span></span><span class="brand-text">Anup Katuwal</span></a>
           <nav class="navbar-nav" aria-label="Main navigation">
-            ${NAV.map(([h, l]) => `<a href="#${h}" class="navbar-link">${l}</a>`).join("\n            ")}
+            ${NAV.map(([h, l]) => `<a href="${h}" class="navbar-link">${l}</a>`).join("\n            ")}
           </nav>
         </div>
       </header>
@@ -67,9 +70,10 @@ const html = `
         <section id="top" class="hero">
           <div class="container">
             <p class="hero-eyebrow">${esc(HERO.eyebrow)}</p>
-            <h1 class="hero-name">Anup <em>Katuwal.</em></h1>
-            <p class="hero-roles">${esc(HERO.roles)}</p>
+            <h1 class="hero-name">${esc(HERO.headline)}</h1>
+            <p class="hero-tagline">${esc(HERO.tagline)}</p>
             <p class="hero-bio">${esc(HERO.bio)}</p>
+            <p class="hero-actions"><a href="/resume.pdf">View Resume</a> · <a href="#projects">Explore Projects</a></p>
             <p class="hero-status">${esc(HERO.status)}</p>
             <p>
               <a href="https://github.com/anupkatuwal">GitHub</a> ·
@@ -79,12 +83,26 @@ const html = `
             </p>
             <picture>
               <source srcset="/profile.webp" type="image/webp" />
-              <img src="/profile-sm.png" class="hero-photo" alt="Anup Katuwal — Data Analyst and NLP Researcher, Kathmandu, Nepal" width="190" height="190" />
+              <img src="/profile-sm.png" class="hero-photo" alt="Anup Katuwal — Computer Information Systems graduate and data researcher, Kathmandu, Nepal" width="190" height="190" />
             </picture>
           </div>
         </section>
+${section("about", "Academic & professional", "About",
+  `<p>${esc(ABOUT.lead)}</p>
+          ${ABOUT.body.map((t) => `<p>${esc(t)}</p>`).join("\n          ")}
+          <ol>${ABOUT.milestones.map((m) => `<li><strong>${esc(m.year)}</strong> — ${esc(m.title)}: ${esc(m.detail)}</li>`).join("")}</ol>
+          <p><a href="/resume.pdf">Download CV</a> · <a href="/resume.pdf">Download Resume</a></p>`)}
+${section("research", "Thesis", "Research",
+  `<h3>${esc(RESEARCH.title)}</h3>
+          <p class="card-subtitle">${esc(RESEARCH.venue)} · ${esc(RESEARCH.period)}</p>
+          <p>${esc(RESEARCH.abstract)}</p>
+          <ul>${li(RESEARCH.results)}</ul>
+          <p><a href="/research">Read the research</a></p>`)}
 ${section("skills", "What I work with", "Skills",
-  SKILLS.map((s) => `<div class="skill-row"><h3>${esc(s.domain)}</h3><ul>${li(s.items)}</ul></div>`).join("\n          "))}
+  SKILLS.map((s) => `<div class="skill-row"><h3>${esc(s.domain)}</h3><ul>${li(s.items)}</ul></div>`).join("\n          ")
+  + `\n          <h3>Skills matrix</h3>
+          <h4>Technical</h4><ul>${li(SKILL_MATRIX.technical.map((k) => `${k.name} (${k.level}/5)`))}</ul>
+          <h4>Professional</h4><ul>${li(SKILL_MATRIX.professional.map((k) => `${k.name} (${k.level}/5)`))}</ul>`)}
 ${section("experience", "Where I've worked", "Experience",
   EXPERIENCES.map((e) => `<article class="card">
             <h3 class="card-title">${esc(e.role)}</h3>
@@ -125,6 +143,13 @@ ${section("projects", "Selected work", "Projects",
 ${section("resume", "Background", "Resume",
   `<ul>${li(RESUME_HIGHLIGHTS)}</ul>
           <p><a href="/resume.pdf">Download resume (PDF)</a></p>`)}
+${section("blog", "Writing", "From the blog",
+  [...BLOG_POSTS].sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, 2).map((p) => `<article class="card">
+            <h3 class="card-title"><a href="/blog/${esc(p.slug)}">${esc(p.title)}</a></h3>
+            <p class="card-subtitle">${esc(p.date)} · ${esc(p.readingTime)} read</p>
+            <p>${esc(p.excerpt)}</p>
+          </article>`).join("\n          ")
+  + `\n          <p><a href="/blog">All posts</a></p>`)}
 ${section("contact", "Let's collaborate", "Contact",
   `<p>Available for freelance data engineering projects — ETL pipelines, MySQL
           database design, data warehouses, Python automation, and BI dashboards.</p>
@@ -137,7 +162,7 @@ ${section("contact", "Let's collaborate", "Contact",
             <li>LinkedIn: <a href="https://www.linkedin.com/in/anupkatuwal1989">linkedin.com/in/anupkatuwal1989</a></li>
           </ul>`)}
       </main>
-      <footer><p>© ${new Date().getFullYear()} Anup Katuwal · Kathmandu, Nepal</p></footer>
+      <footer><p>© ${new Date().getFullYear()} Anup Katuwal · <a href="mailto:contact@anup-katuwal.com.np">Contact</a> · <a href="https://www.linkedin.com/in/anupkatuwal1989">LinkedIn</a> · <a href="https://github.com/anupkatuwal">GitHub</a></p><p>“Knowledge applied through technology.”</p></footer>
 `;
 
 const indexPath = join(dist, "index.html");
@@ -152,10 +177,11 @@ writeFileSync(indexPath, src.replace("<!--ssg-->", html));
 // mediate "who is this person" queries. Same facts as the page, no markup.
 const llms = `# Anup Katuwal
 
-> Data Analyst and NLP Researcher based in Kathmandu, Nepal. Master's in
-> Computer Information Systems (NCIT, Pokhara University), CGPA 3.71, with
-> thesis research on fairness in mental-health NLP. Works with ETL pipelines,
-> star-schema data warehousing, Python, SQL (MySQL), and machine learning.
+> Computer Information Systems graduate, data engineer and NLP researcher
+> based in Kathmandu, Nepal. Master's in Computer Information Systems (NCIT,
+> Pokhara University), CGPA 3.71, with thesis research on fairness in
+> mental-health NLP. Works with ETL pipelines, star-schema data warehousing,
+> Python, SQL (MySQL), and machine learning.
 
 Canonical site: ${SITE_URL}/
 
@@ -174,6 +200,13 @@ ${EXPERIENCES.map((e) => `- ${e.role}, ${e.org} (${e.period})`).join("\n")}
 
 ## Projects
 ${PROJECTS.map((p) => `- ${p.title} (${SITE_URL}/projects/${p.id}) — ${p.description.split(". ")[0]}.`).join("\n")}
+
+## Research
+- ${RESEARCH.title} (${SITE_URL}/research) — ${RESEARCH.venue}, ${RESEARCH.period}.
+${RESEARCH.results.map((r) => `- ${r}`).join("\n")}
+
+## Writing
+${BLOG_POSTS.map((p) => `- ${p.title} (${SITE_URL}/blog/${p.slug}) — ${p.excerpt}`).join("\n")}
 
 ## Skills
 ${SKILLS.map((s) => `- ${s.domain}: ${s.items.join(", ")}`).join("\n")}
