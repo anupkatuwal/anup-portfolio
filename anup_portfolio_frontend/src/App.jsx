@@ -4,7 +4,11 @@
 import { useEffect, useRef } from "react";
 
 import { useContent } from "./context/ContentContext";
+import { useScrollReveal } from "./lib/useScrollReveal";
 import { Hero } from "./components/Hero";
+import { AboutSection } from "./components/AboutSection";
+import { ResearchSection } from "./components/ResearchSection";
+import { BlogSection } from "./components/BlogSection";
 import { SkillsSection } from "./components/SkillsSection";
 import { ExperienceSection } from "./components/ExperienceSection";
 import { CertificationsSection } from "./components/CertificationsSection";
@@ -52,28 +56,9 @@ export default function App() {
     return () => window.removeEventListener("mousemove", move);
   }, []);
 
-  // Scroll reveal — observe cards, timeline items, skill rows, section headings.
-  // Re-runs when `content` changes: content loads async from the API after the
-  // first paint, so any newly rendered cards must be (re)observed or they'd
-  // stay stuck at the CSS-default opacity: 0.
-  useEffect(() => {
-    const targets = document.querySelectorAll(
-      ".card, .timeline-item, .skill-row, .section-title, .section-eyebrow"
-    );
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.08, rootMargin: "0px 0px -30px 0px" }
-    );
-    targets.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, [content]);
+  // Scroll reveal — re-runs when `content` changes, since content arrives from
+  // the API after the first paint and those cards must be observed too.
+  useScrollReveal(content);
 
   return (
     <>
@@ -85,15 +70,18 @@ export default function App() {
         <div className="bg-grid" />
       </div>
       <div ref={spotlightRef} className="cursor-spotlight" aria-hidden="true" />
-      <Navbar />
+      <Navbar path="/" />
       <main id="main">
         <PageLayout>
           <Hero />
+          <AboutSection />
+          <ResearchSection />
+          <ProjectsSection />
           <SkillsSection />
           <ExperienceSection />
           <CertificationsSection />
           <ResumeSection />
-          <ProjectsSection />
+          <BlogSection />
           <ContactSection />
         </PageLayout>
       </main>

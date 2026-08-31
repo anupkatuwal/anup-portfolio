@@ -6,7 +6,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { PROJECTS } from "../src/data/content.js";
+import { PROJECTS, BLOG_POSTS } from "../src/data/content.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
@@ -60,14 +60,14 @@ function pageHtml(p) {
   ].filter(Boolean).join(" ");
 
   return `<!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#0e0d0b" />
+    <meta name="theme-color" content="#0a1f44" />
     <title>${esc(title)}</title>
     <meta name="description" content="${esc(desc)}" />
     <meta name="author" content="${AUTHOR}" />
@@ -86,19 +86,20 @@ function pageHtml(p) {
     <script type="application/ld+json">${jsonld}</script>
     ${cssHref ? `<link rel="stylesheet" href="${cssHref}" />` : ""}
     <style>
-      body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #1a1a1a; background: #faf8f5; line-height: 1.6; margin: 0; }
+      body { font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #0a1f44; background: #f5f7fa; line-height: 1.6; margin: 0; }
+      h1, .pp-title { font-family: Merriweather, Georgia, "Times New Roman", serif; }
       .pp-wrap { max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
       .pp-crumb { font-size: 13px; color: #777; margin-bottom: 24px; }
       .pp-crumb a { color: #777; text-decoration: none; }
       .pp-crumb a:hover { text-decoration: underline; }
       .pp-title { font-size: 30px; line-height: 1.2; margin: 0 0 6px; }
-      .pp-metric { font-weight: 600; color: #b4541a; margin: 0 0 18px; }
+      .pp-metric { font-weight: 600; color: #00705f; margin: 0 0 18px; }
       .pp-desc { font-size: 17px; margin: 0 0 22px; }
       .pp-stack { font-size: 13px; color: #555; margin: 0 0 26px; }
       .pp-links a { display: inline-block; padding: 9px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; margin-right: 10px; }
-      .pp-links a.btn-primary { background: #1a1a2e; color: #fff; }
-      .pp-links a.btn-ghost { border: 1px solid #ccc; color: #1a1a1a; }
-      .pp-back { display: inline-block; margin-top: 36px; color: #1a1a2e; font-weight: 600; text-decoration: none; }
+      .pp-links a.btn-primary { background: #0a1f44; color: #fff; border-radius: 999px; }
+      .pp-links a.btn-ghost { border: 1px solid #cfd6e2; color: #0a1f44; border-radius: 999px; }
+      .pp-back { display: inline-block; margin-top: 36px; color: #0a1f44; font-weight: 600; text-decoration: none; }
     </style>
   </head>
   <body>
@@ -132,6 +133,9 @@ for (const p of PROJECTS) {
 const today = new Date().toISOString().slice(0, 10);
 const urls = [
   { loc: `${SITE_URL}/`, priority: "1.0", changefreq: "weekly" },
+  { loc: `${SITE_URL}/research`, priority: "0.9", changefreq: "monthly" },
+  { loc: `${SITE_URL}/blog`, priority: "0.8", changefreq: "weekly" },
+  ...BLOG_POSTS.map((p) => ({ loc: `${SITE_URL}/blog/${p.slug}`, priority: "0.6", changefreq: "monthly" })),
   ...PROJECTS.map((p) => ({ loc: `${SITE_URL}/projects/${p.id}`, priority: "0.7", changefreq: "monthly" })),
 ];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

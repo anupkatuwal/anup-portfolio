@@ -9,6 +9,7 @@ import { DEFAULT_CONTENT } from "../data/content";
 import { apiFetch } from "../lib/api";
 
 const SECTION_LABELS = {
+  ABOUT: "About — bio & academic timeline",
   PRIMARY_SKILLS: "Primary skills — highlighted chips",
   SKILLS: "Skills",
   EXPERIENCES: "Experience",
@@ -17,10 +18,14 @@ const SECTION_LABELS = {
   CERTIFICATIONS: "Certifications",
   FOUNDATIONS: "Foundations",
   RESUME_HIGHLIGHTS: "Resume highlights",
+  SKILL_MATRIX: "Skills matrix",
+  TESTIMONIALS: "Testimonials — real, attributable quotes only",
   PROJECTS: "Projects",
+  RESEARCH: "Research — thesis page",
+  BLOG_POSTS: "Blog posts",
 };
 
-const MULTILINE_KEYS = new Set(["description", "details"]);
+const MULTILINE_KEYS = new Set(["description", "details", "abstract", "detail", "excerpt", "lead", "quote"]);
 
 const clone = (x) => JSON.parse(JSON.stringify(x));
 const isRecordArray = (v) =>

@@ -1,6 +1,8 @@
 import React from "react";
 import { Section } from "./Section";
 import { useContent } from "../context/ContentContext";
+import { SkillsMatrix } from "./SkillsMatrix";
+import { Testimonials } from "./Testimonials";
 
 // One vertical timeline: work entries first (newest first, as ordered in
 // content.js), then education entries tagged "education".
@@ -37,6 +39,9 @@ export function ExperienceSection() {
           </article>
         ))}
       </div>
+
+      <Testimonials />
+      <SkillsMatrix />
     </Section>
   );
 }

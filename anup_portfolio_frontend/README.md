@@ -7,18 +7,36 @@ backend (contact form storage + admin), deployed on Vercel with Neon Postgres.
 
 ```
 Browser ── https://<site>/            static React build (Vercel CDN)
+        ── https://<site>/research    thesis page (lazy chunk + prerendered HTML)
+        ── https://<site>/blog[/slug] blog index & posts (lazy chunk + prerendered HTML)
+        ── https://<site>/projects/*  prerendered static project pages
         ── https://<site>/admin       same SPA, lazy-loaded admin chunk
         ── https://<site>/api/*       FastAPI serverless function (api/index.py)
                                           │
                                           └── Neon Postgres (pooled, table: contact_messages)
 ```
 
-- The public page is a single React bundle; `/admin` is code-split and only
-  downloaded when visited. Auth is a 12h JWT kept in `sessionStorage`.
+- The public page is a single React bundle; `/admin`, `/research` and `/blog`
+  are code-split and only downloaded when visited. Auth on `/admin` is a 12h
+  JWT kept in `sessionStorage`.
+- Routing is a path match in `src/main.jsx` — no router library. Every route is
+  a full page load, and `src/lib/nav.js` is the single source of truth for the
+  primary navigation (shared by the navbar and the prerender scripts). New
+  routes also need a rewrite in `vercel.json`.
+- Build-time prerendering writes real HTML for every route
+  (`scripts/prerender-projects.mjs` → project pages + sitemap,
+  `scripts/prerender-pages.mjs` → `/research` and `/blog`,
+  `scripts/prerender-home.mjs` → the homepage + `llms.txt`), so crawlers and
+  no-JS visitors see the content before any JavaScript runs. They run in that
+  order — the last two both consume the `<!--ssg-->` marker in
+  `dist/index.html`.
 - The contact form posts to `/api/contact` (validation, honeypot, 5/hour rate
   limit). Messages are read/managed at `/admin`.
-- Performance budget (checked against `npm run build`): JS ≤ 75 KB gzip,
-  CSS ≤ 8 KB gzip, hero image ≤ 60 KB.
+- Performance budget (checked against `npm run build`): JS ≤ 80 KB gzip,
+  CSS ≤ 10 KB gzip, hero image ≤ 60 KB. (Raised from 75/8 when the research
+  and blog content moved into `content.js` — the post bodies ship in the main
+  bundle because the whole content document is one object. Current: ~78 KB JS,
+  ~8.3 KB CSS.)
 
 ## Environment variables
 
@@ -59,13 +77,38 @@ mail).
 
 ## Editing site content
 
-All text content (projects, skills, experience, education, certifications,
-resume highlights) lives in **`src/data/content.js`** — edit that one file and
-push; nothing else needs touching. The file has an editing guide at the top.
+All text content (about, projects, skills, experience, education,
+certifications, resume highlights, research/thesis, blog posts, testimonials)
+lives in **`src/data/content.js`** — edit that one file and push; nothing else
+needs touching. The file has an editing guide at the top, and every section is
+also editable at `/admin`.
 
-If you change the hero name/role/bio, also update the static fallback markup
-inside `<div id="root">` in `index.html` (it's what crawlers and no-JS
-visitors see).
+Two things to know:
+
+- **Hero copy** is JSX in `src/components/Hero.jsx` and is mirrored by hand in
+  the `HERO` object in `scripts/prerender-home.mjs`. Change one, change both.
+- **Testimonials** ship empty on purpose. Add only real, attributable quotes
+  you have permission to publish — the section renders nothing until then, and
+  entries without both `quote` and `name` are skipped.
+
+### Design system
+
+Tokens live at the top of `src/styles.css`: navy `#0A1F44`, silver `#E0E0E0`,
+accent teal `#00BFA6`; Merriweather for headings, Roboto for body text,
+JetBrains Mono for eyebrows and metrics (all self-hosted via `@fontsource`,
+imported in `src/main.jsx`). Light is the default theme; dark is a neutral
+ink/charcoal variant (navy is the brand colour, not the dark surface) — every
+colour is defined in both.
+
+Section and card reveals are driven by `src/lib/useScrollReveal.js`: the CSS
+holds `.card`, `.section-title` and friends at `opacity: 0` until the hook adds
+`is-visible`, so **any new page that renders those classes must call the hook**
+or its content stays invisible.
+
+Research charts are hand-rolled inline SVG (`src/components/BarChart.jsx`) —
+no chart library, so the strict CSP in `vercel.json` (`script-src 'self'`)
+stays as it is. Series colours are validated for colour-blind separation in
+both themes, and every bar is direct-labelled with its value.
 
 ## Changing the site URL (.com.np switch)
 
