@@ -9,6 +9,14 @@ test("renders the AK monogram and every primary link", () => {
   });
 });
 
+test("the mobile drawer offers both the resume and the Upwork profile", () => {
+  render(<Navbar path="/" />);
+  expect(screen.getByRole("link", { name: /Resume \(PDF\)/ })).toHaveAttribute("href", "/resume.pdf");
+  const upwork = screen.getByRole("link", { name: /Upwork/ });
+  expect(upwork).toHaveAttribute("href", "https://www.upwork.com/freelancers/~01fe60c948627059d5");
+  expect(upwork).toHaveAttribute("rel", "noopener noreferrer");
+});
+
 test("hash links stay in-page on the homepage", () => {
   render(<Navbar path="/" />);
   const [projects] = screen.getAllByRole("link", { name: "Projects" });
