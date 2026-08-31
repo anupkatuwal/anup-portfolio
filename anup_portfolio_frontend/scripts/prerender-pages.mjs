@@ -1,6 +1,6 @@
-// Build-time prerender for the standalone routes: /research, /blog and every
-// /blog/<slug>. Each one is written as a real file in dist/, so Vercel serves
-// it from the filesystem (ahead of the SPA rewrite) with its own <title>,
+// Build-time prerender for /research. It is written as a real file in dist/,
+// so Vercel serves it from the filesystem (ahead of the SPA rewrite) with its
+// own <title>,
 // description, canonical, Open Graph tags and JSON-LD — and with the page's
 // content already in the HTML, before any JavaScript runs.
 //
@@ -11,7 +11,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { RESEARCH, BLOG_POSTS } from "../src/data/content.js";
+import { RESEARCH } from "../src/data/content.js";
 
 const dist = join(dirname(fileURLToPath(import.meta.url)), "..", "dist");
 const SITE_URL = (process.env.VITE_SITE_URL || "https://anup-katuwal.com.np").replace(/\/+$/, "");
@@ -41,7 +41,6 @@ const nav = `
             <a href="/research" class="navbar-link">Research</a>
             <a href="/#projects" class="navbar-link">Projects</a>
             <a href="/#experience" class="navbar-link">Experience</a>
-            <a href="/blog" class="navbar-link">Blog</a>
             <a href="/#contact" class="navbar-link">Contact</a>
           </nav>
         </div>
@@ -126,70 +125,5 @@ written.push(
         </article>`,
   })
 );
-
-// ── /blog and each post ──────────────────────────────────────────────────────
-const posts = [...BLOG_POSTS].sort((a, b) => (a.date < b.date ? 1 : -1));
-
-written.push(
-  render({
-    path: "/blog",
-    title: `Blog — notes on data, NLP and ethics | ${AUTHOR}`,
-    description: "Short technical posts by Anup Katuwal on data cleaning, AI ethics and feature engineering.",
-    jsonld: {
-      "@context": "https://schema.org",
-      "@type": "Blog",
-      name: `${AUTHOR} — Blog`,
-      url: `${SITE_URL}/blog`,
-      author: { "@type": "Person", name: AUTHOR, url: `${SITE_URL}/` },
-      blogPost: posts.map((p) => ({
-        "@type": "BlogPosting",
-        headline: p.title,
-        datePublished: p.date,
-        url: `${SITE_URL}/blog/${p.slug}`,
-        description: p.excerpt,
-      })),
-    },
-    body: `
-        <div class="container paper">
-          <h1 class="paper-title">Blog</h1>
-          ${posts.map((p) => `<article class="card">
-            <h2 class="card-title"><a href="/blog/${esc(p.slug)}">${esc(p.title)}</a></h2>
-            <p class="card-subtitle">${esc(p.date)} · ${esc(p.readingTime)} read · ${esc((p.tags || []).join(", "))}</p>
-            <p>${esc(p.excerpt)}</p>
-          </article>`).join("")}
-        </div>`,
-  })
-);
-
-for (const p of posts) {
-  written.push(
-    render({
-      path: `/blog/${p.slug}`,
-      title: `${p.title} | ${AUTHOR}`,
-      description: clamp(p.excerpt),
-      type: "article",
-      jsonld: {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        headline: p.title,
-        datePublished: p.date,
-        description: p.excerpt,
-        url: `${SITE_URL}/blog/${p.slug}`,
-        keywords: (p.tags || []).join(", "),
-        author: { "@type": "Person", name: AUTHOR, url: `${SITE_URL}/` },
-      },
-      body: `
-        <article class="container paper">
-          <h1 class="paper-title">${esc(p.title)}</h1>
-          <p class="paper-meta">${esc(p.date)} · ${esc(p.readingTime)} read</p>
-          ${p.body.map((raw) =>
-            raw.startsWith("## ") ? `<h2>${esc(raw.slice(3))}</h2>`
-            : raw.startsWith("- ") ? `<ul><li>${esc(raw.slice(2))}</li></ul>`
-            : `<p>${esc(raw)}</p>`).join("\n          ")}
-          <p><a href="/blog">All posts</a></p>
-        </article>`,
-    })
-  );
-}
 
 console.log(`prerender-pages: wrote ${written.length} page(s) — ${written.map((u) => u.replace(SITE_URL, "")).join(", ")}`);

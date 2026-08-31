@@ -33,18 +33,16 @@ else setTimeout(startTelemetry, 2000);
 
 // Routing. The site is small enough that a router library would cost more
 // than it saves: every route is a full page load, so a path match at mount is
-// all that's needed. /admin, /research and /blog are code-split so the
-// homepage never pays for them.
+// all that's needed. /admin and /research are code-split so the homepage
+// never pays for them.
 const Admin = lazy(() => import("./pages/Admin"));
 const Research = lazy(() => import("./pages/Research"));
-const Blog = lazy(() => import("./pages/Blog"));
 
 const path = window.location.pathname.replace(/\/index\.html$/, "/").replace(/(.)\/+$/, "$1");
 
 const route = (() => {
   if (path === "/admin") return <Admin />;
   if (path === "/research") return <Research />;
-  if (path === "/blog" || path.startsWith("/blog/")) return <Blog />;
   return <App />;
 })();
 

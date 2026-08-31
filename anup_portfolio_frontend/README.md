@@ -8,7 +8,6 @@ backend (contact form storage + admin), deployed on Vercel with Neon Postgres.
 ```
 Browser ── https://<site>/            static React build (Vercel CDN)
         ── https://<site>/research    thesis page (lazy chunk + prerendered HTML)
-        ── https://<site>/blog[/slug] blog index & posts (lazy chunk + prerendered HTML)
         ── https://<site>/projects/*  prerendered static project pages
         ── https://<site>/admin       same SPA, lazy-loaded admin chunk
         ── https://<site>/api/*       FastAPI serverless function (api/index.py)
@@ -16,8 +15,8 @@ Browser ── https://<site>/            static React build (Vercel CDN)
                                           └── Neon Postgres (pooled, table: contact_messages)
 ```
 
-- The public page is a single React bundle; `/admin`, `/research` and `/blog`
-  are code-split and only downloaded when visited. Auth on `/admin` is a 12h
+- The public page is a single React bundle; `/admin` and `/research` are
+  code-split and only downloaded when visited. Auth on `/admin` is a 12h
   JWT kept in `sessionStorage`.
 - Routing is a path match in `src/main.jsx` — no router library. Every route is
   a full page load, and `src/lib/nav.js` is the single source of truth for the
@@ -25,7 +24,7 @@ Browser ── https://<site>/            static React build (Vercel CDN)
   routes also need a rewrite in `vercel.json`.
 - Build-time prerendering writes real HTML for every route
   (`scripts/prerender-projects.mjs` → project pages + sitemap,
-  `scripts/prerender-pages.mjs` → `/research` and `/blog`,
+  `scripts/prerender-pages.mjs` → `/research`,
   `scripts/prerender-home.mjs` → the homepage + `llms.txt`), so crawlers and
   no-JS visitors see the content before any JavaScript runs. They run in that
   order — the last two both consume the `<!--ssg-->` marker in
@@ -78,7 +77,7 @@ mail).
 ## Editing site content
 
 All text content (about, projects, skills, experience, education,
-certifications, resume highlights, research/thesis, blog posts, testimonials)
+certifications, resume highlights, research/thesis, testimonials)
 lives in **`src/data/content.js`** — edit that one file and push; nothing else
 needs touching. The file has an editing guide at the top, and every section is
 also editable at `/admin`.

@@ -6,7 +6,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { PROJECTS, BLOG_POSTS } from "../src/data/content.js";
+import { PROJECTS } from "../src/data/content.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
@@ -134,8 +134,6 @@ const today = new Date().toISOString().slice(0, 10);
 const urls = [
   { loc: `${SITE_URL}/`, priority: "1.0", changefreq: "weekly" },
   { loc: `${SITE_URL}/research`, priority: "0.9", changefreq: "monthly" },
-  { loc: `${SITE_URL}/blog`, priority: "0.8", changefreq: "weekly" },
-  ...BLOG_POSTS.map((p) => ({ loc: `${SITE_URL}/blog/${p.slug}`, priority: "0.6", changefreq: "monthly" })),
   ...PROJECTS.map((p) => ({ loc: `${SITE_URL}/projects/${p.id}`, priority: "0.7", changefreq: "monthly" })),
 ];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

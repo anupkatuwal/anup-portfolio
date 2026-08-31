@@ -3,13 +3,12 @@
 // the footer and the build-time prerender scripts.
 //
 // `hash` links point at a section of the homepage, so they need the "/" prefix
-// when the visitor is on /research or /blog. `page` links are standalone routes.
+// when the visitor is on a sub-page like /research. `page` links are routes.
 export const NAV_LINKS = [
   { label: "Home",       href: "#top",         kind: "hash" },
   { label: "Research",   href: "/research",    kind: "page" },
   { label: "Projects",   href: "#projects",    kind: "hash" },
   { label: "Experience", href: "#experience",  kind: "hash" },
-  { label: "Blog",       href: "/blog",        kind: "page" },
   { label: "Contact",    href: "#contact",     kind: "hash" },
 ];
 
