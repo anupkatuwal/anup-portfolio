@@ -222,16 +222,16 @@ export const PROJECTS = [
 
 export const ABOUT = {
   lead:
-    "I'm a Computer Information Systems graduate, early in my career, with a " +
-    "Master's thesis on fairness in mental-health NLP and a set of hands-on " +
-    "projects I've built to learn the practical side of working with data.",
+    "I'm a Computer Information Systems graduate, early in my career. I work " +
+    "with Python for data analysis and Microsoft SQL Server, and I'm learning " +
+    "Power BI and Tableau to build dashboards.",
   body: [
     "My Master's research at NCIT (Pokhara University) studied fairness in " +
     "mental-health sentiment analysis: I built RMH-Bias-10K, a 10,000-post Reddit " +
     "corpus, and fine-tuned BERT with adversarial debiasing and counterfactual " +
     "augmentation to cut demographic bias without giving up accuracy.",
-    "Outside the thesis I learn by building things end to end: an ETL pipeline " +
-    "that loads orders into a MySQL star-schema warehouse, an agent that drafts " +
+    "Alongside that I learn by building projects end to end: an ETL pipeline " +
+    "that loads orders into a star-schema warehouse, an agent that drafts " +
     "proposals, and this site. Several were built with the help of AI coding " +
     "tools — the projects are open on GitHub if you want to look.",
     "Before that I taught database design as a lab TA at the College of Applied " +
@@ -369,27 +369,27 @@ export const RESEARCH = {
 };
 
 /* ── SKILLS MATRIX ────────────────────────────────────────────────────────────
-   Technical and soft skills, shown as a matrix in the Experience section.
-   `level` is 1–5 and drives the meter width.                                */
+   Grouped by how well established each skill is, deliberately without
+   numeric proficiency ratings — a "4/5" is a claim nobody can check and
+   which the site owner never made. `using` is current working knowledge;
+   `learning` is in progress and labelled as such on the page.            */
 
 export const SKILL_MATRIX = {
-  technical: [
-    { name: "Python (Pandas, NumPy)", level: 5 },
-    { name: "SQL / MySQL",            level: 5 },
-    { name: "ETL & Data Warehousing", level: 4 },
-    { name: "NLP (BERT, Transformers)", level: 4 },
-    { name: "Scikit-learn & ML workflow", level: 4 },
-    { name: "FastAPI / REST APIs",    level: 3 },
-    { name: "React & front-end",      level: 3 },
-    { name: "Git & GitHub Actions",   level: 4 },
+  using: [
+    "Python — data analysis",
+    "pandas / NumPy",
+    "Microsoft SQL Server",
+    "SQL queries & schema design",
+    "BERT / Transformers (thesis)",
+    "Scikit-learn (thesis)",
+    "Technical writing (IEEE format)",
+    "Teaching & mentoring",
+    "Git & GitHub",
   ],
-  professional: [
-    { name: "Technical writing (IEEE)", level: 5 },
-    { name: "Teaching & mentoring",     level: 5 },
-    { name: "Research methodology",     level: 4 },
-    { name: "Code review",              level: 4 },
-    { name: "Client communication",     level: 4 },
-    { name: "Data storytelling",        level: 4 },
+  learning: [
+    "Power BI — dashboards",
+    "Tableau — dashboards",
+    "ETL pipelines & data warehousing",
   ],
 };
 

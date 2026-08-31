@@ -35,7 +35,7 @@ export function Hero() {
 
             <div className="hero-status">
               <span className="status-dot" aria-hidden="true" />
-              Python · SQL · ETL · BERT · FastAPI
+              Python · Microsoft SQL Server · data analysis · learning Power BI &amp; Tableau
             </div>
 
             <div className="hero-actions">

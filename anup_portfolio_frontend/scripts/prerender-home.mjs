@@ -36,7 +36,7 @@ const HERO = {
        "on fairness in mental-health NLP. I'm early in my career, building real " +
        "skills through hands-on projects — ETL pipelines, dashboards and Python " +
        "automation — and working toward data analyst and data engineer roles.",
-  status: "Python · SQL · ETL · BERT · FastAPI",
+  status: "Python · Microsoft SQL Server · data analysis · learning Power BI & Tableau",
 };
 
 // Mirrors src/lib/nav.js
@@ -99,9 +99,9 @@ ${section("research", "Thesis", "Research",
           <p><a href="/research">Read the research</a></p>`)}
 ${section("skills", "What I work with", "Skills",
   SKILLS.map((s) => `<div class="skill-row"><h3>${esc(s.domain)}</h3><ul>${li(s.items)}</ul></div>`).join("\n          ")
-  + `\n          <h3>Skills matrix</h3>
-          <h4>Technical</h4><ul>${li(SKILL_MATRIX.technical.map((k) => `${k.name} (${k.level}/5)`))}</ul>
-          <h4>Professional</h4><ul>${li(SKILL_MATRIX.professional.map((k) => `${k.name} (${k.level}/5)`))}</ul>`)}
+  + `\n          <h3>Skills</h3>
+          <h4>Working with</h4><ul>${li(SKILL_MATRIX.using)}</ul>
+          <h4>Learning</h4><ul>${li(SKILL_MATRIX.learning)}</ul>`)}
 ${section("experience", "Where I've worked", "Experience",
   EXPERIENCES.map((e) => `<article class="card">
             <h3 class="card-title">${esc(e.role)}</h3>

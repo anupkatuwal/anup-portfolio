@@ -1935,23 +1935,33 @@ html[data-theme="dark"] .chart-bar--b { background: #0aa78f; fill: #0aa78f; }
   color: var(--accent);
   margin-bottom: 14px;
 }
-.matrix-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.matrix-note {
+  font-size: 12px;
+  color: var(--muted);
+  margin: -8px 0 14px;
+  font-style: italic;
+}
+.matrix-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
 .matrix-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
+  align-items: baseline;
+  gap: 9px;
   font-size: 13.5px;
   color: var(--text);
 }
-.matrix-name { line-height: 1.4; }
-.matrix-meter { display: inline-flex; gap: 4px; flex-shrink: 0; }
-.matrix-pip {
-  width: 9px; height: 9px;
-  border-radius: 2px;
-  background: var(--faint);
+.matrix-row::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent-bright);
+  flex-shrink: 0;
 }
-.matrix-pip.is-filled { background: var(--accent-bright); }
+/* Learning items read as outlines, not filled dots */
+.matrix-row--learning::before {
+  background: transparent;
+  border: 1.5px solid var(--accent-bright);
+}
+.matrix-name { line-height: 1.45; }
 
 .testimonial-grid {
   display: grid;
