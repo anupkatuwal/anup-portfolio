@@ -3,8 +3,10 @@
    Navy #0A1F44 · Silver #E0E0E0 · Accent teal #00BFA6
    Type: Merriweather (serif headings) + Roboto (sans body)
    Self-hosted via @fontsource — imported in src/main.jsx.
-   Light is the default (academic paper feel); dark is a deep-navy
-   variant. Muted text is tuned for WCAG >= 4.5:1 on bg AND cards.
+   Light is the default (academic paper feel); dark is a neutral
+   ink/charcoal variant — navy is the brand colour, not the dark surface,
+   so the teal accent stays legible against it.
+   Muted text is tuned for WCAG >= 4.5:1 on bg AND cards.
 ========================================================= */
 :root {
   /* Brand constants — identical in both themes */
@@ -40,14 +42,14 @@
 }
 
 html[data-theme="dark"] {
-  --bg:           #061224;
-  --bg-card:      #0c2144;
-  --bg-card-2:    #102b53;
-  --border:       rgba(224, 224, 224, 0.14);
+  --bg:           #0b0e12;
+  --bg-card:      #141922;
+  --bg-card-2:    #1b2230;
+  --border:       rgba(226, 232, 240, 0.13);
   --border-hover: rgba(0, 191, 166, 0.55);
-  --text:         #e9edf4;
-  --muted:        #a8b6cc;
-  --faint:        #1d3a63;
+  --text:         #e8ecf2;
+  --muted:        #a3adbd;
+  --faint:        #2a3342;
   --accent:       #35d6c0;
   --accent-bright:#00bfa6;
   --accent-dim:   rgba(0, 191, 166, 0.12);
@@ -61,14 +63,14 @@ html[data-theme="dark"] {
 /* Before JS sets data-theme, honor the OS preference (no-JS visitors too) */
 @media (prefers-color-scheme: dark) {
   html:not([data-theme]) {
-    --bg:           #061224;
-    --bg-card:      #0c2144;
-    --bg-card-2:    #102b53;
-    --border:       rgba(224, 224, 224, 0.14);
+    --bg:           #0b0e12;
+    --bg-card:      #141922;
+    --bg-card-2:    #1b2230;
+    --border:       rgba(226, 232, 240, 0.13);
     --border-hover: rgba(0, 191, 166, 0.55);
-    --text:         #e9edf4;
-    --muted:        #a8b6cc;
-    --faint:        #1d3a63;
+    --text:         #e8ecf2;
+    --muted:        #a3adbd;
+    --faint:        #2a3342;
     --accent:       #35d6c0;
     --accent-bright:#00bfa6;
     --accent-dim:   rgba(0, 191, 166, 0.12);
@@ -100,7 +102,7 @@ body {
 
 /* ── Per-section background tint ──
    Light (default) reads as tinted paper; the dark theme shifts the same
-   sections through deep-navy variants. Kept very low-contrast on purpose. */
+   sections through neutral charcoal steps. Kept very low-contrast on purpose. */
 body[data-section="top"]        { background-color: #f5f7fa; }
 body[data-section="about"]      { background-color: #f2f5f9; }
 body[data-section="research"]   { background-color: #eef4f7; }
@@ -112,28 +114,28 @@ body[data-section="projects"]   { background-color: #eff3f8; }
 body[data-section="blog"]       { background-color: #f1f4f8; }
 body[data-section="contact"]    { background-color: #edf1f7; }
 
-html[data-theme="dark"] body[data-section="top"]        { background-color: #061224; }
-html[data-theme="dark"] body[data-section="about"]      { background-color: #07152a; }
-html[data-theme="dark"] body[data-section="research"]   { background-color: #05182b; }
-html[data-theme="dark"] body[data-section="skills"]     { background-color: #071628; }
-html[data-theme="dark"] body[data-section="experience"] { background-color: #05192a; }
-html[data-theme="dark"] body[data-section="certifications"] { background-color: #071427; }
-html[data-theme="dark"] body[data-section="resume"]     { background-color: #06182a; }
-html[data-theme="dark"] body[data-section="projects"]   { background-color: #071527; }
-html[data-theme="dark"] body[data-section="blog"]       { background-color: #06152a; }
-html[data-theme="dark"] body[data-section="contact"]    { background-color: #051324; }
+html[data-theme="dark"] body[data-section="top"]        { background-color: #0b0e12; }
+html[data-theme="dark"] body[data-section="about"]      { background-color: #0c1014; }
+html[data-theme="dark"] body[data-section="research"]   { background-color: #0a1113; }
+html[data-theme="dark"] body[data-section="skills"]     { background-color: #0b0f13; }
+html[data-theme="dark"] body[data-section="experience"] { background-color: #0a1112; }
+html[data-theme="dark"] body[data-section="certifications"] { background-color: #0c0f13; }
+html[data-theme="dark"] body[data-section="resume"]     { background-color: #0a1012; }
+html[data-theme="dark"] body[data-section="projects"]   { background-color: #0b0f14; }
+html[data-theme="dark"] body[data-section="blog"]       { background-color: #0c1015; }
+html[data-theme="dark"] body[data-section="contact"]    { background-color: #0a0d12; }
 
 @media (prefers-color-scheme: dark) {
-  html:not([data-theme]) body[data-section="top"]        { background-color: #061224; }
-  html:not([data-theme]) body[data-section="about"]      { background-color: #07152a; }
-  html:not([data-theme]) body[data-section="research"]   { background-color: #05182b; }
-  html:not([data-theme]) body[data-section="skills"]     { background-color: #071628; }
-  html:not([data-theme]) body[data-section="experience"] { background-color: #05192a; }
-  html:not([data-theme]) body[data-section="certifications"] { background-color: #071427; }
-  html:not([data-theme]) body[data-section="resume"]     { background-color: #06182a; }
-  html:not([data-theme]) body[data-section="projects"]   { background-color: #071527; }
-  html:not([data-theme]) body[data-section="blog"]       { background-color: #06152a; }
-  html:not([data-theme]) body[data-section="contact"]    { background-color: #051324; }
+  html:not([data-theme]) body[data-section="top"]        { background-color: #0b0e12; }
+  html:not([data-theme]) body[data-section="about"]      { background-color: #0c1014; }
+  html:not([data-theme]) body[data-section="research"]   { background-color: #0a1113; }
+  html:not([data-theme]) body[data-section="skills"]     { background-color: #0b0f13; }
+  html:not([data-theme]) body[data-section="experience"] { background-color: #0a1112; }
+  html:not([data-theme]) body[data-section="certifications"] { background-color: #0c0f13; }
+  html:not([data-theme]) body[data-section="resume"]     { background-color: #0a1012; }
+  html:not([data-theme]) body[data-section="projects"]   { background-color: #0b0f14; }
+  html:not([data-theme]) body[data-section="blog"]       { background-color: #0c1015; }
+  html:not([data-theme]) body[data-section="contact"]    { background-color: #0a0d12; }
 }
 
 /* =========================================================

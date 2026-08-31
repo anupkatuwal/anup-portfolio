@@ -96,8 +96,9 @@ Two things to know:
 Tokens live at the top of `src/styles.css`: navy `#0A1F44`, silver `#E0E0E0`,
 accent teal `#00BFA6`; Merriweather for headings, Roboto for body text,
 JetBrains Mono for eyebrows and metrics (all self-hosted via `@fontsource`,
-imported in `src/main.jsx`). Light is the default theme, dark is a deep-navy
-variant — every colour is defined in both.
+imported in `src/main.jsx`). Light is the default theme; dark is a neutral
+ink/charcoal variant (navy is the brand colour, not the dark surface) — every
+colour is defined in both.
 
 Section and card reveals are driven by `src/lib/useScrollReveal.js`: the CSS
 holds `.card`, `.section-title` and friends at `opacity: 0` until the hook adds
