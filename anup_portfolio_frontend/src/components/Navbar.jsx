@@ -93,13 +93,24 @@ export function Navbar({ path = "/" }) {
             {link.label}
           </a>
         ))}
-        <a
-          href="/resume.pdf"
-          className="navbar-mobile-link navbar-mobile-cta"
-          onClick={handleLinkClick}
-        >
-          Resume (PDF) ↗
-        </a>
+        <div className="navbar-mobile-ctas">
+          <a
+            href="/resume.pdf"
+            className="navbar-mobile-link navbar-mobile-cta"
+            onClick={handleLinkClick}
+          >
+            Resume (PDF) ↗
+          </a>
+          <a
+            href="https://www.upwork.com/freelancers/~01fe60c948627059d5"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="navbar-mobile-link navbar-mobile-cta"
+            onClick={handleLinkClick}
+          >
+            Upwork ↗
+          </a>
+        </div>
       </nav>
     </header>
   );

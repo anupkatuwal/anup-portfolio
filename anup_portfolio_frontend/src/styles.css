@@ -458,10 +458,16 @@ section[id] {
   background: var(--accent-dim);
   text-decoration: none;
 }
+/* Resume + Upwork share a row at the foot of the mobile drawer */
+.navbar-mobile-ctas {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
 .navbar-mobile-cta {
+  flex: 1;
   color: var(--accent);
   border: 1px solid var(--border);
-  margin-top: 6px;
   text-align: center;
 }
 .navbar-mobile-cta:hover {
