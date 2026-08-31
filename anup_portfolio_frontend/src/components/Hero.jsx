@@ -27,10 +27,10 @@ export function Hero() {
 
             <p className="hero-bio">
               M.Sc. in Computer Information Systems (CGPA 3.71) with thesis
-              research on fairness in mental-health NLP, and hands-on work
-              building <strong>ETL pipelines, star-schema warehouses and Python
-              automation</strong> that put research methods to work on
-              production data.
+              research on fairness in mental-health NLP. I&apos;m early in my
+              career, building real skills through hands-on projects —{" "}
+              <strong>ETL pipelines, dashboards and Python automation</strong> —
+              and working toward data analyst and data engineer roles.
             </p>
 
             <div className="hero-status">

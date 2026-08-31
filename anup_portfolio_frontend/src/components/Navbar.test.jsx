@@ -4,7 +4,7 @@ import { Navbar } from "./Navbar";
 test("renders the AK monogram and every primary link", () => {
   render(<Navbar path="/" />);
   expect(screen.getByText("AK")).toBeInTheDocument();
-  ["Home", "Research", "Projects", "Experience", "Blog", "Contact"].forEach((label) => {
+  ["Home", "Research", "Projects", "Experience", "Contact"].forEach((label) => {
     expect(screen.getAllByRole("link", { name: label }).length).toBeGreaterThan(0);
   });
 });

@@ -8,7 +8,6 @@ import { useScrollReveal } from "./lib/useScrollReveal";
 import { Hero } from "./components/Hero";
 import { AboutSection } from "./components/AboutSection";
 import { ResearchSection } from "./components/ResearchSection";
-import { BlogSection } from "./components/BlogSection";
 import { SkillsSection } from "./components/SkillsSection";
 import { ExperienceSection } from "./components/ExperienceSection";
 import { CertificationsSection } from "./components/CertificationsSection";
@@ -81,7 +80,6 @@ export default function App() {
           <ExperienceSection />
           <CertificationsSection />
           <ResumeSection />
-          <BlogSection />
           <ContactSection />
         </PageLayout>
       </main>

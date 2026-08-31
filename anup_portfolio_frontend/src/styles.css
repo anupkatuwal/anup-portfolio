@@ -111,7 +111,6 @@ body[data-section="experience"] { background-color: #edf4f2; }
 body[data-section="certifications"] { background-color: #f1f3f8; }
 body[data-section="resume"]     { background-color: #eef3f6; }
 body[data-section="projects"]   { background-color: #eff3f8; }
-body[data-section="blog"]       { background-color: #f1f4f8; }
 body[data-section="contact"]    { background-color: #edf1f7; }
 
 html[data-theme="dark"] body[data-section="top"]        { background-color: #0b0e12; }
@@ -122,7 +121,6 @@ html[data-theme="dark"] body[data-section="experience"] { background-color: #0a1
 html[data-theme="dark"] body[data-section="certifications"] { background-color: #0c0f13; }
 html[data-theme="dark"] body[data-section="resume"]     { background-color: #0a1012; }
 html[data-theme="dark"] body[data-section="projects"]   { background-color: #0b0f14; }
-html[data-theme="dark"] body[data-section="blog"]       { background-color: #0c1015; }
 html[data-theme="dark"] body[data-section="contact"]    { background-color: #0a0d12; }
 
 @media (prefers-color-scheme: dark) {
@@ -134,7 +132,6 @@ html[data-theme="dark"] body[data-section="contact"]    { background-color: #0a0
   html:not([data-theme]) body[data-section="certifications"] { background-color: #0c0f13; }
   html:not([data-theme]) body[data-section="resume"]     { background-color: #0a1012; }
   html:not([data-theme]) body[data-section="projects"]   { background-color: #0b0f14; }
-  html:not([data-theme]) body[data-section="blog"]       { background-color: #0c1015; }
   html:not([data-theme]) body[data-section="contact"]    { background-color: #0a0d12; }
 }
 
@@ -529,8 +526,7 @@ section[id] {
 .section-title + .projects-grid,
 .section-title + .timeline,
 .section-title + .skills-table,
-.section-title + .card,
-.section-title + .blog-grid { margin-top: 18px; }
+.section-title + .card { margin-top: 18px; }
 
 /* =========================================================
    CARDS
@@ -1783,7 +1779,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--display); }
 .research-actions { margin-top: 4px; }
 
 /* =========================================================
-   PAPER PAGES — /research and /blog
+   PAPER PAGES — /research
 ========================================================= */
 .paper { max-width: 820px; padding-top: 40px; padding-bottom: 80px; }
 
@@ -1972,32 +1968,6 @@ html[data-theme="dark"] .chart-bar--b { background: #0aa78f; fill: #0aa78f; }
 .testimonial-source { display: flex; flex-direction: column; gap: 2px; }
 .testimonial-name { font-size: 13px; font-weight: 600; color: var(--text); }
 .testimonial-role { font-family: var(--mono); font-size: 11px; color: var(--muted); }
-
-/* =========================================================
-   BLOG
-========================================================= */
-.blog-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-}
-.blog-card { display: flex; flex-direction: column; gap: 10px; }
-.blog-card .card-title a { color: var(--text); text-decoration: none; }
-.blog-card:hover .card-title a { color: var(--accent); }
-.blog-meta { font-family: var(--mono); font-size: 11px; color: var(--muted); }
-.blog-more { margin-top: auto; padding-top: 6px; font-size: 13px; font-weight: 500; }
-
-.post-body { max-width: 68ch; }
-.post-para { font-size: 16px; line-height: 1.9; color: var(--text); opacity: 0.92; margin-bottom: 20px; }
-.post-h3 {
-  font-family: var(--display);
-  font-size: 19px;
-  font-weight: 700;
-  color: var(--text);
-  margin: 34px 0 14px;
-}
-.post-list { margin-bottom: 20px; }
-.post-list li { font-size: 15.5px; line-height: 1.8; }
 
 /* =========================================================
    NARROW SCREENS — verified down to 360px
