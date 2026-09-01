@@ -17,7 +17,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import {
   ABOUT, SKILLS, EXPERIENCES, EDUCATION, TRAINING, CERTIFICATIONS,
-  FOUNDATIONS, RESUME_HIGHLIGHTS, PROJECTS, RESEARCH, SKILL_MATRIX,
+  FOUNDATIONS, RESUME_HIGHLIGHTS, PROJECTS, RESEARCH, SKILL_MATRIX, INTERESTS,
 } from "../src/data/content.js";
 
 const dist = join(dirname(fileURLToPath(import.meta.url)), "..", "dist");
@@ -142,6 +142,9 @@ ${section("projects", "Selected work", "Projects",
 ${section("resume", "Background", "Resume",
   `<ul>${li(RESUME_HIGHLIGHTS)}</ul>
           <p><a href="/resume.pdf">Download resume (PDF)</a></p>`)}
+${section("interests", "Beyond work", INTERESTS.title,
+  `${INTERESTS.body.map((t) => `<p>${esc(t)}</p>`).join("\n          ")}
+          <dl>${INTERESTS.facts.map((f) => `<dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd>`).join("")}</dl>`)}
 ${section("contact", "Let's collaborate", "Contact",
   `<p>Available for freelance data engineering projects — ETL pipelines, MySQL
           database design, data warehouses, Python automation, and BI dashboards.</p>

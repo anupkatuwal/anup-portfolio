@@ -1992,3 +1992,60 @@ html[data-theme="dark"] .chart-bar--b { background: #0aa78f; fill: #0aa78f; }
   .btn { width: 100%; justify-content: center; }
   .about-actions, .hero-actions { flex-direction: column; align-items: stretch; }
 }
+
+/* =========================================================
+   INTERESTS — "beyond work"
+   Deliberately quieter than the professional sections: smaller
+   photo, no card chrome, no hover lift.
+========================================================= */
+.interests-layout {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 44px;
+  align-items: center;
+}
+.interests-layout--text { grid-template-columns: 1fr; }
+@media (max-width: 760px) {
+  .interests-layout { grid-template-columns: 1fr; gap: 28px; }
+}
+
+.interests-para {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 62ch;
+  margin-bottom: 14px;
+}
+
+.interests-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  margin-top: 20px;
+}
+.interests-fact dt {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.interests-fact dd {
+  font-family: var(--display);
+  font-size: 14px;
+  color: var(--text);
+}
+
+.interests-photo { margin: 0; }
+.interests-photo img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+@media (max-width: 760px) {
+  .interests-photo { max-width: 260px; }
+}

@@ -400,6 +400,29 @@ export const SKILL_MATRIX = {
 
 export const TESTIMONIALS = [];
 
+/* ── INTERESTS ────────────────────────────────────────────────────────────────
+   The "beyond work" section. Facts here come from Anup directly — training
+   since early 2017, breaks for the first COVID wave, an ACL reconstruction
+   and a torn right lateral deltoid. Don't embellish them.
+   Set `photo` to "" to run the section text-only.                          */
+
+export const INTERESTS = {
+  eyebrow: "// beyond work",
+  title: "Training",
+  body: [
+    "I've been training since early 2017 — bodybuilding and general fitness.",
+    "The only real breaks have been the first wave of COVID and two injuries: " +
+    "an ACL reconstruction and a torn right lateral deltoid. I came back from " +
+    "both, and have been consistent either side of them.",
+  ],
+  facts: [
+    { label: "Training since", value: "2017" },
+    { label: "Longest breaks", value: "COVID · ACL reconstruction · delt tear" },
+  ],
+  photo: "/training",
+  photoAlt: "Anup Katuwal after a training session",
+};
+
 /* ── AGGREGATE ────────────────────────────────────────────────────────────────
    The full content document, in the same shape the admin panel edits and the
    API stores. Order of keys here defines the order sections appear in /admin. */
@@ -418,4 +441,5 @@ export const DEFAULT_CONTENT = {
   TESTIMONIALS,
   PROJECTS,
   RESEARCH,
+  INTERESTS,
 };
