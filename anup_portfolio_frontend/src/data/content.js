@@ -420,7 +420,7 @@ export const INTERESTS = {
     { label: "Longest breaks", value: "COVID · ACL reconstruction · delt tear" },
   ],
   photo: "/training",
-  photoAlt: "Anup Katuwal after a training session",
+  photoAlt: "Anup Katuwal mid-session at the gym",
 };
 
 /* ── AGGREGATE ────────────────────────────────────────────────────────────────
