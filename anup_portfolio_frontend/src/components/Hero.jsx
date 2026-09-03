@@ -52,11 +52,11 @@ export function Hero() {
               <picture>
                 <source srcSet="/profile.webp" type="image/webp" />
                 <img
-                  src="/profile-sm.png"
+                  src="/profile.jpg"
                   alt="Anup Katuwal — Computer Information Systems graduate and data researcher, Kathmandu, Nepal"
                   className="hero-photo"
-                  width="380"
-                  height="380"
+                  width="440"
+                  height="440"
                   fetchPriority="high"
                 />
               </picture>

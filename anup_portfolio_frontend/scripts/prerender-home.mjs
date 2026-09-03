@@ -17,7 +17,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import {
   ABOUT, SKILLS, EXPERIENCES, EDUCATION, TRAINING, CERTIFICATIONS,
-  FOUNDATIONS, RESUME_HIGHLIGHTS, PROJECTS, RESEARCH, SKILL_MATRIX,
+  FOUNDATIONS, RESUME_HIGHLIGHTS, PROJECTS, RESEARCH, SKILL_MATRIX, INTERESTS,
 } from "../src/data/content.js";
 
 const dist = join(dirname(fileURLToPath(import.meta.url)), "..", "dist");
@@ -82,7 +82,7 @@ const html = `
             </p>
             <picture>
               <source srcset="/profile.webp" type="image/webp" />
-              <img src="/profile-sm.png" class="hero-photo" alt="Anup Katuwal — Computer Information Systems graduate and data researcher, Kathmandu, Nepal" width="190" height="190" />
+              <img src="/profile.jpg" class="hero-photo" alt="Anup Katuwal — Computer Information Systems graduate and data researcher, Kathmandu, Nepal" width="220" height="220" />
             </picture>
           </div>
         </section>
@@ -142,6 +142,9 @@ ${section("projects", "Selected work", "Projects",
 ${section("resume", "Background", "Resume",
   `<ul>${li(RESUME_HIGHLIGHTS)}</ul>
           <p><a href="/resume.pdf">Download resume (PDF)</a></p>`)}
+${section("interests", "Beyond work", INTERESTS.title,
+  `${INTERESTS.body.map((t) => `<p>${esc(t)}</p>`).join("\n          ")}
+          <dl>${INTERESTS.facts.map((f) => `<dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd>`).join("")}</dl>`)}
 ${section("contact", "Let's collaborate", "Contact",
   `<p>Available for freelance data engineering projects — ETL pipelines, MySQL
           database design, data warehouses, Python automation, and BI dashboards.</p>

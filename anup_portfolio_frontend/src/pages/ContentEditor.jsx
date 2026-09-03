@@ -22,6 +22,7 @@ const SECTION_LABELS = {
   TESTIMONIALS: "Testimonials — real, attributable quotes only",
   PROJECTS: "Projects",
   RESEARCH: "Research — thesis page",
+  INTERESTS: "Beyond work — training",
 };
 
 const MULTILINE_KEYS = new Set(["description", "details", "abstract", "detail", "excerpt", "lead", "quote"]);
