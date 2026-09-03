@@ -82,7 +82,7 @@ const html = `
             </p>
             <picture>
               <source srcset="/profile.webp" type="image/webp" />
-              <img src="/profile.jpg" class="hero-photo" alt="Anup Katuwal — Computer Information Systems graduate and data researcher, Kathmandu, Nepal" width="220" height="220" />
+              <img src="/profile-sm.png" class="hero-photo" alt="Anup Katuwal — Computer Information Systems graduate and data researcher, Kathmandu, Nepal" width="190" height="190" />
             </picture>
           </div>
         </section>
@@ -144,7 +144,8 @@ ${section("resume", "Background", "Resume",
           <p><a href="/resume.pdf">Download resume (PDF)</a></p>`)}
 ${section("interests", "Beyond work", INTERESTS.title,
   `${INTERESTS.body.map((t) => `<p>${esc(t)}</p>`).join("\n          ")}
-          <dl>${INTERESTS.facts.map((f) => `<dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd>`).join("")}</dl>`)}
+          <dl>${INTERESTS.facts.map((f) => `<dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd>`).join("")}</dl>
+          ${(INTERESTS.photos || []).map((p) => `<img src="${esc(p.src)}.jpg" alt="${esc(p.alt || "")}" width="700" height="875" loading="lazy" />`).join("\n          ")}`)}
 ${section("contact", "Let's collaborate", "Contact",
   `<p>Available for freelance data engineering projects — ETL pipelines, MySQL
           database design, data warehouses, Python automation, and BI dashboards.</p>

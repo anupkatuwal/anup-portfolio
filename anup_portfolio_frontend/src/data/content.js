@@ -419,8 +419,13 @@ export const INTERESTS = {
     { label: "Training since", value: "2017" },
     { label: "Longest breaks", value: "COVID · ACL reconstruction · delt tear" },
   ],
-  photo: "/training",
-  photoAlt: "Anup Katuwal at the gym, holding a back double-biceps pose",
+  /* Up to two photos, rendered side by side. `src` is the path without an
+     extension — each needs a .webp and a .jpg in public/. Leave the array
+     empty to run the section text-only. */
+  photos: [
+    { src: "/training-1", alt: "Anup Katuwal at the gym, holding a back double-biceps pose" },
+    { src: "/training-2", alt: "Anup Katuwal in training kit on the stairs at home" },
+  ],
 };
 
 /* ── AGGREGATE ────────────────────────────────────────────────────────────────
