@@ -82,7 +82,7 @@ const html = `
             </p>
             <picture>
               <source srcset="/profile.webp" type="image/webp" />
-              <img src="/profile-sm.png" class="hero-photo" alt="Anup Katuwal — Computer Information Systems graduate and data researcher, Kathmandu, Nepal" width="190" height="190" />
+              <img src="/profile.jpg" class="hero-photo" alt="Anup Katuwal — Computer Information Systems graduate and data researcher, Kathmandu, Nepal" width="220" height="220" />
             </picture>
           </div>
         </section>

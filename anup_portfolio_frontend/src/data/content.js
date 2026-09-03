@@ -420,7 +420,7 @@ export const INTERESTS = {
     { label: "Longest breaks", value: "COVID · ACL reconstruction · delt tear" },
   ],
   photo: "/training",
-  photoAlt: "Anup Katuwal mid-session at the gym",
+  photoAlt: "Anup Katuwal at the gym, holding a back double-biceps pose",
 };
 
 /* ── AGGREGATE ────────────────────────────────────────────────────────────────
