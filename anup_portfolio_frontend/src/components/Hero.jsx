@@ -26,7 +26,7 @@ export function Hero() {
             </p>
 
             <p className="hero-bio">
-              M.Sc. in Computer Information Systems (CGPA 3.71) with thesis
+              Master of Computer Information System (CGPA 3.71) with thesis
               research on fairness in mental-health NLP. I&apos;m early in my
               career, building real skills through hands-on projects —{" "}
               <strong>ETL pipelines, dashboards and Python automation</strong> —
@@ -65,7 +65,7 @@ export function Hero() {
             <div className="hero-panel">
               <div className="hero-stat">
                 <p className="stat-label">Education</p>
-                <p className="stat-value">M.Sc. CIS · <span>CGPA 3.71</span></p>
+                <p className="stat-value">MCIS · <span>CGPA 3.71</span></p>
               </div>
               <div className="hero-stat">
                 <p className="stat-label">Thesis</p>

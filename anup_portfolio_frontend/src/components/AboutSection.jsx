@@ -1,5 +1,5 @@
 // src/components/AboutSection.jsx — academic + professional bio, an academic
-// timeline graphic (B.Sc. → M.Sc. → Research), and the CV / resume downloads.
+// timeline graphic (B.Sc. → MCIS → Research), and the CV / resume downloads.
 import React from "react";
 import { Section } from "./Section";
 import { useContent } from "../context/ContentContext";
