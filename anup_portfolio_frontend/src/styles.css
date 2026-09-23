@@ -1719,7 +1719,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--display); }
 }
 .about-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
 
-/* Academic timeline graphic: B.Sc. → M.Sc. → Research */
+/* Academic timeline graphic: B.Sc. → MCIS → Research */
 .about-track {
   list-style: none;
   position: relative;

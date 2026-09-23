@@ -32,7 +32,7 @@ const HERO = {
   eyebrow: "Kathmandu, Nepal · Open to research & data roles",
   headline: "Anup Katuwal — CIS Graduate & Data Enthusiast",
   tagline: "Bridging academic research with real-world data solutions.",
-  bio: "M.Sc. in Computer Information Systems (CGPA 3.71) with thesis research " +
+  bio: "Master of Computer Information System (CGPA 3.71) with thesis research " +
        "on fairness in mental-health NLP. I'm early in my career, building real " +
        "skills through hands-on projects — ETL pipelines, dashboards and Python " +
        "automation — and working toward data analyst and data engineer roles.",
@@ -174,7 +174,7 @@ writeFileSync(indexPath, src.replace("<!--ssg-->", html));
 const llms = `# Anup Katuwal
 
 > Computer Information Systems graduate, data engineer and NLP researcher
-> based in Kathmandu, Nepal. Master's in Computer Information Systems (NCIT,
+> based in Kathmandu, Nepal. Master of Computer Information System (NCIT,
 > Pokhara University), CGPA 3.71, with thesis research on fairness in
 > mental-health NLP. Works with ETL pipelines, star-schema data warehousing,
 > Python, SQL (MySQL), and machine learning.

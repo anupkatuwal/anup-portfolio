@@ -148,7 +148,7 @@ export const FOUNDATIONS = [
    Bullet list shown next to the Download PDF button.                         */
 
 export const RESUME_HIGHLIGHTS = [
-  "Master's in Computer Information Systems — CGPA 3.71 (NCIT, Pokhara University)",
+  "Master of Computer Information System (MCIS) — CGPA 3.71 (NCIT, Pokhara University)",
   "FairBERT thesis: fine-tuned BERT on 10,000 Reddit posts · 84% accuracy · 35% mean bias reduction (80% on dialect)",
   "End-to-End Food Order ETL Pipeline — MySQL stored procedures, star schema warehouse, Python orchestration, 20 automated tests, HTML dashboard · Available on Upwork",
   "Upwork Proposal Automation Agent · cuts proposal time from 20 min to under 2 min",
@@ -218,7 +218,7 @@ export const PROJECTS = [
 
 /* ── ABOUT ────────────────────────────────────────────────────────────────────
    Short academic + professional bio shown in the About section, plus the
-   three-step academic timeline graphic (B.Sc. → M.Sc. → Research).          */
+   three-step academic timeline graphic (B.Sc. → MCIS → Research).          */
 
 export const ABOUT = {
   lead:
@@ -245,7 +245,7 @@ export const ABOUT = {
     },
     {
       year: "2020 – 2026",
-      title: "M.Sc. in Computer Information Systems",
+      title: "Master of Computer Information System",
       detail: "NCIT, Pokhara University · CGPA 3.71",
     },
     {
@@ -264,7 +264,7 @@ export const ABOUT = {
 export const RESEARCH = {
   title: "Bias Mitigation in Mental-Health Sentiment Analysis using BERT with Fairness Techniques",
   shortTitle: "FairBERT",
-  venue: "M.Sc. thesis · NCIT, Pokhara University",
+  venue: "Master's thesis · NCIT, Pokhara University",
   period: "2024 – 2026",
   keywords: ["Fairness in NLP", "BERT", "Adversarial Debiasing", "Counterfactual Augmentation", "Mental Health"],
   thesisUrl: "https://github.com/anupkatuwal/bias-aware-sentiment-analysis-mental-health",
