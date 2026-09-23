@@ -21,6 +21,9 @@
     <meta name="author" content="Anup Katuwal" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="theme-color" content="#0a1f44" />
+    <!-- Blocking on purpose, and after theme-color: sets data-theme before
+         first paint so the saved theme never flashes. Tiny, same-origin. -->
+    <script src="/theme-init.js"></script>
     <link rel="canonical" href="%SITE_URL%/" />
 
     <!-- Open Graph (Facebook, LinkedIn, etc.) -->

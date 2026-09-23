@@ -17,6 +17,10 @@ import "@fontsource/roboto/latin-700.css";
 import "@fontsource/jetbrains-mono/latin-400.css";
 import "@fontsource/jetbrains-mono/latin-500.css";
 import "@fontsource/jetbrains-mono/latin-600.css";
+// Outfit + Inter drive the dark "space" theme only. The @font-face rules are
+// cheap; the browser downloads a file only once dark mode renders text in it.
+import "@fontsource-variable/outfit";
+import "@fontsource-variable/inter";
 
 import App from "./App";
 import { ContentProvider } from "./context/ContentContext";

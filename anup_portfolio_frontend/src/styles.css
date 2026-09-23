@@ -63,48 +63,105 @@
   /* Non-text graphics (WCAG 1.4.11 wants 3:1). --faint is far too low
      for anything load-bearing, so axes get their own token. */
   --chart-axis: #727f94;
+
+  /* Component tokens — light values are the literals these rules used
+     before, so the light theme renders exactly as it did. The dark
+     theme redefines them below. */
+  --btn-primary-bg:       linear-gradient(135deg, var(--navy) 0%, #143166 100%);
+  --btn-primary-bg-hover: linear-gradient(135deg, #143166 0%, var(--accent-bright) 190%);
+  --btn-primary-fg:       #ffffff;
+  --btn-accent-bg:        linear-gradient(135deg, var(--accent-bright) 0%, #00a08a 100%);
+  --on-accent:            #04231f;
+  --brand-mark-bg:        linear-gradient(135deg, var(--navy), #16336b);
+  --brand-mark-fg:        #ffffff;
+  --brand-mark-border:    rgba(0, 191, 166, 0.55);
+  --track-end:            var(--navy);
+  --chart-a:              #4a7fe0;
+  --chart-b:              #00a58f;
+  --highlight-border:     rgba(212, 160, 23, 0.6);
+  --highlight-border-soft:rgba(212, 160, 23, 0.4);
+  --highlight-wash:       rgba(201, 151, 95, 0.04);
+  --spotlight:            rgba(138, 90, 22, 0.05);
 }
 
 html[data-theme="dark"] {
-  --bg:           #0b0e12;
-  --bg-card:      #141922;
-  --bg-card-2:    #1b2230;
-  --border:       rgba(226, 232, 240, 0.13);
-  --border-hover: rgba(0, 191, 166, 0.55);
-  --text:         #e8ecf2;
-  --muted:        #a3adbd;
-  --faint:        #2a3342;
-  --accent:       #35d6c0;
-  --accent-bright:#00bfa6;
-  --accent-dim:   rgba(0, 191, 166, 0.12);
-  --accent-glow:  rgba(0, 191, 166, 0.28);
-  --green:        #35d6c0;
-  --shadow-sm:    0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 10px rgba(0, 0, 0, 0.25);
-  --shadow-md:    0 8px 30px rgba(0, 0, 0, 0.4);
-  --shadow-nav:   0 1px 0 rgba(224, 224, 224, 0.08), 0 6px 24px rgba(0, 0, 0, 0.45);
-  --chart-axis:   #6b7a91;
+  --bg:           #03040a;
+  --bg-card:      rgba(12, 9, 28, 0.72);
+  --bg-card-2:    rgba(168, 85, 247, 0.07);
+  --border:       rgba(168, 85, 247, 0.2);
+  --border-hover: rgba(192, 132, 252, 0.55);
+  --text:         #f0e8ff;
+  --muted:        #939cb0;
+  --faint:        rgba(168, 85, 247, 0.24);
+  --accent:       #c084fc;
+  --accent-bright:#a855f7;
+  --accent-dim:   rgba(168, 85, 247, 0.12);
+  --accent-glow:  rgba(168, 85, 247, 0.32);
+  --green:        #4ade80;
+  --shadow-sm:    0 1px 2px rgba(0, 0, 0, 0.5), 0 2px 12px rgba(0, 0, 0, 0.4);
+  --shadow-md:    0 10px 40px rgba(0, 0, 0, 0.55), 0 0 32px rgba(168, 85, 247, 0.08);
+  --shadow-nav:   0 1px 0 rgba(168, 85, 247, 0.14), 0 6px 24px rgba(0, 0, 0, 0.5);
+  --chart-axis:   #6a6f94;
+
+  --display:      "Outfit Variable", "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --body:         "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --btn-primary-bg:       linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
+  --btn-primary-bg-hover: linear-gradient(135deg, #d8b4fe 0%, #a5b4fc 100%);
+  --btn-primary-fg:       #03040a;
+  --btn-accent-bg:        linear-gradient(135deg, #22d3ee 0%, #818cf8 100%);
+  --on-accent:            #03040a;
+  --brand-mark-bg:        rgba(168, 85, 247, 0.1);
+  --brand-mark-fg:        #c084fc;
+  --brand-mark-border:    rgba(192, 132, 252, 0.45);
+  --track-end:            transparent;
+  --chart-a:              #818cf8;
+  --chart-b:              #22d3ee;
+  --highlight-border:     rgba(192, 132, 252, 0.55);
+  --highlight-border-soft:rgba(192, 132, 252, 0.35);
+  --highlight-wash:       rgba(168, 85, 247, 0.06);
+  --spotlight:            rgba(168, 85, 247, 0.07);
 }
 
 /* Before JS sets data-theme, honor the OS preference (no-JS visitors too) */
 @media (prefers-color-scheme: dark) {
   html:not([data-theme]) {
-    --bg:           #0b0e12;
-    --bg-card:      #141922;
-    --bg-card-2:    #1b2230;
-    --border:       rgba(226, 232, 240, 0.13);
-    --border-hover: rgba(0, 191, 166, 0.55);
-    --text:         #e8ecf2;
-    --muted:        #a3adbd;
-    --faint:        #2a3342;
-    --accent:       #35d6c0;
-    --accent-bright:#00bfa6;
-    --accent-dim:   rgba(0, 191, 166, 0.12);
-    --accent-glow:  rgba(0, 191, 166, 0.28);
-    --green:        #35d6c0;
-    --shadow-sm:    0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 10px rgba(0, 0, 0, 0.25);
-    --shadow-md:    0 8px 30px rgba(0, 0, 0, 0.4);
-    --shadow-nav:   0 1px 0 rgba(224, 224, 224, 0.08), 0 6px 24px rgba(0, 0, 0, 0.45);
-    --chart-axis:   #6b7a91;
+    --bg:           #03040a;
+    --bg-card:      rgba(12, 9, 28, 0.72);
+    --bg-card-2:    rgba(168, 85, 247, 0.07);
+    --border:       rgba(168, 85, 247, 0.2);
+    --border-hover: rgba(192, 132, 252, 0.55);
+    --text:         #f0e8ff;
+    --muted:        #939cb0;
+    --faint:        rgba(168, 85, 247, 0.24);
+    --accent:       #c084fc;
+    --accent-bright:#a855f7;
+    --accent-dim:   rgba(168, 85, 247, 0.12);
+    --accent-glow:  rgba(168, 85, 247, 0.32);
+    --green:        #4ade80;
+    --shadow-sm:    0 1px 2px rgba(0, 0, 0, 0.5), 0 2px 12px rgba(0, 0, 0, 0.4);
+    --shadow-md:    0 10px 40px rgba(0, 0, 0, 0.55), 0 0 32px rgba(168, 85, 247, 0.08);
+    --shadow-nav:   0 1px 0 rgba(168, 85, 247, 0.14), 0 6px 24px rgba(0, 0, 0, 0.5);
+    --chart-axis:   #6a6f94;
+
+    --display:      "Outfit Variable", "Outfit", ui-sans-serif, system-ui, sans-serif;
+    --body:         "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+    --btn-primary-bg:       linear-gradient(135deg, #c084fc 0%, #818cf8 100%);
+    --btn-primary-bg-hover: linear-gradient(135deg, #d8b4fe 0%, #a5b4fc 100%);
+    --btn-primary-fg:       #03040a;
+    --btn-accent-bg:        linear-gradient(135deg, #22d3ee 0%, #818cf8 100%);
+    --on-accent:            #03040a;
+    --brand-mark-bg:        rgba(168, 85, 247, 0.1);
+    --brand-mark-fg:        #c084fc;
+    --brand-mark-border:    rgba(192, 132, 252, 0.45);
+    --track-end:            transparent;
+    --chart-a:              #818cf8;
+    --chart-b:              #22d3ee;
+    --highlight-border:     rgba(192, 132, 252, 0.55);
+    --highlight-border-soft:rgba(192, 132, 252, 0.35);
+    --highlight-wash:       rgba(168, 85, 247, 0.06);
+    --spotlight:            rgba(168, 85, 247, 0.07);
   }
 }
 
@@ -145,27 +202,13 @@ body[data-section="resume"]     { background-color: #eef3f6; }
 body[data-section="projects"]   { background-color: #eff3f8; }
 body[data-section="contact"]    { background-color: #edf1f7; }
 
-html[data-theme="dark"] body[data-section="top"]        { background-color: #0b0e12; }
-html[data-theme="dark"] body[data-section="about"]      { background-color: #0c1014; }
-html[data-theme="dark"] body[data-section="research"]   { background-color: #0a1113; }
-html[data-theme="dark"] body[data-section="skills"]     { background-color: #0b0f13; }
-html[data-theme="dark"] body[data-section="experience"] { background-color: #0a1112; }
-html[data-theme="dark"] body[data-section="certifications"] { background-color: #0c0f13; }
-html[data-theme="dark"] body[data-section="resume"]     { background-color: #0a1012; }
-html[data-theme="dark"] body[data-section="projects"]   { background-color: #0b0f14; }
-html[data-theme="dark"] body[data-section="contact"]    { background-color: #0a0d12; }
-
+/* The space theme keeps one constant deep black: per-section tints read as
+   banding behind the starfield. */
+html[data-theme="dark"] body[data-section] { background-color: var(--bg); }
 @media (prefers-color-scheme: dark) {
-  html:not([data-theme]) body[data-section="top"]        { background-color: #0b0e12; }
-  html:not([data-theme]) body[data-section="about"]      { background-color: #0c1014; }
-  html:not([data-theme]) body[data-section="research"]   { background-color: #0a1113; }
-  html:not([data-theme]) body[data-section="skills"]     { background-color: #0b0f13; }
-  html:not([data-theme]) body[data-section="experience"] { background-color: #0a1112; }
-  html:not([data-theme]) body[data-section="certifications"] { background-color: #0c0f13; }
-  html:not([data-theme]) body[data-section="resume"]     { background-color: #0a1012; }
-  html:not([data-theme]) body[data-section="projects"]   { background-color: #0b0f14; }
-  html:not([data-theme]) body[data-section="contact"]    { background-color: #0a0d12; }
+  html:not([data-theme]) body[data-section] { background-color: var(--bg); }
 }
+
 
 /* =========================================================
    ANIMATED BACKGROUND FX
@@ -362,14 +405,14 @@ section[id] {
   place-items: center;
   border-radius: 9px;
   flex-shrink: 0;
-  background: linear-gradient(135deg, var(--navy), #16336b);
-  border: 1px solid rgba(0, 191, 166, 0.55);
+  background: var(--brand-mark-bg);
+  border: 1px solid var(--brand-mark-border);
   box-shadow: 0 0 0 3px var(--accent-dim);
   font-family: var(--display);
   font-weight: 900;
   font-size: var(--fs-md);
   letter-spacing: 0.06em;
-  color: #ffffff;
+  color: var(--brand-mark-fg);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .navbar-brand:hover .brand-mark {
@@ -618,18 +661,18 @@ section[id] {
 
 /* Rounded, subtle-gradient primary */
 .btn-primary {
-  background: linear-gradient(135deg, var(--navy) 0%, #143166 100%);
-  color: #ffffff;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
   border-radius: 999px;
   padding: 11px 22px;
   box-shadow: var(--shadow-sm);
 }
 .btn-primary:hover {
-  background: linear-gradient(135deg, #143166 0%, var(--accent-bright) 190%);
+  background: var(--btn-primary-bg-hover);
   box-shadow: 0 6px 20px var(--accent-glow);
   transform: translateY(-2px);
   text-decoration: none;
-  color: #ffffff;
+  color: var(--btn-primary-fg);
 }
 
 .btn-ghost {
@@ -649,8 +692,8 @@ section[id] {
 
 /* Solid teal accent button — used for the research CTA */
 .btn-accent {
-  background: linear-gradient(135deg, var(--accent-bright) 0%, #00a08a 100%);
-  color: #04231f;
+  background: var(--btn-accent-bg);
+  color: var(--on-accent);
   border-radius: 999px;
   padding: 11px 22px;
   box-shadow: var(--shadow-sm);
@@ -659,7 +702,7 @@ section[id] {
   filter: brightness(1.06);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px var(--accent-glow);
-  color: #04231f;
+  color: var(--on-accent);
   text-decoration: none;
 }
 
@@ -913,13 +956,13 @@ section[id] {
 }
 .skill-chip--primary {
   font-weight: 600;
-  border-color: rgba(212, 160, 23, 0.6);
+  border-color: var(--highlight-border);
   color: var(--text);
 }
 .skill-row:hover .skill-chip {
   color: var(--text);
   border-color: var(--border-hover);
-  background: rgba(201,151,95,0.04);
+  background: var(--highlight-wash);
 }
 
 @media (max-width: 600px) {
@@ -1132,7 +1175,7 @@ section[id] {
   font-size: var(--fs-2xs);
   font-family: var(--mono);
   color: var(--accent);
-  border: 1px solid rgba(212,160,23,0.4);
+  border: 1px solid var(--highlight-border-soft);
   border-radius: 4px;
   padding: 1px 6px;
   white-space: nowrap;
@@ -1408,7 +1451,11 @@ section[id] {
    ADMIN
 ========================================================= */
 .admin-page { min-height: 100vh; padding: 48px 0; }
-.admin-page .card { opacity: 1; transform: none; }
+/* Admin never runs useScrollReveal, so opt it out of the reveal fade —
+   headings too, or "Admin" / "Change password" render at opacity 0. */
+.admin-page .card,
+.admin-page .section-title,
+.admin-page .section-eyebrow { opacity: 1; transform: none; }
 
 .admin-login {
   max-width: 380px;
@@ -1580,14 +1627,7 @@ section[id] {
   pointer-events: none;
   background: radial-gradient(
     600px circle at var(--cx, -999px) var(--cy, -999px),
-    rgba(201, 151, 95, 0.07),
-    transparent 40%
-  );
-}
-html[data-theme="light"] .cursor-spotlight {
-  background: radial-gradient(
-    600px circle at var(--cx, -999px) var(--cy, -999px),
-    rgba(138, 90, 22, 0.05),
+    var(--spotlight),
     transparent 40%
   );
 }
@@ -1763,7 +1803,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--display); }
   position: absolute;
   left: 6px; top: 8px; bottom: 8px;
   width: 2px;
-  background: linear-gradient(180deg, var(--accent-bright), var(--navy));
+  background: linear-gradient(180deg, var(--accent-bright), var(--track-end));
   opacity: 0.45;
   border-radius: 2px;
 }
@@ -1912,27 +1952,17 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--display); }
 }
 .chart-legend li { display: inline-flex; align-items: center; gap: 7px; }
 .chart-swatch { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
-.chart-swatch--a { background: #4a7fe0; }
-.chart-swatch--b { background: #00a58f; }
+.chart-swatch--a { background: var(--chart-a); }
+.chart-swatch--b { background: var(--chart-b); }
 
 .chart-svg { width: 100%; height: auto; overflow: visible; }
-.chart-bar--a { fill: #4a7fe0; }
-.chart-bar--b { fill: #00a58f; }
+.chart-bar--a { fill: var(--chart-a); }
+.chart-bar--b { fill: var(--chart-b); }
 .chart-axis { stroke: var(--chart-axis); stroke-width: 1.5; }
 .chart-label { font-family: var(--body); font-size: var(--fs-lg); fill: var(--text); }
 .chart-value { font-family: var(--mono); font-size: var(--fs-md); fill: var(--muted); }
 .chart-unit { font-family: var(--mono); font-size: var(--fs-sm); fill: var(--muted); opacity: 0.75; }
 
-html[data-theme="dark"] .chart-swatch--a,
-html[data-theme="dark"] .chart-bar--a { background: #5686de; fill: #5686de; }
-html[data-theme="dark"] .chart-swatch--b,
-html[data-theme="dark"] .chart-bar--b { background: #0aa78f; fill: #0aa78f; }
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme]) .chart-swatch--a,
-  html:not([data-theme]) .chart-bar--a { background: #5686de; fill: #5686de; }
-  html:not([data-theme]) .chart-swatch--b,
-  html:not([data-theme]) .chart-bar--b { background: #0aa78f; fill: #0aa78f; }
-}
 
 /* =========================================================
    SKILLS MATRIX & TESTIMONIALS
@@ -2023,6 +2053,163 @@ html[data-theme="dark"] .chart-bar--b { background: #0aa78f; fill: #0aa78f; }
   .matrix-row { flex-direction: column; align-items: flex-start; gap: 6px; }
   .btn { width: 100%; justify-content: center; }
   .about-actions, .hero-actions { flex-direction: column; align-items: stretch; }
+}
+
+/* =========================================================
+   SPACE THEME — dark mode scenery
+   Colors come from the dark token blocks at the top. What lives here is
+   decoration: starfield, nebulas, hero planets and comets. It is scoped to
+   an explicit data-theme="dark", which public/theme-init.js sets before
+   first paint; visitors without JS get the dark palette but no scenery.
+========================================================= */
+.starfield {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+html[data-theme="dark"] .starfield { display: block; }
+
+/* Nebulas: the existing ambient orbs, recoloured */
+html[data-theme="dark"] .bg-orb { opacity: 0.5; }
+html[data-theme="dark"] .bg-orb-1 {
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.55), rgba(99, 47, 196, 0.2) 45%, transparent 70%);
+}
+html[data-theme="dark"] .bg-orb-2 {
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.35), rgba(14, 116, 144, 0.15) 45%, transparent 70%);
+}
+html[data-theme="dark"] .bg-orb-3 {
+  background: radial-gradient(circle, rgba(244, 114, 182, 0.28), transparent 70%);
+}
+html[data-theme="dark"] .bg-grid {
+  background-image:
+    linear-gradient(rgba(168, 85, 247, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 85, 247, 0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* ── Hero scenery ──
+   Absolute against the page, one viewport tall: it sits above .bg-fx and
+   below .page (z-index 1), and scrolls away with the hero. */
+.hero-cosmos {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 100vh;
+  min-height: 640px;
+  z-index: 0;
+  overflow: hidden;   /* the ringed planet hangs off the right edge */
+  pointer-events: none;
+  display: none;
+}
+html[data-theme="dark"] .hero-cosmos { display: block; }
+
+.planet {
+  position: absolute;
+  display: none;      /* only where there is room beside the photo, below */
+}
+.planet-body {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+/* faint surface bands */
+.planet-body::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: repeating-linear-gradient(170deg, transparent 0%, rgba(255, 255, 255, 0.05) 10%, transparent 20%);
+}
+
+.planet--ringed {
+  width: 150px; height: 150px;
+  top: 64px; right: -40px;
+  animation: planetFloatSlow 14s ease-in-out infinite;
+}
+.planet--ringed .planet-body {
+  background: radial-gradient(circle at 35% 35%, #7c3aed, #4c1d95 55%, #1e1b4b);
+  box-shadow: inset -18px -12px 45px rgba(0, 0, 0, 0.7), 0 0 60px rgba(124, 58, 237, 0.22);
+}
+/* The ring is drawn twice: the full ellipse behind the planet, and only its
+   near half in front — so it actually wraps the planet instead of lying on
+   top of it. clip-path works in the ring's own (pre-rotation) box. */
+.planet-ring {
+  position: absolute;
+  z-index: 0;
+  top: 50%; left: 50%;
+  width: 320px; height: 70px;
+  margin: -35px 0 0 -160px;
+  border: 5px solid rgba(167, 139, 250, 0.42);
+  border-radius: 50%;
+  box-shadow: 0 0 14px rgba(167, 139, 250, 0.25);
+  transform: rotate(-14deg);
+}
+.planet-ring--front {
+  z-index: 2;
+  clip-path: inset(50% 0 0 0);
+}
+
+.planet--ice {
+  width: 80px; height: 80px;
+  top: 540px; right: 2.5%;
+  animation: planetFloatMed 18s ease-in-out infinite;
+}
+.planet--ice .planet-body {
+  background: radial-gradient(circle at 35% 35%, #0891b2, #0e4f6b 55%, #042f3f);
+  box-shadow: inset -10px -6px 24px rgba(0, 0, 0, 0.7), 0 0 32px rgba(8, 145, 178, 0.2);
+}
+
+.planet--ember {
+  width: 44px; height: 44px;
+  top: 44%; left: 3%;
+  animation: planetFloatSlow 22s ease-in-out infinite 3s;
+}
+.planet--ember .planet-body {
+  background: radial-gradient(circle at 35% 35%, #c2410c, #7c2d12 55%, #431407);
+  box-shadow: inset -6px -4px 14px rgba(0, 0, 0, 0.7), 0 0 20px rgba(194, 65, 12, 0.2);
+}
+
+/* Below 1280px the content column reaches the viewport edges and the
+   planets would land on the photo, the credential cards or the bio. */
+@media (min-width: 1280px) {
+  .planet { display: block; }
+}
+
+@keyframes planetFloatSlow {
+  0%, 100% { transform: translateY(0); }
+  33%      { transform: translateY(-16px); }
+  66%      { transform: translateY(-7px); }
+}
+@keyframes planetFloatMed {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-20px); }
+}
+
+/* Comets. The streak is rotated to its direction of travel (atan2(300, -600)
+   = 153.43deg) with the bright head leading. */
+.comet {
+  position: absolute;
+  width: 130px;
+  height: 1.5px;
+  border-radius: 2px;
+  background: linear-gradient(to right, rgba(200, 180, 255, 0), rgba(200, 180, 255, 0.35) 55%, #ffffff);
+  box-shadow: 0 0 6px rgba(192, 132, 252, 0.5);
+  opacity: 0;
+  animation: cometFly 18s ease-in infinite;
+}
+.comet--1 { top: 12%; left: 72%; animation-delay: 3s; }
+.comet--2 { top: 30%; left: 48%; animation-delay: 9s; }
+.comet--3 { top: 8%;  left: 94%; animation-delay: 15s; }
+
+@keyframes cometFly {
+  0%        { transform: translate(0, 0) rotate(153.43deg); opacity: 0; }
+  3%        { opacity: 1; }
+  15%, 100% { transform: translate(-600px, 300px) rotate(153.43deg); opacity: 0; }
 }
 
 /* =========================================================
