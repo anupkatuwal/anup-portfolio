@@ -6,7 +6,7 @@
   var theme;
   try {
     theme = window.localStorage.getItem("theme");
-  } catch (e) {
+  } catch {
     // storage blocked (private mode, strict cookie settings) — fall through
   }
   if (theme !== "light" && theme !== "dark") {
