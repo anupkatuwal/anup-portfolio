@@ -2210,6 +2210,7 @@ html[data-theme="dark"] .hero-cosmos { display: block; }
   0%        { transform: translate(0, 0) rotate(153.43deg); opacity: 0; }
   3%        { opacity: 1; }
   15%, 100% { transform: translate(-600px, 300px) rotate(153.43deg); opacity: 0; }
+}
 
 /* =========================================================
    INTERESTS — "beyond work"
