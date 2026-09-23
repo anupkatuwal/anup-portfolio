@@ -13,6 +13,7 @@ import { ExperienceSection } from "./components/ExperienceSection";
 import { CertificationsSection } from "./components/CertificationsSection";
 import { ResumeSection } from "./components/ResumeSection";
 import { ProjectsSection } from "./components/ProjectsSection";
+import { InterestsSection } from "./components/InterestsSection";
 import { ContactSection } from "./components/ContactSection";
 
 import { PageLayout } from "./layouts/PageLayout";
@@ -97,6 +98,7 @@ export default function App() {
           <ExperienceSection />
           <CertificationsSection />
           <ResumeSection />
+          <InterestsSection />
           <ContactSection />
         </PageLayout>
       </main>
