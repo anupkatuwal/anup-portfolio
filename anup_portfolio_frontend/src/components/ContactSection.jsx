@@ -4,8 +4,17 @@
 // that fill it get a fake success and nothing is saved.
 
 import React, { useState } from "react";
+import { Theme } from "@astryxdesign/core/theme";
+import { Card } from "@astryxdesign/core/Card";
+import { FormLayout } from "@astryxdesign/core/FormLayout";
+import { TextInput } from "@astryxdesign/core/TextInput";
+import { TextArea } from "@astryxdesign/core/TextArea";
+import { Banner } from "@astryxdesign/core/Banner";
+import { Button } from "@astryxdesign/core/Button";
+import { matchaTheme } from "../themes/matcha/matcha";
 import { Section } from "./Section";
 import { apiFetch } from "../lib/api";
+import { useSiteTheme } from "../lib/useSiteTheme";
 
 const EMPTY_FORM = { name: "", email: "", subject: "", message: "", company: "" };
 
@@ -13,7 +22,10 @@ export function ContactSection() {
   const [form,    setForm]    = useState(EMPTY_FORM);
   const [status,  setStatus]  = useState({ type: null, message: "" });
   const [loading, setLoading] = useState(false);
+  const mode = useSiteTheme();
 
+  // Astryx inputs call onChange(value, event); native ones pass the event.
+  const setField = (name) => (value) => setForm((prev) => ({ ...prev, [name]: value }));
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -139,90 +151,80 @@ export function ContactSection() {
           </ul>
         </div>
 
-        {/* ── Right: contact form ── */}
-        <form className="card contact-form" onSubmit={handleSubmit} noValidate>
-          <div className="field-row">
-            <div className="field">
-              <label htmlFor="cf-name">Name</label>
-              <input
-                id="cf-name"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                placeholder="Your name"
-                required
-                autoComplete="name"
-              />
-            </div>
+        {/* ── Right: contact form (Astryx trial, Matcha theme) ── */}
+        <Theme theme={matchaTheme} mode={mode}>
+          <Card elevation="low">
+            <form onSubmit={handleSubmit} noValidate>
+              <FormLayout defaultOptionality="required">
+                <FormLayout direction="horizontal">
+                  <TextInput
+                    label="Name"
+                    htmlName="name"
+                    value={form.name}
+                    onChange={setField("name")}
+                    placeholder="Your name"
+                    autoComplete="name"
+                  />
+                  <TextInput
+                    label="Email"
+                    htmlName="email"
+                    type="email"
+                    value={form.email}
+                    onChange={setField("email")}
+                    placeholder="you@example.com"
+                    autoComplete="email"
+                  />
+                </FormLayout>
 
-            <div className="field">
-              <label htmlFor="cf-email">Email</label>
-              <input
-                id="cf-email"
-                name="email"
-                type="email"
-                value={form.email}
-                onChange={handleChange}
-                placeholder="you@example.com"
-                required
-                autoComplete="email"
-              />
-            </div>
-          </div>
+                <TextInput
+                  label="Subject"
+                  htmlName="subject"
+                  value={form.subject}
+                  onChange={setField("subject")}
+                  placeholder="What's this about?"
+                />
 
-          <div className="field">
-            <label htmlFor="cf-subject">Subject</label>
-            <input
-              id="cf-subject"
-              name="subject"
-              value={form.subject}
-              onChange={handleChange}
-              placeholder="What's this about?"
-              required
-            />
-          </div>
+                <TextArea
+                  label="Message"
+                  htmlName="message"
+                  rows={5}
+                  value={form.message}
+                  onChange={setField("message")}
+                  placeholder="Tell me about your project or question..."
+                />
 
-          <div className="field">
-            <label htmlFor="cf-message">Message</label>
-            <textarea
-              id="cf-message"
-              name="message"
-              rows="5"
-              value={form.message}
-              onChange={handleChange}
-              placeholder="Tell me about your project or question..."
-              required
-            />
-          </div>
+                {/* Honeypot — hidden from humans, bots auto-fill it. Stays a
+                    native input: it must never render or take focus. */}
+                <div style={{ display: "none" }} aria-hidden="true">
+                  <label htmlFor="cf-company">Company</label>
+                  <input
+                    id="cf-company"
+                    name="company"
+                    value={form.company}
+                    onChange={handleChange}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
 
-          {/* Honeypot — hidden from humans, bots auto-fill it */}
-          <div className="field" style={{ display: "none" }} aria-hidden="true">
-            <label htmlFor="cf-company">Company</label>
-            <input
-              id="cf-company"
-              name="company"
-              value={form.company}
-              onChange={handleChange}
-              tabIndex={-1}
-              autoComplete="off"
-            />
-          </div>
+                {status.type && (
+                  <Banner
+                    status={status.type}
+                    title={status.message}
+                    collapsible={false}
+                  />
+                )}
 
-          {status.type && (
-            <p className={`form-status ${status.type}`} role="alert">
-              {status.message}
-            </p>
-          )}
-
-          <button
-            className="btn btn-primary"
-            type="submit"
-            disabled={loading}
-            style={{ width: "100%", justifyContent: "center" }}
-          >
-            {loading ? "Sending…" : "Send Message"}
-          </button>
-        </form>
+                <Button
+                  variant="primary"
+                  type="submit"
+                  label={loading ? "Sending…" : "Send Message"}
+                  isLoading={loading}
+                />
+              </FormLayout>
+            </form>
+          </Card>
+        </Theme>
 
       </div>
     </Section>

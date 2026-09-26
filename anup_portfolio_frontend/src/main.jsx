@@ -21,6 +21,14 @@ import "@fontsource/jetbrains-mono/latin-600.css";
 // cheap; the browser downloads a file only once dark mode renders text in it.
 import "@fontsource-variable/outfit";
 import "@fontsource-variable/inter";
+// Astryx trial (contact form only). DM Sans is the Matcha theme's body font,
+// self-hosted because the CSP only allows font-src 'self'. Astryx's reset.css
+// is deliberately NOT imported: it is global and would restyle the whole site.
+import "@fontsource/dm-sans/latin-400.css";
+import "@fontsource/dm-sans/latin-500.css";
+import "@fontsource/dm-sans/latin-600.css";
+import "@astryxdesign/core/astryx.css";
+import "./themes/matcha/matcha.css";
 
 import App from "./App";
 import { ContentProvider } from "./context/ContentContext";
