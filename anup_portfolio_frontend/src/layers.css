@@ -1,0 +1,8 @@
+/* src/layers.css — must be the first stylesheet imported (see main.jsx).
+   Declares the cascade-layer order once, lowest priority first:
+     site-reset   the site's universal `* { margin: 0; padding: 0 }` reset
+     reset…       Astryx's layers (its components' own padding, spacing, etc.)
+   Everything else in styles.css stays unlayered, so it still beats all of
+   these exactly as before. Net effect: the site looks the same, and Astryx
+   components keep their spacing instead of having it zeroed by the reset. */
+@layer site-reset, reset, astryx-base, astryx-theme;

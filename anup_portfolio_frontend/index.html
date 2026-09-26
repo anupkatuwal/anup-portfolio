@@ -118,7 +118,11 @@
 
   </head>
   <body>
-    <div id="root"><!--ssg--></div>
+    <!-- data-astryx-theme="site" is a scope boundary: Astryx theme CSS is
+         written as @scope (theme) to ([data-astryx-theme]), so its default
+         heading/paragraph styles stop here instead of restyling the site.
+         Astryx components inside keep their own <Theme> wrapper. -->
+    <div id="root" data-astryx-theme="site"><!--ssg--></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

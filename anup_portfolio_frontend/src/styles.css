@@ -168,7 +168,11 @@ html[data-theme="dark"] {
 /* =========================================================
    RESET
 ========================================================= */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* In the lowest cascade layer (order set in layers.css) so it still resets
+   plain elements but no longer zeroes the spacing of Astryx components. */
+@layer site-reset {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+}
 
 html {
   scroll-behavior: smooth;
@@ -1251,6 +1255,10 @@ section[id] {
   gap: 22px;
 }
 @media (max-width: 720px) { .contact-layout { grid-template-columns: 1fr; } }
+/* The Astryx form's <Theme> wrapper is display: contents, so its card is the
+   real grid item; let it be as tall as its content instead of stretching to
+   the info column. (.astryx-card is Astryx's stable component class.) */
+.contact-layout > [data-astryx-theme] > .astryx-card { align-self: start; }
 
 .contact-meta { list-style: none; display: grid; gap: 14px; }
 

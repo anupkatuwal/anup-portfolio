@@ -11,13 +11,12 @@ import { TextInput } from "@astryxdesign/core/TextInput";
 import { TextArea } from "@astryxdesign/core/TextArea";
 import { Banner } from "@astryxdesign/core/Banner";
 import { Button } from "@astryxdesign/core/Button";
-import { matchaTheme } from "../themes/matcha/matcha";
+import { neutralTheme } from "@astryxdesign/theme-neutral/built";
 import { Section } from "./Section";
 import { apiFetch } from "../lib/api";
 import { useSiteTheme } from "../lib/useSiteTheme";
 
 const EMPTY_FORM = { name: "", email: "", subject: "", message: "", company: "" };
-
 export function ContactSection() {
   const [form,    setForm]    = useState(EMPTY_FORM);
   const [status,  setStatus]  = useState({ type: null, message: "" });
@@ -151,9 +150,11 @@ export function ContactSection() {
           </ul>
         </div>
 
-        {/* ── Right: contact form (Astryx trial, Matcha theme) ── */}
-        <Theme theme={matchaTheme} mode={mode}>
-          <Card elevation="low">
+        {/* ── Right: contact form (Astryx trial, Neutral theme) ── */}
+        {/* Scoped to this form: index.html's #root boundary keeps Neutral's
+            default text styles off the rest of the page. */}
+        <Theme theme={neutralTheme} mode={mode}>
+          <Card elevation="low" padding={5}>
             <form onSubmit={handleSubmit} noValidate>
               <FormLayout defaultOptionality="required">
                 <FormLayout direction="horizontal">

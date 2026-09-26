@@ -4,6 +4,9 @@ import ReactDOM from "react-dom/client";
 import { inject } from "@vercel/analytics";
 import { injectSpeedInsights } from "@vercel/speed-insights";
 
+// Cascade-layer order — must be the first stylesheet (see the file).
+import "./layers.css";
+
 // Self-hosted fonts — only the weights the CSS actually uses.
 // Merriweather (serif) carries the headings, Roboto (sans) the body text,
 // JetBrains Mono the eyebrows, metrics and other small caps-y bits.
@@ -21,14 +24,10 @@ import "@fontsource/jetbrains-mono/latin-600.css";
 // cheap; the browser downloads a file only once dark mode renders text in it.
 import "@fontsource-variable/outfit";
 import "@fontsource-variable/inter";
-// Astryx trial (contact form only). DM Sans is the Matcha theme's body font,
-// self-hosted because the CSP only allows font-src 'self'. Astryx's reset.css
-// is deliberately NOT imported: it is global and would restyle the whole site.
-import "@fontsource/dm-sans/latin-400.css";
-import "@fontsource/dm-sans/latin-500.css";
-import "@fontsource/dm-sans/latin-600.css";
+// Astryx trial (contact form only), Neutral theme. Astryx's reset.css is
+// deliberately NOT imported: it is global and would restyle the whole site.
 import "@astryxdesign/core/astryx.css";
-import "./themes/matcha/matcha.css";
+import "@astryxdesign/theme-neutral/theme.css";
 
 import App from "./App";
 import { ContentProvider } from "./context/ContentContext";
