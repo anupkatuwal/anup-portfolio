@@ -424,7 +424,7 @@ export const INTERESTS = {
      empty to run the section text-only. */
   photos: [
     { src: "/training-1", alt: "Anup Katuwal at the gym, holding a back double-biceps pose" },
-    { src: "/training-2", alt: "Anup Katuwal in training kit on the stairs at home" },
+    { src: "/training-2", alt: "Anup Katuwal, physique progress photo" },
   ],
 };
 
