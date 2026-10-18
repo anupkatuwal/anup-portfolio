@@ -7,6 +7,8 @@ import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { PROJECTS } from "../src/data/content.js";
+import { liveLinkLabel } from "../src/lib/projects.js";
+import { esc, headerHtml, footerHtml } from "./site-chrome.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
@@ -14,9 +16,6 @@ const dist = join(root, "dist");
 
 const SITE_URL = (process.env.VITE_SITE_URL || "https://anup-katuwal.com.np").replace(/\/+$/, "");
 const AUTHOR = "Anup Katuwal";
-
-const esc = (s = "") =>
-  String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
 const clamp = (s, n = 155) => {
   s = String(s).replace(/\s+/g, " ").trim();
@@ -53,12 +52,14 @@ function pageHtml(p) {
   };
   const jsonld = JSON.stringify({ "@context": "https://schema.org", "@graph": [software, breadcrumb] });
 
-  const pills = (p.tech || []).map((t) => `<li class="pill">${esc(t)}</li>`).join("");
+  const tags = (p.tech || []).map((t) => `<li class="tag">${esc(t)}</li>`).join("");
   const links = [
     p.github && `<a class="btn btn-primary" href="${esc(p.github)}" target="_blank" rel="noreferrer">View on GitHub ↗</a>`,
-    p.live && `<a class="btn btn-ghost" href="${esc(p.live)}" target="_blank" rel="noreferrer">Live site ↗</a>`,
-  ].filter(Boolean).join(" ");
+    p.live && `<a class="btn" href="${esc(p.live)}" target="_blank" rel="noreferrer">${liveLinkLabel(p.live)} ↗</a>`,
+  ].filter(Boolean).join("\n            ");
 
+  // No app bundle here: main.jsx would mount the homepage over this page.
+  // static-header.js wires the theme toggle and mobile menu instead.
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -67,7 +68,8 @@ function pageHtml(p) {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#0a1f44" />
+    <meta name="theme-color" content="#fafaf7" />
+    <script src="/theme-init.js"></script>
     <title>${esc(title)}</title>
     <meta name="description" content="${esc(desc)}" />
     <meta name="author" content="${AUTHOR}" />
@@ -85,37 +87,30 @@ function pageHtml(p) {
     <meta name="twitter:image" content="${SITE_URL}/og.png" />
     <script type="application/ld+json">${jsonld}</script>
     ${cssHref ? `<link rel="stylesheet" href="${cssHref}" />` : ""}
-    <style>
-      body { font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #0a1f44; background: #f5f7fa; line-height: 1.6; margin: 0; }
-      h1, .pp-title { font-family: Merriweather, Georgia, "Times New Roman", serif; }
-      .pp-wrap { max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
-      .pp-crumb { font-size: 13px; color: #777; margin-bottom: 24px; }
-      .pp-crumb a { color: #777; text-decoration: none; }
-      .pp-crumb a:hover { text-decoration: underline; }
-      .pp-title { font-size: 30px; line-height: 1.2; margin: 0 0 6px; }
-      .pp-metric { font-weight: 600; color: #00705f; margin: 0 0 18px; }
-      .pp-desc { font-size: 17px; margin: 0 0 22px; }
-      .pp-stack { font-size: 13px; color: #555; margin: 0 0 26px; }
-      .pp-links a { display: inline-block; padding: 9px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; margin-right: 10px; }
-      .pp-links a.btn-primary { background: #0a1f44; color: #fff; border-radius: 999px; }
-      .pp-links a.btn-ghost { border: 1px solid #cfd6e2; color: #0a1f44; border-radius: 999px; }
-      .pp-back { display: inline-block; margin-top: 36px; color: #0a1f44; font-weight: 600; text-decoration: none; }
-    </style>
+    <script src="/static-header.js" defer></script>
   </head>
   <body>
-    <main class="pp-wrap">
-      <nav class="pp-crumb" aria-label="Breadcrumb">
-        <a href="/">Anup Katuwal</a> / <a href="/#projects">Projects</a> / <span>${esc(p.title)}</span>
-      </nav>
-      <article>
-        <h1 class="pp-title">${esc(p.title)}</h1>
-        ${p.metric ? `<p class="pp-metric">${esc(p.metric)}</p>` : ""}
-        <p class="pp-desc">${esc(p.description)}</p>
-        ${stack ? `<p class="pp-stack"><strong>Built with:</strong> ${esc(stack)}</p>` : ""}
-        <div class="pp-links">${links}</div>
+    <a class="skip-link" href="#main">Skip to content</a>${headerHtml(`/projects/${p.id}`)}
+    <main id="main" class="page">
+      <article class="container">
+        <nav class="crumb" aria-label="Breadcrumb">
+          <a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/#projects">Projects</a> <span aria-hidden="true">/</span> <span>${esc(p.title)}</span>
+        </nav>
+        <header class="page-head">
+          <h1 class="page-title">${esc(p.title)}</h1>
+          ${p.metric ? `<p class="meta">${esc(p.metric)}</p>` : ""}
+          ${tags ? `<ul class="tags" aria-label="Technologies">${tags}</ul>` : ""}
+        </header>
+        <section class="page-section" aria-labelledby="overview">
+          <h2 id="overview">Overview</h2>
+          <p>${esc(p.description)}</p>
+          ${links ? `<p class="page-actions">
+            ${links}
+          </p>` : ""}
+        </section>
+        <p class="page-back"><a href="/#projects">← Back to all projects</a></p>
       </article>
-      <a class="pp-back" href="/#projects">← Back to all projects</a>
-    </main>
+    </main>${footerHtml()}
   </body>
 </html>
 `;

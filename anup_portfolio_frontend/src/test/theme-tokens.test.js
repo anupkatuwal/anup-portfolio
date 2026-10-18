@@ -1,7 +1,7 @@
-// The dark theme is declared twice in styles.css: once for an explicit
-// data-theme="dark", once for visitors whose OS prefers dark before a theme
-// has been set. CSS can't share one block between a selector and a media
-// query, so this test is what keeps the two copies from drifting apart.
+// Light is the default theme; dark is one block that only applies once the
+// visitor picks it. This keeps the dark block honest: every token it sets
+// must override one declared in :root, and there must be no OS-preference
+// copy of it (that would make dark the default for some visitors).
 import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -22,19 +22,16 @@ function tokens(block) {
   return out;
 }
 
-const explicitDark = css.match(/html\[data-theme="dark"\] \{([\s\S]*?)\n\}/)[1];
-const systemDark = css.match(
-  /@media \(prefers-color-scheme: dark\) \{\s*html:not\(\[data-theme\]\) \{([\s\S]*?)\n {2}\}/
-)[1];
+const dark = css.match(/html\[data-theme="dark"\] \{([\s\S]*?)\n\}/)[1];
 const root = css.match(/:root \{([\s\S]*?)\n\}/)[1];
-
-test("both dark theme blocks define identical tokens", () => {
-  expect(tokens(systemDark)).toEqual(tokens(explicitDark));
-});
 
 test("every dark token overrides one declared in :root", () => {
   const rootTokens = Object.keys(tokens(root));
-  for (const name of Object.keys(tokens(explicitDark))) {
+  for (const name of Object.keys(tokens(dark))) {
     expect(rootTokens).toContain(name);
   }
+});
+
+test("dark mode is never applied from the OS preference alone", () => {
+  expect(css).not.toMatch(/prefers-color-scheme:\s*dark/);
 });

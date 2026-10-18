@@ -12,7 +12,7 @@ import React from "react";
 
 const BAR_H = 16;
 const LABEL_W = 116;
-const VALUE_W = 92;
+const VALUE_W = 150; // room for "0.327 before" at the label size
 const PAD_TOP = 10;
 const PLOT_W = 1000 - LABEL_W - VALUE_W;
 
@@ -36,7 +36,7 @@ export function BarChart({ chart }) {
   return (
     <figure className="chart" aria-labelledby={titleId}>
       <figcaption className="chart-caption">
-        <h4 className="chart-title" id={titleId}>{title}</h4>
+        <h3 className="chart-title" id={titleId}>{title}</h3>
         {note && <p className="chart-note">{note}</p>}
       </figcaption>
 
@@ -74,7 +74,7 @@ export function BarChart({ chart }) {
               )}
               <rect
                 className={`chart-bar chart-bar--${s.tone}`}
-                x={LABEL_W} y={y} width={w} height={BAR_H} rx="4"
+                x={LABEL_W} y={y} width={w} height={BAR_H} rx="2"
               >
                 <title>{`${s.label || bars[0]?.label} ${s.sub}: ${fmt(s.value)}`}</title>
               </rect>

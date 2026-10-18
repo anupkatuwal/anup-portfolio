@@ -1,26 +1,18 @@
 // src/components/Navbar.jsx
-// Sticky header: AK monogram + primary navigation + theme toggle.
+// Sticky header: name on the left, primary navigation + theme toggle on the
+// right. Below 720px the links collapse into a "Menu" drop-down.
 import React, { useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 import { NAV_LINKS, resolveHref, currentPath } from "../lib/nav";
 
 export function Navbar({ path = "/" }) {
-  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
   const here = path || currentPath();
   const isHome = here === "/";
 
-  // Scroll detection — drives the header shadow
-  useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 10);
-    handler();
-    window.addEventListener("scroll", handler, { passive: true });
-    return () => window.removeEventListener("scroll", handler);
-  }, []);
-
-  // Close mobile menu on outside click
+  // Close the mobile menu on an outside click
   useEffect(() => {
     const handleClick = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -31,7 +23,7 @@ export function Navbar({ path = "/" }) {
     return () => document.removeEventListener("mousedown", handleClick);
   }, [menuOpen]);
 
-  const handleLinkClick = () => setMenuOpen(false);
+  const close = () => setMenuOpen(false);
 
   const linkProps = (link) => ({
     href: resolveHref(link, isHome),
@@ -39,78 +31,51 @@ export function Navbar({ path = "/" }) {
   });
 
   return (
-    <header className={`navbar${scrolled ? " navbar-scrolled" : ""}`} ref={menuRef}>
-      <div className="navbar-inner">
-
-        {/* Brand — AK monogram */}
-        <a href={isHome ? "#top" : "/"} className="navbar-brand" onClick={handleLinkClick}>
-          <span className="brand-mark" aria-hidden="true"><span>AK</span></span>
-          <span className="brand-text">
-            Anup Katuwal
-            <span className="brand-sub">CIS Graduate &amp; Data Enthusiast</span>
-          </span>
+    <header className="site-header" ref={menuRef}>
+      <div className="container header-inner">
+        <a href={isHome ? "#top" : "/"} className="site-name" onClick={close}>
+          Anup Katuwal
         </a>
 
-        {/* Desktop nav */}
-        <nav className="navbar-nav" aria-label="Main navigation">
-          {NAV_LINKS.map((link) => (
-            <a key={link.label} className="navbar-link" {...linkProps(link)}>
-              {link.label}
-            </a>
-          ))}
+        <nav className="site-nav" aria-label="Main navigation">
+          <ul>
+            {NAV_LINKS.map((link) => (
+              <li key={link.label}>
+                <a className="nav-link" {...linkProps(link)}>{link.label}</a>
+              </li>
+            ))}
+          </ul>
         </nav>
 
-        {/* Right actions: theme toggle + hamburger */}
-        <div className="navbar-actions">
-          <ThemeToggle />
+        <ThemeToggle />
 
-          <button
-            className="navbar-hamburger"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((prev) => !prev)}
-          >
-            <span className={`hamburger-icon${menuOpen ? " open" : ""}`}>
-              <span /><span /><span />
-            </span>
-          </button>
-        </div>
+        <button
+          className="text-button menu-button"
+          type="button"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-nav"
+          onClick={() => setMenuOpen((prev) => !prev)}
+        >
+          {menuOpen ? "Close" : "Menu"}
+        </button>
       </div>
 
-      {/* Mobile drawer */}
       <nav
-        className={`navbar-mobile-nav${menuOpen ? " open" : ""}`}
+        id="mobile-nav"
+        className={`mobile-nav${menuOpen ? " open" : ""}`}
         aria-label="Mobile navigation"
         inert={!menuOpen}
       >
-        {NAV_LINKS.map((link) => (
-          <a
-            key={link.label}
-            className="navbar-mobile-link"
-            onClick={handleLinkClick}
-            {...linkProps(link)}
-          >
-            {link.label}
-          </a>
-        ))}
-        <div className="navbar-mobile-ctas">
-          <a
-            href="/resume.pdf"
-            className="navbar-mobile-link navbar-mobile-cta"
-            onClick={handleLinkClick}
-          >
-            Resume (PDF) ↗
-          </a>
-          <a
-            href="https://www.upwork.com/freelancers/~01fe60c948627059d5"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="navbar-mobile-link navbar-mobile-cta"
-            onClick={handleLinkClick}
-          >
-            Upwork ↗
-          </a>
-        </div>
+        <ul className="container">
+          {NAV_LINKS.map((link) => (
+            <li key={link.label}>
+              <a className="nav-link" onClick={close} {...linkProps(link)}>{link.label}</a>
+            </li>
+          ))}
+          <li>
+            <a className="nav-link" href="/resume.pdf" onClick={close}>Resume (PDF)</a>
+          </li>
+        </ul>
       </nav>
     </header>
   );

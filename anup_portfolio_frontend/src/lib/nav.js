@@ -5,7 +5,7 @@
 // `hash` links point at a section of the homepage, so they need the "/" prefix
 // when the visitor is on a sub-page like /research. `page` links are routes.
 export const NAV_LINKS = [
-  { label: "Home",       href: "#top",         kind: "hash" },
+  { label: "About",      href: "#about",       kind: "hash" },
   { label: "Research",   href: "/research",    kind: "page" },
   { label: "Projects",   href: "#projects",    kind: "hash" },
   { label: "Experience", href: "#experience",  kind: "hash" },

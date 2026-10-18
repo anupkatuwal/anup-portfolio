@@ -4,23 +4,11 @@ import ReactDOM from "react-dom/client";
 import { inject } from "@vercel/analytics";
 import { injectSpeedInsights } from "@vercel/speed-insights";
 
-// Self-hosted fonts — only the weights the CSS actually uses.
-// Merriweather (serif) carries the headings, Roboto (sans) the body text,
-// JetBrains Mono the eyebrows, metrics and other small caps-y bits.
-import "@fontsource/merriweather/latin-400.css";
-import "@fontsource/merriweather/latin-700.css";
-import "@fontsource/merriweather/latin-900.css";
-import "@fontsource/merriweather/latin-400-italic.css";
-import "@fontsource/roboto/latin-400.css";
-import "@fontsource/roboto/latin-500.css";
-import "@fontsource/roboto/latin-700.css";
+// Self-hosted fonts (same origin, so the CSP's font-src 'self' covers them).
+// Inter carries all text; JetBrains Mono only metrics, dates and tags.
+import "@fontsource-variable/inter";
 import "@fontsource/jetbrains-mono/latin-400.css";
 import "@fontsource/jetbrains-mono/latin-500.css";
-import "@fontsource/jetbrains-mono/latin-600.css";
-// Outfit + Inter drive the dark "space" theme only. The @font-face rules are
-// cheap; the browser downloads a file only once dark mode renders text in it.
-import "@fontsource-variable/outfit";
-import "@fontsource-variable/inter";
 
 import App from "./App";
 import { ContentProvider } from "./context/ContentContext";

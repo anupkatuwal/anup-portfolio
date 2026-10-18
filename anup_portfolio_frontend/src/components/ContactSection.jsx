@@ -66,165 +66,127 @@ export function ContactSection() {
   };
 
   return (
-    <Section id="contact" title="Contact" eyebrow="Let's collaborate">
-      <div className="contact-layout">
+    <Section id="contact" title="Contact">
+      <p className="contact-intro">
+        Available for freelance data engineering projects — ETL pipelines,
+        MySQL database design, data warehouses, Python automation, and BI
+        dashboards. Reach out and I'll reply within 24 hours.
+      </p>
 
-        {/* ── Left: contact info ── */}
-        <div className="contact-text">
-          <p className="card-text" style={{ marginBottom: "20px" }}>
-            Available for freelance data engineering projects — ETL pipelines,
-            MySQL database design, data warehouses, Python automation, and BI
-            dashboards. Reach out and I'll reply within 24 hours.
-          </p>
+      <dl className="contact-list">
+        <dt>Email</dt>
+        <dd>
+          <a href="mailto:contact@anup-katuwal.com.np">contact@anup-katuwal.com.np</a>
+          <br />
+          <a href="mailto:katuwalanup@gmail.com">katuwalanup@gmail.com</a>
+        </dd>
 
-          <ul className="contact-meta">
-            <li className="contact-meta-item">
-              <span className="meta-label">Email</span>
-              <span>
-                <a href="mailto:contact@anup-katuwal.com.np" className="meta-link">
-                  contact@anup-katuwal.com.np
-                </a>
-                <br />
-                <a href="mailto:katuwalanup@gmail.com" className="meta-link">
-                  katuwalanup@gmail.com
-                </a>
-              </span>
-            </li>
+        <dt>LinkedIn</dt>
+        <dd>
+          <a href="https://www.linkedin.com/in/anupkatuwal1989" target="_blank" rel="noreferrer">
+            linkedin.com/in/anupkatuwal1989
+          </a>
+        </dd>
 
-            <li className="contact-meta-item">
-              <span className="meta-label">Location</span>
-              <span>Kathmandu, Nepal</span>
-            </li>
+        <dt>GitHub</dt>
+        <dd>
+          <a href="https://github.com/anupkatuwal" target="_blank" rel="noreferrer">
+            github.com/anupkatuwal
+          </a>
+        </dd>
 
-            <li className="contact-meta-item">
-              <span className="meta-label">Upwork</span>
-              <a
-                href="https://www.upwork.com/freelancers/~01fe60c948627059d5"
-                target="_blank"
-                rel="noreferrer"
-                className="meta-link"
-              >
-                upwork.com/freelancers/~01fe60c948627059d5
-              </a>
-            </li>
+        <dt>Upwork</dt>
+        <dd>
+          <a href="https://www.upwork.com/freelancers/~01fe60c948627059d5" target="_blank" rel="noreferrer">
+            upwork.com/freelancers/~01fe60c948627059d5
+          </a>
+        </dd>
 
-            <li className="contact-meta-item">
-              <span className="meta-label">GitHub</span>
-              <a
-                href="https://github.com/anupkatuwal"
-                target="_blank"
-                rel="noreferrer"
-                className="meta-link"
-              >
-                github.com/anupkatuwal
-              </a>
-            </li>
+        <dt>Location</dt>
+        <dd>Kathmandu, Nepal</dd>
 
-            <li className="contact-meta-item">
-              <span className="meta-label">LinkedIn</span>
-              <a
-                href="https://www.linkedin.com/in/anupkatuwal1989"
-                target="_blank"
-                rel="noreferrer"
-                className="meta-link"
-              >
-                linkedin.com/in/anupkatuwal1989
-              </a>
-            </li>
+        <dt>Open to</dt>
+        <dd>ETL pipelines · Data engineering · Python automation · AI integration</dd>
+      </dl>
 
-            <li className="contact-meta-item">
-              <span className="meta-label">Open to</span>
-              <span>ETL pipelines · Data engineering · Python automation · AI integration</span>
-            </li>
-          </ul>
+      <form className="contact-form" onSubmit={handleSubmit} noValidate>
+        <div className="field-row">
+          <div className="field">
+            <label htmlFor="cf-name">Name</label>
+            <input
+              id="cf-name"
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              placeholder="Your name"
+              required
+              autoComplete="name"
+            />
+          </div>
+
+          <div className="field">
+            <label htmlFor="cf-email">Email</label>
+            <input
+              id="cf-email"
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="you@example.com"
+              required
+              autoComplete="email"
+            />
+          </div>
         </div>
 
-        {/* ── Right: contact form ── */}
-        <form className="card contact-form" onSubmit={handleSubmit} noValidate>
-          <div className="field-row">
-            <div className="field">
-              <label htmlFor="cf-name">Name</label>
-              <input
-                id="cf-name"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                placeholder="Your name"
-                required
-                autoComplete="name"
-              />
-            </div>
+        <div className="field">
+          <label htmlFor="cf-subject">Subject</label>
+          <input
+            id="cf-subject"
+            name="subject"
+            value={form.subject}
+            onChange={handleChange}
+            placeholder="What's this about?"
+            required
+          />
+        </div>
 
-            <div className="field">
-              <label htmlFor="cf-email">Email</label>
-              <input
-                id="cf-email"
-                name="email"
-                type="email"
-                value={form.email}
-                onChange={handleChange}
-                placeholder="you@example.com"
-                required
-                autoComplete="email"
-              />
-            </div>
-          </div>
+        <div className="field">
+          <label htmlFor="cf-message">Message</label>
+          <textarea
+            id="cf-message"
+            name="message"
+            rows="5"
+            value={form.message}
+            onChange={handleChange}
+            placeholder="Tell me about your project or question..."
+            required
+          />
+        </div>
 
-          <div className="field">
-            <label htmlFor="cf-subject">Subject</label>
-            <input
-              id="cf-subject"
-              name="subject"
-              value={form.subject}
-              onChange={handleChange}
-              placeholder="What's this about?"
-              required
-            />
-          </div>
+        {/* Honeypot — hidden from humans, bots auto-fill it */}
+        <div className="field" style={{ display: "none" }} aria-hidden="true">
+          <label htmlFor="cf-company">Company</label>
+          <input
+            id="cf-company"
+            name="company"
+            value={form.company}
+            onChange={handleChange}
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </div>
 
-          <div className="field">
-            <label htmlFor="cf-message">Message</label>
-            <textarea
-              id="cf-message"
-              name="message"
-              rows="5"
-              value={form.message}
-              onChange={handleChange}
-              placeholder="Tell me about your project or question..."
-              required
-            />
-          </div>
+        {status.type && (
+          <p className={`form-status ${status.type}`} role="alert">
+            {status.message}
+          </p>
+        )}
 
-          {/* Honeypot — hidden from humans, bots auto-fill it */}
-          <div className="field" style={{ display: "none" }} aria-hidden="true">
-            <label htmlFor="cf-company">Company</label>
-            <input
-              id="cf-company"
-              name="company"
-              value={form.company}
-              onChange={handleChange}
-              tabIndex={-1}
-              autoComplete="off"
-            />
-          </div>
-
-          {status.type && (
-            <p className={`form-status ${status.type}`} role="alert">
-              {status.message}
-            </p>
-          )}
-
-          <button
-            className="btn btn-primary"
-            type="submit"
-            disabled={loading}
-            style={{ width: "100%", justifyContent: "center" }}
-          >
-            {loading ? "Sending…" : "Send Message"}
-          </button>
-        </form>
-
-      </div>
+        <button className="btn btn-primary" type="submit" disabled={loading}>
+          {loading ? "Sending…" : "Send Message"}
+        </button>
+      </form>
     </Section>
   );
 }

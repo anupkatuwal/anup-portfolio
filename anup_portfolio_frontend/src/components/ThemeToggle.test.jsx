@@ -11,16 +11,22 @@ afterEach(() => {
 test("starts from the theme theme-init.js already applied", () => {
   document.documentElement.setAttribute("data-theme", "dark");
   render(<ThemeToggle />);
-  expect(screen.getByRole("button", { name: "Switch to light theme" })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Dark mode" })).toHaveAttribute("aria-pressed", "true");
 });
 
-test("toggles data-theme, persists it, and updates its accessible name", async () => {
+test("defaults to light when nothing has been chosen", () => {
+  render(<ThemeToggle />);
+  expect(document.documentElement.getAttribute("data-theme")).toBe("light");
+  expect(screen.getByRole("button", { name: "Dark mode" })).toHaveAttribute("aria-pressed", "false");
+});
+
+test("toggles data-theme, persists it, and updates its pressed state", async () => {
   document.documentElement.setAttribute("data-theme", "dark");
   render(<ThemeToggle />);
   await userEvent.click(screen.getByRole("button"));
   expect(document.documentElement.getAttribute("data-theme")).toBe("light");
   expect(window.localStorage.getItem("theme")).toBe("light");
-  expect(screen.getByRole("button", { name: "Switch to dark theme" })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Dark mode" })).toHaveAttribute("aria-pressed", "false");
 });
 
 test("still renders and toggles when storage is blocked", async () => {

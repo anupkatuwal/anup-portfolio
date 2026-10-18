@@ -2,45 +2,41 @@ import React from "react";
 import { Section } from "./Section";
 import { useContent } from "../context/ContentContext";
 
-function CertCard({ item }) {
+// One line per credential: name · issuer · date · status or link.
+function CertLine({ item }) {
   return (
-    <article className={`card cert-card${item.tag === "training" ? " cert-card--training" : ""}`}>
-      <div className="cert-header">
-        <h3 className="card-title cert-title">{item.name}</h3>
-        {item.note && <span className="cert-badge">{item.note}</span>}
-      </div>
-      <p className="card-subtitle">{item.org}</p>
-      <p className="card-meta">{item.period}</p>
+    <li>
+      <span className="cert-name">{item.name}</span>
+      {" · "}{item.org}
+      {item.period && <>{" · "}<span className="mono">{item.period}</span></>}
+      {item.note && <>{" · "}<span className="cert-status">{item.note}</span></>}
       {item.link && (
-        <a href={item.link} target="_blank" rel="noreferrer" className="cert-verify">
-          verify ↗
-        </a>
+        <>
+          {" · "}
+          <a href={item.link} target="_blank" rel="noreferrer">
+            Verify<span className="visually-hidden"> {item.name}</span> ↗
+          </a>
+        </>
       )}
-    </article>
+    </li>
   );
 }
 
 export function CertificationsSection() {
   const { TRAINING = [], CERTIFICATIONS = [], FOUNDATIONS = [] } = useContent();
+  const items = [...TRAINING, ...CERTIFICATIONS];
+  if (!items.length && !FOUNDATIONS.length) return null;
+
   return (
-    <Section id="certifications" title="Certifications & Training" eyebrow="// continuous learning">
-      <div className="cert-group">
-        <p className="cert-group-label">training</p>
-        <div className="cert-grid">
-          {TRAINING.map((item) => <CertCard key={item.name} item={item} />)}
-        </div>
-      </div>
-      <div className="cert-group">
-        <p className="cert-group-label">certifications</p>
-        <div className="cert-grid">
-          {CERTIFICATIONS.map((item) => <CertCard key={item.name + item.period} item={item} />)}
-        </div>
-      </div>
+    <Section id="certifications" title="Certifications">
+      <ul className="cert-list">
+        {items.map((item) => <CertLine key={item.name + item.period} item={item} />)}
+      </ul>
       {FOUNDATIONS.map((line) => (
         <p key={line.label} className="cert-foundations">
           <span className="cert-foundations-label">{line.label}:</span>{" "}
           {(line.items || []).join(" · ")}
-          {line.note && <span className="cert-foundations-note"> — {line.note}</span>}{" "}
+          {line.note && <span className="meta"> — {line.note}</span>}{" "}
           {line.link && (
             <a
               href={line.link}

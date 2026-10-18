@@ -22,20 +22,16 @@ const NOT_FOUND_HTML = `<!doctype html>
     <meta name="robots" content="noindex" />
     <title>404 — Page not found</title>
     <style>
-      :root { color-scheme: dark light; }
+      :root { color-scheme: light; }
       body {
         margin: 0; min-height: 100vh; display: grid; place-items: center;
-        background: #0b0d12; color: #e6e8ee; text-align: center;
+        background: #fafaf7; color: #1a1a1a; text-align: center;
         font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
       }
-      main { padding: 2rem; }
-      h1 { font-size: clamp(2.5rem, 10vw, 4rem); margin: 0 0 .5rem; }
-      p { color: #98a0b3; margin: 0 0 1.5rem; }
-      a { color: #7aa2ff; }
-      @media (prefers-color-scheme: light) {
-        body { background: #f7f8fb; color: #171a21; }
-        p { color: #5b6478; }
-      }
+      main { padding: 2rem 16px; }
+      h1 { font-size: 2.5rem; font-weight: 600; margin: 0 0 .5rem; }
+      p { color: #55554f; margin: 0 0 1.5rem; }
+      a { color: #1f5f4a; }
     </style>
   </head>
   <body>
