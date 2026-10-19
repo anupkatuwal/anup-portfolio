@@ -1,6 +1,6 @@
 // src/components/StatusBar.jsx — the editor-style footer (DESIGN.md §5.11):
 // availability, Kathmandu time (updates every 30s) and the copyright line.
-import React, { useEffect, useState } from "react";
+import React, { useSyncExternalStore } from "react";
 import { useContent } from "../context/ContentContext";
 
 const ktmTime = () =>
@@ -10,16 +10,17 @@ const ktmTime = () =>
     minute: "2-digit",
   }).format(new Date());
 
+// Ticks every 30s. "--:--" in the build-time render and during hydration.
+function subscribe(onTick) {
+  const id = window.setInterval(onTick, 30000);
+  return () => window.clearInterval(id);
+}
+
 export function StatusBar() {
   const { SITE = {} } = useContent();
-  const [time, setTime] = useState(ktmTime);
+  const time = useSyncExternalStore(subscribe, ktmTime, () => "--:--");
   const available = SITE.available !== false;
   const host = (SITE.siteUrl || "").replace(/^https?:\/\//, "");
-
-  useEffect(() => {
-    const id = window.setInterval(() => setTime(ktmTime()), 30000);
-    return () => window.clearInterval(id);
-  }, []);
 
   return (
     <footer className="statusbar">

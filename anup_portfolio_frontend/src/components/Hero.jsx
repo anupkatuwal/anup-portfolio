@@ -25,15 +25,15 @@ export function Hero() {
           </div>
         </div>
 
+        {/* Not the LCP element (the lead text is), so no high priority: on a
+            slow connection it would take bandwidth from the text's font. */}
         <picture className="hero-photo">
-          <source srcSet="/portrait.webp" type="image/webp" />
-          <img
-            src="/profile.jpg"
-            alt={`${SITE.name}, portrait`}
-            width="608"
-            height="760"
-            fetchPriority="high"
+          <source
+            type="image/webp"
+            srcSet="/portrait-240.webp 240w, /portrait-400.webp 400w, /portrait.webp 608w"
+            sizes="(max-width: 767px) 120px, (max-width: 1023px) 30vw, 350px"
           />
+          <img src="/profile.jpg" alt={`${SITE.name}, portrait`} width="608" height="760" decoding="async" />
         </picture>
       </div>
     </section>

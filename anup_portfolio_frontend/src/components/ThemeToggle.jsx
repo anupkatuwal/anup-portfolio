@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
 import { currentTheme, toggleTheme } from "../lib/theme";
 
-export function ThemeToggle() {
-  const [theme, setTheme] = useState(currentTheme);
+function subscribe(onChange) {
+  window.addEventListener("themechange", onChange);
+  return () => window.removeEventListener("themechange", onChange);
+}
 
-  // The command palette can switch the theme too; follow it.
-  useEffect(() => {
-    const sync = () => setTheme(currentTheme());
-    window.addEventListener("themechange", sync);
-    return () => window.removeEventListener("themechange", sync);
-  }, []);
+export function ThemeToggle() {
+  // "dark" during the build-time render and hydration, then the real theme
+  // (which the CSS already shows). Follows the command palette's toggle too.
+  const theme = useSyncExternalStore(subscribe, currentTheme, () => "dark");
 
   const label = theme === "dark" ? "Switch to light theme" : "Switch to dark theme";
 

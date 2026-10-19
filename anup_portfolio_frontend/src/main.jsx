@@ -5,9 +5,9 @@ import { inject } from "@vercel/analytics";
 import { injectSpeedInsights } from "@vercel/speed-insights";
 
 // Self-hosted fonts (same origin, so the CSP's font-src 'self' covers them).
-// Inter for body text, JetBrains Mono for labels and data. Inter Tight 600
-// (headings) is declared in styles/tokens.css and preloaded from index.html.
-import "@fontsource/inter/latin-400.css";
+// JetBrains Mono for labels and data, Inter 500 for buttons. Inter Tight 600
+// (headings) and Inter 400 (body text, including the LCP paragraph) are
+// declared in styles/tokens.css and preloaded from index.html.
 import "@fontsource/inter/latin-500.css";
 import "@fontsource/jetbrains-mono/latin-400.css";
 import "@fontsource/jetbrains-mono/latin-500.css";
@@ -29,24 +29,38 @@ else setTimeout(startTelemetry, 2000);
 // than it saves: every route is a full page load, so a path match at mount is
 // all that's needed. /admin and /research are code-split so the homepage
 // never pays for them.
-const Admin = lazy(() => import("./pages/Admin"));
-const Research = lazy(() => import("./pages/Research"));
-
+//
+// "/" and "/research" ship their React markup prerendered at build time
+// (src/entry-server.jsx, marked data-ssr on #root), so they hydrate it rather
+// than re-rendering — the first paint is already the final one.
 const path = window.location.pathname.replace(/\/index\.html$/, "/").replace(/(.)\/+$/, "$1");
+const rootEl = document.getElementById("root");
 
-const route = (() => {
-  if (path === "/admin") return <Admin />;
-  if (path === "/research") return <Research />;
-  return <App />;
-})();
+function mount(page) {
+  const tree = (
+    <React.StrictMode>
+      <ContentProvider>{page}</ContentProvider>
+    </React.StrictMode>
+  );
+  if (rootEl.hasAttribute("data-ssr")) ReactDOM.hydrateRoot(rootEl, tree);
+  else ReactDOM.createRoot(rootEl).render(tree);
+}
 
-// /admin manages its own auth state and does not read site content.
-const needsContent = path !== "/admin";
-
-const tree = <Suspense fallback={null}>{route}</Suspense>;
-
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    {needsContent ? <ContentProvider>{tree}</ContentProvider> : tree}
-  </React.StrictMode>
-);
+if (path === "/admin") {
+  // /admin manages its own auth state and does not read site content.
+  const Admin = lazy(() => import("./pages/Admin"));
+  ReactDOM.createRoot(rootEl).render(
+    <React.StrictMode>
+      <Suspense fallback={null}><Admin /></Suspense>
+    </React.StrictMode>
+  );
+} else if (path === "/research") {
+  // Load the chunk first: hydrating through a lazy boundary would render the
+  // fallback and throw the prerendered markup away.
+  import("./pages/Research").then((m) => {
+    const Research = m.default;
+    mount(<Research />);
+  });
+} else {
+  mount(<App />);
+}

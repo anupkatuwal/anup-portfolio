@@ -8,8 +8,10 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Fonts: self-hosted (CSP font-src 'self'); only Inter Tight 600 is preloaded -->
+    <!-- Fonts: self-hosted (CSP font-src 'self'). Preloaded: Inter Tight 600
+         (headings) and Inter 400 (the LCP paragraph). -->
     <link rel="preload" href="/fonts/inter-tight-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Primary SEO -->
     <title>Anup Katuwal — Backend Developer &amp; Data Analyst</title>
@@ -21,9 +23,10 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="theme-color" content="#0A0C09" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#F7F8F3" media="(prefers-color-scheme: light)" />
-    <!-- Blocking on purpose, and after theme-color: applies a saved theme
-         before first paint so it never flashes. Tiny, same-origin. -->
-    <script src="/theme-init.js"></script>
+    <!-- After theme-color: applies a saved theme before first paint so it
+         never flashes. Inlined at build (scripts/theme-init.mjs); the CSP
+         allows it by hash. -->
+    <!--theme-init-->
     <link rel="canonical" href="%SITE_URL%/" />
 
     <!-- Open Graph (Facebook, LinkedIn, etc.) -->

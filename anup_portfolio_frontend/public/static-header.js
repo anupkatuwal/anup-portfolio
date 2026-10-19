@@ -1,7 +1,8 @@
 // Wires up the build-time project pages (dist/projects/*), which ship no
 // React: theme toggle, mobile menu, scrolled top bar, scroll progress and the
 // status-bar clock. Mirrors src/lib/theme.js, TopBar.jsx and StatusBar.jsx.
-// Same-origin file, because the CSP rules out inline scripts.
+// Same-origin file: the CSP allows only one inline script (the no-flash
+// theme script in each page's <head>, by hash).
 (function () {
   var root = document.documentElement;
   var colors = { dark: "#0A0C09", light: "#F7F8F3" };
