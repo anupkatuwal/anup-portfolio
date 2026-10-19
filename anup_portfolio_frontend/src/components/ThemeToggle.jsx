@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 
+// Keep in step with public/theme-init.js.
+const THEME_COLOR = { light: "#fafaf7", dark: "#141414" };
+
 // public/theme-init.js has already set data-theme before first paint, so
 // start from that rather than recomputing it. Storage access is wrapped:
 // it throws when blocked (Safari private mode, strict cookie settings), and
-// an uncaught throw here would blank the whole page.
+// an uncaught throw here would blank the whole page. Light is the default —
+// dark only applies once the visitor has chosen it.
 function initialTheme() {
   const set = document.documentElement.getAttribute("data-theme");
   if (set === "light" || set === "dark") return set;
   try {
-    const stored = window.localStorage.getItem("theme");
-    if (stored === "light" || stored === "dark") return stored;
+    if (window.localStorage.getItem("theme") === "dark") return "dark";
   } catch {
-    /* storage blocked — fall back to the OS preference */
+    /* storage blocked — use the default */
   }
-  return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+  return "light";
 }
 
 export function ThemeToggle() {
@@ -23,7 +26,7 @@ export function ThemeToggle() {
     document.documentElement.setAttribute("data-theme", theme);
     document
       .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", theme === "dark" ? "#03040a" : "#0a1f44");
+      ?.setAttribute("content", THEME_COLOR[theme]);
   }, [theme]);
 
   const toggle = () => {
@@ -36,11 +39,14 @@ export function ThemeToggle() {
     }
   };
 
-  const label = theme === "dark" ? "Switch to light theme" : "Switch to dark theme";
-
   return (
-    <button className="icon-button" type="button" onClick={toggle} aria-label={label} title={label}>
-      <span aria-hidden="true">{theme === "dark" ? "☀️" : "🌙"}</span>
+    <button
+      className="text-button theme-toggle"
+      type="button"
+      onClick={toggle}
+      aria-pressed={theme === "dark"}
+    >
+      Dark mode
     </button>
   );
 }

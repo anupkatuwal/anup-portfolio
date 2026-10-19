@@ -12,14 +12,11 @@ import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { RESEARCH } from "../src/data/content.js";
+import { esc, headerHtml, footerHtml } from "./site-chrome.mjs";
 
 const dist = join(dirname(fileURLToPath(import.meta.url)), "..", "dist");
 const SITE_URL = (process.env.VITE_SITE_URL || "https://anup-katuwal.com.np").replace(/\/+$/, "");
 const AUTHOR = "Anup Katuwal";
-
-const esc = (s = "") =>
-  String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;")
-           .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
 const clamp = (s, n = 158) => {
   const t = String(s).replace(/\s+/g, " ").trim();
@@ -31,23 +28,6 @@ if (!shell.includes("<!--ssg-->")) {
   console.error("prerender-pages: <!--ssg--> marker not found in dist/index.html — refusing to write.");
   process.exit(1);
 }
-
-const nav = `
-      <header class="navbar">
-        <div class="navbar-inner">
-          <a href="/" class="navbar-brand"><span class="brand-mark"><span>AK</span></span><span class="brand-text">Anup Katuwal</span></a>
-          <nav class="navbar-nav" aria-label="Main navigation">
-            <a href="/#top" class="navbar-link">Home</a>
-            <a href="/research" class="navbar-link">Research</a>
-            <a href="/#projects" class="navbar-link">Projects</a>
-            <a href="/#experience" class="navbar-link">Experience</a>
-            <a href="/#contact" class="navbar-link">Contact</a>
-          </nav>
-        </div>
-      </header>`;
-
-const footer = `
-      <footer><p>© ${new Date().getFullYear()} ${AUTHOR} · <a href="mailto:contact@anup-katuwal.com.np">Contact</a> · <a href="https://www.linkedin.com/in/anupkatuwal1989">LinkedIn</a> · <a href="https://github.com/anupkatuwal">GitHub</a></p><p>“Knowledge applied through technology.”</p></footer>`;
 
 // Swap the shell's homepage metadata for this page's, then inject the content.
 function render({ path, title, description, body, jsonld, type = "website" }) {
@@ -76,7 +56,7 @@ function render({ path, title, description, body, jsonld, type = "website" }) {
     .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, "")
     .replace("<!-- Structured data: Person + WebSite + ProfilePage (linked @graph) -->", "")
     .replace("%%HEAD%%", head)
-    .replace("<!--ssg-->", `${nav}\n      <main>${body}</main>${footer}`);
+    .replace("<!--ssg-->", `<a class="skip-link" href="#main">Skip to content</a>${headerHtml(path)}\n      <main id="main" class="page">${body}</main>${footerHtml()}`);
 
   const out = join(dist, path.replace(/^\//, ""));
   mkdirSync(out, { recursive: true });
@@ -104,24 +84,30 @@ written.push(
       ...(RESEARCH.thesisUrl ? { sameAs: RESEARCH.thesisUrl } : {}),
     },
     body: `
-        <article class="container paper">
-          <h1 class="paper-title">${esc(RESEARCH.title)}</h1>
-          <p class="paper-meta">${esc(AUTHOR)} · ${esc(RESEARCH.venue)} · ${esc(RESEARCH.period)}</p>
-          <p><a href="${esc(RESEARCH.thesisUrl)}">Read Full Thesis</a></p>
-          <h2>Abstract</h2>
-          <p>${esc(RESEARCH.abstract)}</p>
-          <h2>Methodology</h2>
-          <ol>${RESEARCH.methodology.map((m) => `<li><strong>${esc(m.title)}</strong> — ${esc(m.detail)}</li>`).join("")}</ol>
-          <h2>Results</h2>
-          <ul>${RESEARCH.results.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
-          ${RESEARCH.charts.map((c) => `<p>${esc(c.title)}: ${esc(
-            (c.grouped
-              ? c.bars.map((b) => `${b.label} ${b.before} before, ${b.after} after`)
-              : c.bars.map((b) => `${b.label} ${b.value}`)
-            ).join("; ")
-          )}.</p>`).join("")}
-          <h2>References</h2>
-          <ol>${RESEARCH.references.map((r) => `<li>${esc(r)}</li>`).join("")}</ol>
+        <article class="container">
+          <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <span>Research</span></nav>
+          <header class="page-head">
+            <h1 class="page-title">${esc(RESEARCH.title)}</h1>
+            <p class="meta">${esc(AUTHOR)} · ${esc(RESEARCH.venue)} · ${esc(RESEARCH.period)}</p>
+            <ul class="tags" aria-label="Keywords">${RESEARCH.keywords.map((k) => `<li class="tag">${esc(k)}</li>`).join("")}</ul>
+            ${RESEARCH.thesisUrl ? `<p class="page-actions"><a class="btn btn-primary" href="${esc(RESEARCH.thesisUrl)}">Read the full thesis ↗</a></p>` : ""}
+          </header>
+          <section class="page-section"><h2>Abstract</h2><p>${esc(RESEARCH.abstract)}</p></section>
+          <section class="page-section"><h2>Methodology</h2>
+            <ol class="method-list">${RESEARCH.methodology.map((m) => `<li class="method-step"><span class="method-num">${esc(m.step)}</span><div><h3>${esc(m.title)}</h3><p>${esc(m.detail)}</p></div></li>`).join("")}</ol>
+          </section>
+          <section class="page-section"><h2>Results</h2>
+            ${RESEARCH.charts.map((c) => `<p>${esc(c.title)}: ${esc(
+              (c.grouped
+                ? c.bars.map((b) => `${b.label} ${b.before} before, ${b.after} after`)
+                : c.bars.map((b) => `${b.label} ${b.value}`)
+              ).join("; ")
+            )}.</p>`).join("")}
+            <ul class="bullets">${RESEARCH.results.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
+          </section>
+          <section class="page-section"><h2>References</h2>
+            <ol class="ieee-list">${RESEARCH.references.map((r, i) => `<li class="ieee-item"><span class="ieee-num">[${i + 1}]</span><span>${esc(r)}</span></li>`).join("")}</ol>
+          </section>
         </article>`,
   })
 );

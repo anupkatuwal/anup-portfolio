@@ -73,7 +73,7 @@ export const EDUCATION = [
     degree: "B.Sc. in Computer Information Systems",
     inst: "Columbia College, Denver, Colorado",
     period: "2010 – 2014",
-    details: "GPA 3.34 · Focus on information systems and programming.",
+    details: "GPA 3.36 · Focus on information systems and programming.",
   },
 ];
 
@@ -217,8 +217,9 @@ export const PROJECTS = [
 ];
 
 /* ── ABOUT ────────────────────────────────────────────────────────────────────
-   Short academic + professional bio shown in the About section, plus the
-   three-step academic timeline graphic (B.Sc. → MCIS → Research).          */
+   Short academic + professional bio shown in the About section.
+   `milestones` is no longer rendered (Education covers it); kept so saved
+   content keeps its shape.                                                 */
 
 export const ABOUT = {
   lead:
@@ -241,7 +242,7 @@ export const ABOUT = {
     {
       year: "2010 – 2014",
       title: "B.Sc. in Computer Information Systems",
-      detail: "Columbia College, Denver, Colorado · GPA 3.34",
+      detail: "Columbia College, Denver, Colorado · GPA 3.36",
     },
     {
       year: "2020 – 2026",
@@ -268,6 +269,13 @@ export const RESEARCH = {
   period: "2024 – 2026",
   keywords: ["Fairness in NLP", "BERT", "Adversarial Debiasing", "Counterfactual Augmentation", "Mental Health"],
   thesisUrl: "https://github.com/anupkatuwal/bias-aware-sentiment-analysis-mental-health",
+  /* The metric row on the homepage. Every figure is from the abstract below. */
+  metrics: [
+    { value: "84.0%",         label: "accuracy" },
+    { value: "0.688",         label: "macro-F1" },
+    { value: "−35.4%",        label: "mean DPD" },
+    { value: "0.327 → 0.066", label: "dialect DPD" },
+  ],
   abstract:
     "Sentiment classifiers trained on social-media mental-health text inherit the " +
     "demographic skew of their training data, and the resulting error is not evenly " +

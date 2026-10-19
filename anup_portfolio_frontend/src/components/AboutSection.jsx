@@ -1,5 +1,5 @@
-// src/components/AboutSection.jsx — academic + professional bio, an academic
-// timeline graphic (B.Sc. → MCIS → Research), and the CV / resume downloads.
+// src/components/AboutSection.jsx — short bio. Copy comes from ABOUT in
+// content.js (editable in /admin).
 import React from "react";
 import { Section } from "./Section";
 import { useContent } from "../context/ContentContext";
@@ -7,35 +7,14 @@ import { useContent } from "../context/ContentContext";
 export function AboutSection() {
   const { ABOUT } = useContent();
   if (!ABOUT) return null;
-  const { lead, body = [], milestones = [] } = ABOUT;
+  const { lead, body = [] } = ABOUT;
 
   return (
-    <Section id="about" title="About" eyebrow="// academic & professional">
-      <div className="about-layout">
-        <div className="about-copy">
-          {lead && <p className="about-lead">{lead}</p>}
-          {body.map((para) => (
-            <p key={para.slice(0, 40)} className="about-para">{para}</p>
-          ))}
-
-          <div className="about-actions">
-            <a href="/resume.pdf" download className="btn btn-primary">Download CV</a>
-            <a href="/resume.pdf" download className="btn btn-ghost">Download Resume</a>
-          </div>
-        </div>
-
-        {/* Academic timeline graphic */}
-        <ol className="about-track" aria-label="Academic timeline">
-          {milestones.map((m) => (
-            <li key={m.title} className="about-step">
-              <span className="about-step-dot" aria-hidden="true" />
-              <p className="about-step-year">{m.year}</p>
-              <p className="about-step-title">{m.title}</p>
-              <p className="about-step-detail">{m.detail}</p>
-            </li>
-          ))}
-        </ol>
-      </div>
+    <Section id="about" title="About">
+      {lead && <p>{lead}</p>}
+      {body.map((para) => (
+        <p key={para.slice(0, 40)}>{para}</p>
+      ))}
     </Section>
   );
 }

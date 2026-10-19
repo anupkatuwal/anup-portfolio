@@ -38,5 +38,5 @@ test("bar width is proportional to the value and never exceeds the plot", () => 
   expect(Number(before.getAttribute("width"))).toBeGreaterThan(
     Number(after.getAttribute("width"))
   );
-  expect(Number(before.getAttribute("width"))).toBeLessThanOrEqual(1000 - 116 - 92);
+  expect(Number(before.getAttribute("width"))).toBeLessThanOrEqual(1000 - 116 - 150);
 });

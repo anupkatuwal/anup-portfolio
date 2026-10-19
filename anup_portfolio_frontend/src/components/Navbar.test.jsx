@@ -1,20 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import { Navbar } from "./Navbar";
 
-test("renders the AK monogram and every primary link", () => {
+test("renders the name and every primary link", () => {
   render(<Navbar path="/" />);
-  expect(screen.getByText("AK")).toBeInTheDocument();
-  ["Home", "Research", "Projects", "Experience", "Contact"].forEach((label) => {
+  expect(screen.getByRole("link", { name: "Anup Katuwal" })).toBeInTheDocument();
+  ["About", "Research", "Projects", "Experience", "Contact"].forEach((label) => {
     expect(screen.getAllByRole("link", { name: label }).length).toBeGreaterThan(0);
   });
 });
 
-test("the mobile drawer offers both the resume and the Upwork profile", () => {
+test("the mobile menu offers the resume", () => {
   render(<Navbar path="/" />);
-  expect(screen.getByRole("link", { name: /Resume \(PDF\)/ })).toHaveAttribute("href", "/resume.pdf");
-  const upwork = screen.getByRole("link", { name: /Upwork/ });
-  expect(upwork).toHaveAttribute("href", "https://www.upwork.com/freelancers/~01fe60c948627059d5");
-  expect(upwork).toHaveAttribute("rel", "noopener noreferrer");
+  expect(screen.getByRole("link", { name: "Resume (PDF)", hidden: true })).toHaveAttribute("href", "/resume.pdf");
 });
 
 test("hash links stay in-page on the homepage", () => {

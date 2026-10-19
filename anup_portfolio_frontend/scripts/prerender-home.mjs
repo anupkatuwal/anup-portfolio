@@ -8,7 +8,8 @@
 // content as HTML removes that dependency entirely.
 //
 // This runs after `vite build` and after prerender-projects.mjs, and replaces
-// the <!--ssg--> marker in dist/index.html with the full page. Every section
+// the <!--ssg--> marker in dist/index.html with the full page, using the same
+// markup and classes as the React components. Every section
 // is generated from src/data/content.js, so it cannot drift out of sync. The
 // one exception is the hero copy below, which lives in Hero.jsx as JSX and is
 // mirrored here by hand -- keep the two in step.
@@ -16,149 +17,127 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import {
-  ABOUT, SKILLS, EXPERIENCES, EDUCATION, TRAINING, CERTIFICATIONS,
-  FOUNDATIONS, RESUME_HIGHLIGHTS, PROJECTS, RESEARCH, SKILL_MATRIX, INTERESTS,
+  ABOUT, EXPERIENCES, EDUCATION, TRAINING, CERTIFICATIONS,
+  FOUNDATIONS, PROJECTS, RESEARCH, SKILL_MATRIX, INTERESTS,
 } from "../src/data/content.js";
+import { firstSentence, liveLinkLabel } from "../src/lib/projects.js";
+import { esc, headerHtml, footerHtml } from "./site-chrome.mjs";
 
 const dist = join(dirname(fileURLToPath(import.meta.url)), "..", "dist");
 const SITE_URL = (process.env.VITE_SITE_URL || "https://anup-katuwal.com.np").replace(/\/+$/, "");
 
-const esc = (s = "") =>
-  String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;")
-           .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-
 // ── Hero copy — mirrors src/components/Hero.jsx ──────────────────────────────
 const HERO = {
-  eyebrow: "Kathmandu, Nepal · Open to research & data roles",
-  headline: "Anup Katuwal — CIS Graduate & Data Enthusiast",
-  tagline: "Bridging academic research with real-world data solutions.",
-  bio: "Master of Computer Information System (CGPA 3.71) with thesis research " +
-       "on fairness in mental-health NLP. I'm early in my career, building real " +
-       "skills through hands-on projects — ETL pipelines, dashboards and Python " +
-       "automation — and working toward data analyst and data engineer roles.",
-  status: "Python · Microsoft SQL Server · data analysis · learning Power BI & Tableau",
+  role: "Data analyst · MCIS graduate · Kathmandu, Nepal",
+  summary: "Data analyst with a Master's in CIS. I clean, model and query data, " +
+           "then report what it shows. Master of Computer Information System " +
+           "(CGPA 3.71) with thesis research on fairness in mental-health NLP. " +
+           "I'm early in my career, building real skills through hands-on " +
+           "projects — ETL pipelines, dashboards and Python automation — and " +
+           "working toward data analyst and data engineer roles.",
+  links: [
+    ["Resume (PDF)", "/resume.pdf", "btn btn-primary"],
+    ["GitHub", "https://github.com/anupkatuwal", "btn"],
+    ["LinkedIn", "https://www.linkedin.com/in/anupkatuwal1989", "btn"],
+    ["Email", "mailto:contact@anup-katuwal.com.np", "btn"],
+  ],
 };
-
-// Mirrors src/lib/nav.js
-const NAV = [
-  ["/#top", "Home"], ["/research", "Research"], ["/#projects", "Projects"],
-  ["/#experience", "Experience"], ["/#contact", "Contact"],
-];
 
 const li = (items) => items.map((t) => `<li>${esc(t)}</li>`).join("");
 
-const section = (id, eyebrow, title, body) => `
-      <section id="${id}" class="section">
-        <div class="container">
-          <p class="section-eyebrow">${esc(eyebrow)}</p>
-          <h2 class="section-title">${esc(title)}</h2>
-          ${body}
-        </div>
-      </section>`;
+const section = (id, title, body) => `
+        <section id="${id}" class="section" aria-labelledby="${id}-title">
+          <div class="container">
+            <h2 class="section-title" id="${id}-title">${esc(title)}</h2>
+            ${body}
+          </div>
+        </section>`;
+
+const entry = (title, date, org, inner) => `<li class="entry">
+              <div class="entry-head"><h3 class="entry-title">${esc(title)}</h3><p class="meta">${esc(date)}</p></div>
+              <p class="entry-org">${esc(org)}</p>
+              ${inner}
+            </li>`;
+
+const researchSummary = RESEARCH.abstract.split(". ").slice(0, 2).join(". ") + ".";
+const projects = [...PROJECTS].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+const photo = (INTERESTS.photos || []).find((p) => p && p.src);
 
 const html = `
-      <header class="navbar">
-        <div class="navbar-inner">
-          <a href="#top" class="navbar-brand"><span class="brand-mark"><span>AK</span></span><span class="brand-text">Anup Katuwal</span></a>
-          <nav class="navbar-nav" aria-label="Main navigation">
-            ${NAV.map(([h, l]) => `<a href="${h}" class="navbar-link">${l}</a>`).join("\n            ")}
-          </nav>
-        </div>
-      </header>
-      <main>
+      <a class="skip-link" href="#main">Skip to content</a>${headerHtml("/")}
+      <main id="main">
         <section id="top" class="hero">
-          <div class="container">
-            <p class="hero-eyebrow">${esc(HERO.eyebrow)}</p>
-            <h1 class="hero-name">${esc(HERO.headline)}</h1>
-            <p class="hero-tagline">${esc(HERO.tagline)}</p>
-            <p class="hero-bio">${esc(HERO.bio)}</p>
-            <p class="hero-actions"><a href="/resume.pdf">View Resume</a> · <a href="#projects">Explore Projects</a></p>
-            <p class="hero-status">${esc(HERO.status)}</p>
-            <p>
-              <a href="https://github.com/anupkatuwal">GitHub</a> ·
-              <a href="https://www.linkedin.com/in/anupkatuwal1989">LinkedIn</a> ·
-              <a href="https://www.upwork.com/freelancers/~01fe60c948627059d5">Upwork</a> ·
-              <a href="mailto:contact@anup-katuwal.com.np">contact@anup-katuwal.com.np</a>
-            </p>
+          <div class="container hero-inner">
+            <div class="hero-text">
+              <h1 class="hero-name">Anup Katuwal</h1>
+              <p class="hero-role">${esc(HERO.role)}</p>
+              <p class="hero-summary">${esc(HERO.summary)}</p>
+              <ul class="hero-actions">${HERO.links.map(([l, h, c]) => `<li><a href="${h}" class="${c}">${l}</a></li>`).join("")}</ul>
+            </div>
             <picture>
               <source srcset="/profile.webp" type="image/webp" />
-              <img src="/profile-sm.png" class="hero-photo" alt="Anup Katuwal — Computer Information Systems graduate and data researcher, Kathmandu, Nepal" width="190" height="190" />
+              <img src="/profile-sm.png" class="hero-photo" alt="Anup Katuwal — Computer Information Systems graduate and data researcher, Kathmandu, Nepal" width="128" height="128" fetchpriority="high" />
             </picture>
           </div>
         </section>
-${section("about", "Academic & professional", "About",
-  `<p>${esc(ABOUT.lead)}</p>
-          ${ABOUT.body.map((t) => `<p>${esc(t)}</p>`).join("\n          ")}
-          <ol>${ABOUT.milestones.map((m) => `<li><strong>${esc(m.year)}</strong> — ${esc(m.title)}: ${esc(m.detail)}</li>`).join("")}</ol>
-          <p><a href="/resume.pdf">Download CV</a> · <a href="/resume.pdf">Download Resume</a></p>`)}
-${section("research", "Thesis", "Research",
-  `<h3>${esc(RESEARCH.title)}</h3>
-          <p class="card-subtitle">${esc(RESEARCH.venue)} · ${esc(RESEARCH.period)}</p>
-          <p>${esc(RESEARCH.abstract)}</p>
-          <ul>${li(RESEARCH.results)}</ul>
-          <p><a href="/research">Read the research</a></p>`)}
-${section("skills", "What I work with", "Skills",
-  SKILLS.map((s) => `<div class="skill-row"><h3>${esc(s.domain)}</h3><ul>${li(s.items)}</ul></div>`).join("\n          ")
-  + `\n          <h3>Skills</h3>
-          <h4>Working with</h4><ul>${li(SKILL_MATRIX.using)}</ul>
-          <h4>Learning</h4><ul>${li(SKILL_MATRIX.learning)}</ul>`)}
-${section("experience", "Where I've worked", "Experience",
-  EXPERIENCES.map((e) => `<article class="card">
-            <h3 class="card-title">${esc(e.role)}</h3>
-            <p class="card-subtitle">${esc(e.org)} · ${esc(e.period)}${e.location ? ` · ${esc(e.location)}` : ""}</p>
-            ${e.bullets ? `<ul>${li(e.bullets)}</ul>` : `<p>${esc(e.description || "")}</p>`}
-          </article>`).join("\n          ")
-  + `\n          <h3>Education</h3>\n          `
-  + EDUCATION.map((d) => `<article class="card">
-            <h4 class="card-title">${esc(d.degree)}</h4>
-            <p class="card-subtitle">${esc(d.inst)} · ${esc(d.period)}</p>
-            <p>${esc(d.details)}</p>
-          </article>`).join("\n          "))}
-${section("certifications", "Credentials", "Certifications",
-  [...CERTIFICATIONS, ...TRAINING].map((c) => `<article class="card">
-            <h3 class="card-title">${esc(c.name)}</h3>
-            <p class="card-subtitle">${esc(c.org)} · ${esc(c.period)}${c.note ? ` · ${esc(c.note)}` : ""}</p>
-            ${c.link ? `<a href="${esc(c.link)}">View credential</a>` : ""}
-          </article>`).join("\n          ")
-  + "\n          "
-  + FOUNDATIONS.map((f) => `<article class="card">
-            <h3 class="card-title">${esc(f.label)}</h3>
-            <ul>${li(f.items)}</ul>
-            ${f.note ? `<p class="card-subtitle">${esc(f.note)}</p>` : ""}
-            ${f.link ? `<a href="${esc(f.link)}">${esc(f.linkLabel || "View")}</a>` : ""}
-          </article>`).join("\n          "))}
-${section("projects", "Selected work", "Projects",
-  PROJECTS.map((p) => `<article class="card">
-            <h3 class="card-title"><a href="/projects/${esc(p.id)}">${esc(p.title)}</a></h3>
-            ${p.metric ? `<p class="card-metric">${esc(p.metric)}</p>` : ""}
-            <p>${esc(p.description)}</p>
-            <ul class="tech">${li(p.tech || [])}</ul>
-            <p>
-              <a href="/projects/${esc(p.id)}">Project details</a>
-              ${p.github ? ` · <a href="${esc(p.github)}">Source on GitHub</a>` : ""}
-              ${p.live ? ` · <a href="${esc(p.live)}">Live</a>` : ""}
-            </p>
-          </article>`).join("\n          "))}
-${section("resume", "Background", "Resume",
-  `<ul>${li(RESUME_HIGHLIGHTS)}</ul>
-          <p><a href="/resume.pdf">Download resume (PDF)</a></p>`)}
-${section("interests", "Beyond work", INTERESTS.title,
-  `${INTERESTS.body.map((t) => `<p>${esc(t)}</p>`).join("\n          ")}
-          <dl>${INTERESTS.facts.map((f) => `<dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd>`).join("")}</dl>
-          ${(INTERESTS.photos || []).map((p) => `<img src="${esc(p.src)}.jpg" alt="${esc(p.alt || "")}" width="700" height="875" loading="lazy" />`).join("\n          ")}`)}
-${section("contact", "Let's collaborate", "Contact",
-  `<p>Available for freelance data engineering projects — ETL pipelines, MySQL
-          database design, data warehouses, Python automation, and BI dashboards.</p>
-          <ul>
-            <li>Email: <a href="mailto:contact@anup-katuwal.com.np">contact@anup-katuwal.com.np</a></li>
-            <li>Email: <a href="mailto:katuwalanup@gmail.com">katuwalanup@gmail.com</a></li>
-            <li>Location: Kathmandu, Nepal</li>
-            <li>Upwork: <a href="https://www.upwork.com/freelancers/~01fe60c948627059d5">upwork.com/freelancers/~01fe60c948627059d5</a></li>
-            <li>GitHub: <a href="https://github.com/anupkatuwal">github.com/anupkatuwal</a></li>
-            <li>LinkedIn: <a href="https://www.linkedin.com/in/anupkatuwal1989">linkedin.com/in/anupkatuwal1989</a></li>
-          </ul>`)}
-      </main>
-      <footer><p>© ${new Date().getFullYear()} Anup Katuwal · <a href="mailto:contact@anup-katuwal.com.np">Contact</a> · <a href="https://www.linkedin.com/in/anupkatuwal1989">LinkedIn</a> · <a href="https://github.com/anupkatuwal">GitHub</a></p><p>“Knowledge applied through technology.”</p></footer>
+${section("about", "About",
+  [ABOUT.lead, ...ABOUT.body].filter(Boolean).map((t) => `<p>${esc(t)}</p>`).join("\n            "))}
+${section("research", "Research",
+  `<article class="research-teaser">
+              <h3 class="research-title"><a href="/research">${esc(RESEARCH.title)}</a></h3>
+              <p class="meta">${esc(RESEARCH.venue)} · ${esc(RESEARCH.period)}</p>
+              <p class="research-summary">${esc(researchSummary)}</p>
+              <dl class="metrics">${(RESEARCH.metrics || []).map((m) => `<div class="metric"><dt>${esc(m.label)}</dt><dd>${esc(m.value)}</dd></div>`).join("")}</dl>
+              <p class="text-link-row"><a href="/research">Read the full research →</a></p>
+            </article>`)}
+${section("projects", "Projects",
+  `<ul class="project-grid">${projects.map((p) => `
+              <li class="project">
+                <h3 class="project-title"><a href="/projects/${esc(p.id)}">${esc(p.title)}</a></h3>
+                <p class="project-summary">${esc(firstSentence(p.description))}</p>
+                ${p.metric ? `<p class="project-metric">${esc(p.metric)}</p>` : ""}
+                <ul class="tags" aria-label="Technologies">${(p.tech || []).map((t) => `<li class="tag">${esc(t)}</li>`).join("")}</ul>
+                <ul class="project-links">
+                  <li><a href="/projects/${esc(p.id)}">Details</a></li>
+                  ${p.github ? `<li><a href="${esc(p.github)}">GitHub ↗</a></li>` : ""}
+                  ${p.live ? `<li><a href="${esc(p.live)}">${liveLinkLabel(p.live)} ↗</a></li>` : ""}
+                </ul>
+              </li>`).join("")}
+            </ul>`)}
+${section("experience", "Experience",
+  `<ol class="entries">${EXPERIENCES.map((e) => entry(e.role, e.period,
+    [e.org, e.location].filter(Boolean).join(" · "),
+    e.bullets?.length ? `<ul class="bullets">${li(e.bullets)}</ul>` : `<p class="entry-text">${esc(e.description || "")}</p>`)).join("\n            ")}</ol>`)}
+${section("education", "Education",
+  `<ol class="entries">${EDUCATION.map((d) => entry(d.degree, d.period, d.inst,
+    `<p class="entry-text">${esc(d.details)}</p>`)).join("\n            ")}</ol>`)}
+${section("skills", "Skills",
+  `<dl class="skills">
+              <dt>Working with</dt><dd><ul class="inline-list">${li(SKILL_MATRIX.using)}</ul></dd>
+              <dt>Learning</dt><dd><ul class="inline-list">${li(SKILL_MATRIX.learning)}</ul></dd>
+            </dl>`)}
+${section("certifications", "Certifications",
+  `<ul class="cert-list">${[...TRAINING, ...CERTIFICATIONS].map((c) =>
+    `<li><span class="cert-name">${esc(c.name)}</span> · ${esc(c.org)}${c.period ? ` · <span class="mono">${esc(c.period)}</span>` : ""}${c.note ? ` · <span class="cert-status">${esc(c.note)}</span>` : ""}${c.link ? ` · <a href="${esc(c.link)}">Verify ↗</a>` : ""}</li>`).join("")}</ul>
+            ${FOUNDATIONS.map((f) => `<p class="cert-foundations"><span class="cert-foundations-label">${esc(f.label)}:</span> ${esc(f.items.join(" · "))}${f.note ? `<span class="meta"> — ${esc(f.note)}</span>` : ""} ${f.link ? `<a href="${esc(f.link)}">${esc(f.linkLabel || "view ↗")}</a>` : ""}</p>`).join("\n            ")}`)}
+${section("interests", "Outside work",
+  `<div class="outside">
+              <div class="outside-text">${INTERESTS.body.map((t) => `<p>${esc(t)}</p>`).join("")}</div>
+              ${photo ? `<figure class="outside-photo"><picture><source srcset="${esc(photo.src)}.webp" type="image/webp" /><img src="${esc(photo.src)}.jpg" alt="${esc(photo.alt || "")}" width="120" height="150" loading="lazy" decoding="async" /></picture></figure>` : ""}
+            </div>`)}
+${section("contact", "Contact",
+  `<p class="contact-intro">Available for freelance data engineering projects — ETL pipelines,
+            MySQL database design, data warehouses, Python automation, and BI dashboards.
+            Reach out and I'll reply within 24 hours.</p>
+            <dl class="contact-list">
+              <dt>Email</dt><dd><a href="mailto:contact@anup-katuwal.com.np">contact@anup-katuwal.com.np</a><br /><a href="mailto:katuwalanup@gmail.com">katuwalanup@gmail.com</a></dd>
+              <dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/anupkatuwal1989">linkedin.com/in/anupkatuwal1989</a></dd>
+              <dt>GitHub</dt><dd><a href="https://github.com/anupkatuwal">github.com/anupkatuwal</a></dd>
+              <dt>Upwork</dt><dd><a href="https://www.upwork.com/freelancers/~01fe60c948627059d5">upwork.com/freelancers/~01fe60c948627059d5</a></dd>
+              <dt>Location</dt><dd>Kathmandu, Nepal</dd>
+              <dt>Open to</dt><dd>ETL pipelines · Data engineering · Python automation · AI integration</dd>
+            </dl>`)}
+      </main>${footerHtml()}
 `;
 
 const indexPath = join(dist, "index.html");
@@ -202,7 +181,8 @@ ${PROJECTS.map((p) => `- ${p.title} (${SITE_URL}/projects/${p.id}) — ${p.descr
 ${RESEARCH.results.map((r) => `- ${r}`).join("\n")}
 
 ## Skills
-${SKILLS.map((s) => `- ${s.domain}: ${s.items.join(", ")}`).join("\n")}
+- Working with: ${SKILL_MATRIX.using.join(", ")}
+- Learning: ${SKILL_MATRIX.learning.join(", ")}
 `;
 writeFileSync(join(dist, "llms.txt"), llms);
 
