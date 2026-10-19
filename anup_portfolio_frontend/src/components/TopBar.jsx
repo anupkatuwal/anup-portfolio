@@ -2,7 +2,7 @@
 // blinking cursor, section links, the ⌘K chip, theme toggle and a 1px scroll
 // progress line. Below 768px the links give way to search + menu buttons,
 // both of which open the command palette.
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Menu, Search } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { openPalette } from "./CommandPalette";
@@ -10,13 +10,16 @@ import { NAV_LINKS, sectionHref } from "../lib/nav";
 import { useContent } from "../context/ContentContext";
 
 const isMac = () => /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || "");
+const noSubscribe = () => () => {};
+// "Ctrl K" in the build-time render and during hydration, then the real one.
+const shortcutLabel = () => (isMac() ? "⌘K" : "Ctrl K");
 
 export function TopBar({ path = "/" }) {
   const { SITE = {} } = useContent();
   const isHome = path === "/";
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("");
-  const [shortcut] = useState(() => (isMac() ? "⌘K" : "Ctrl K"));
+  const shortcut = useSyncExternalStore(noSubscribe, shortcutLabel, () => "Ctrl K");
   const progressRef = useRef(null);
 
   // Scrolled state + progress line, batched into one frame per scroll.

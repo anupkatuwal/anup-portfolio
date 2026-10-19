@@ -1,7 +1,8 @@
 // src/lib/theme.js — theme state shared by the toggle and the command palette.
 // Order (DESIGN.md §5.13): saved choice → system preference → dark.
-// public/theme-init.js applies a saved choice before first paint; with no
-// saved choice, data-theme stays unset and the CSS follows the system.
+// The inline script from scripts/theme-init.mjs applies a saved choice before
+// first paint; with no saved choice, data-theme stays unset and the CSS
+// follows the system.
 
 const THEME_COLOR = { dark: "#0A0C09", light: "#F7F8F3" };
 
@@ -15,6 +16,7 @@ function saved() {
 }
 
 export function currentTheme() {
+  if (typeof document === "undefined") return "dark"; // build-time render
   const set = document.documentElement.getAttribute("data-theme");
   if (set === "light" || set === "dark") return set;
   const stored = saved();

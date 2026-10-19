@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { mkdirSync, writeFileSync } from 'node:fs'
+import { themeInitTag } from './scripts/theme-init.mjs'
 
 // Single source of truth for the site's public URL — used by the canonical
 // tag, Open Graph tags, JSON-LD (via %SITE_URL% in index.html), and the
@@ -55,7 +56,8 @@ function siteUrl() {
     name: 'site-url',
     transformIndexHtml: {
       order: 'pre',
-      handler: (html) => html.replaceAll('%SITE_URL%', SITE_URL),
+      handler: (html) =>
+        html.replaceAll('%SITE_URL%', SITE_URL).replace('<!--theme-init-->', themeInitTag()),
     },
     // Regenerate sitemap + robots on every build so lastmod stays current.
     closeBundle() {
@@ -109,9 +111,24 @@ Canonical: ${SITE_URL}/.well-known/security.txt
   }
 }
 
+// The page is prerendered (scripts/prerender-*.mjs), so the app script only
+// hydrates markup that is already on screen. Fetching it at low priority
+// leaves the bandwidth on slow connections for the CSS and fonts, which the
+// first paint actually needs.
+function lowPriorityAppScript() {
+  return {
+    name: 'low-priority-app-script',
+    apply: 'build',
+    transformIndexHtml: {
+      order: 'post',
+      handler: (html) => html.replace('<script type="module" crossorigin', '<script type="module" fetchpriority="low" crossorigin'),
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), siteUrl()],
+  plugins: [react(), siteUrl(), lowPriorityAppScript()],
   test: {
     environment: 'jsdom',
     globals: true,

@@ -1,8 +1,9 @@
 // src/components/SqlConsole.jsx — the hero's query card (DESIGN.md §5.3).
 // Types the query once (~35ms/char), then fades the result table in. Under
-// prefers-reduced-motion it renders finished. The animated text is hidden
-// from assistive tech; the full query sits in a visually-hidden copy.
-import React, { useEffect, useState } from "react";
+// prefers-reduced-motion it shows finished. The build-time render and the
+// hydration pass both show it empty, so the two match. The animated text is
+// hidden from assistive tech; the full query sits in a visually-hidden copy.
+import React, { useEffect, useState, useSyncExternalStore } from "react";
 
 const KEYWORDS = new Set(["SELECT", "FROM", "WHERE", "AND", "OR", "ORDER", "BY", "LIMIT"]);
 
@@ -13,6 +14,14 @@ function tokenize(sql) {
     kind: KEYWORDS.has(text.toUpperCase()) ? "kw" : /^\d+$/.test(text) ? "num" : "",
   }));
 }
+
+const MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+function subscribeMotion(onChange) {
+  const mq = window.matchMedia(MOTION_QUERY);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+}
+const prefersReduced = () => window.matchMedia(MOTION_QUERY).matches;
 
 function typed(tokens, count) {
   const out = [];
@@ -29,11 +38,9 @@ export function SqlConsole({ console: c }) {
   const query = c?.query || "";
   const rows = c?.rows || [];
   const tokens = tokenize(query);
-  const [count, setCount] = useState(() =>
-    typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
-      ? query.length
-      : 0
-  );
+  const reduced = useSyncExternalStore(subscribeMotion, prefersReduced, () => false);
+  const [typedCount, setCount] = useState(0);
+  const count = reduced ? query.length : typedCount;
   const done = count >= query.length;
 
   useEffect(() => {

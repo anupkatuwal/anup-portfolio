@@ -9,6 +9,7 @@ import { dirname, join } from "node:path";
 import { PROJECTS, PROJECT_NOTES } from "../src/data/content.js";
 import { liveLinkLabel, workItems } from "../src/lib/projects.js";
 import { esc, headerHtml, footerHtml } from "./site-chrome.mjs";
+import { themeInitTag } from "./theme-init.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
@@ -71,9 +72,10 @@ function pageHtml(p) {
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preload" href="/fonts/inter-tight-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
     <meta name="theme-color" content="#0A0C09" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#F7F8F3" media="(prefers-color-scheme: light)" />
-    <script src="/theme-init.js"></script>
+    ${themeInitTag()}
     <title>${esc(title)}</title>
     <meta name="description" content="${esc(desc)}" />
     <meta name="author" content="${AUTHOR}" />
