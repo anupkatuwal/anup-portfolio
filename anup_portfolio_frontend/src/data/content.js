@@ -37,7 +37,7 @@ export const EXPERIENCES = [
   {
     role: "Graduate Researcher — NLP & Data Analytics",
     org: "NCIT, Pokhara University",
-    period: "2020 – 2026",
+    period: "Apr 2022 – Apr 2026",
     location: "Kathmandu, Nepal",
     bullets: [
       "Built data pipelines to preprocess and analyze 10,000 Reddit posts using Python and SQL.",
@@ -73,7 +73,7 @@ export const EDUCATION = [
   {
     degree: "Master of Computer Information System (MCIS)",
     inst: "NCIT, Pokhara University",
-    period: "Sep 2020 – Apr 2026",
+    period: "Fall 2021 – Apr 2026",
     details: "CGPA 3.71 · Thesis: Bias Mitigation in Mental Health Sentiment Analysis using BERT with Fairness Techniques.",
   },
   {
@@ -252,7 +252,7 @@ export const ABOUT = {
       detail: "Columbia College, Denver, Colorado · GPA 3.36",
     },
     {
-      year: "2020 – 2026",
+      year: "2021 – 2026",
       title: "Master of Computer Information System",
       detail: "NCIT, Pokhara University · CGPA 3.71",
     },
@@ -418,7 +418,7 @@ export const SITE = {
   handle: "anup.katuwal",
   role: "Backend Developer & Data Analyst",
   lead: "Backend developer turning into a data analyst. I build APIs, clean data, and make numbers make sense.",
-  location: "Kathmandu, Nepal",
+  location: "Bhaktapur, Nepal",
   email: "contact@anup-katuwal.com.np",
   cvUrl: "/resume.pdf",
   siteUrl: "https://anup-katuwal.com.np",
@@ -441,7 +441,7 @@ export const SITE = {
    The key/value table beside the About text.                                */
 
 export const ABOUT_SPEC = [
-  { key: "based_in",  value: "Kathmandu, Nepal" },
+  { key: "based_in",  value: "Bhaktapur, Nepal" },
   { key: "focus",     value: "Data analytics · Backend" },
   { key: "education", value: "MCIS, Pokhara University · BSc CIS, Columbia College (Denver)" },
   { key: "languages", value: "Python · SQL · Java" },

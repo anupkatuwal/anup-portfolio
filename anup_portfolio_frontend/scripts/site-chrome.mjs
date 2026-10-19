@@ -44,7 +44,7 @@ export function footerHtml() {
       <footer class="statusbar">
         <div class="container statusbar-inner">
           <p class="status${available ? " is-available" : ""}"><span class="status-dot" aria-hidden="true"></span>${available ? "available for work" : "heads down"}</p>
-          <p class="status-time">Kathmandu · NPT UTC+5:45 · <time>--:--</time></p>
+          <p class="status-time">Bhaktapur · NPT UTC+5:45 · <time>--:--</time></p>
           <p>© ${new Date().getFullYear()}<span class="status-host"> · ${esc(host)}</span></p>
         </div>
       </footer>`;

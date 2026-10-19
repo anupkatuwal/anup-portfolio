@@ -1,5 +1,5 @@
 // src/components/StatusBar.jsx — the editor-style footer (DESIGN.md §5.11):
-// availability, Kathmandu time (updates every 30s) and the copyright line.
+// availability, local time in Nepal (updates every 30s) and the copyright line.
 import React, { useSyncExternalStore } from "react";
 import { useContent } from "../context/ContentContext";
 
@@ -30,7 +30,7 @@ export function StatusBar() {
           {available ? "available for work" : "heads down"}
         </p>
         <p className="status-time">
-          Kathmandu · NPT UTC+5:45 · <time>{time}</time>
+          Bhaktapur · NPT UTC+5:45 · <time>{time}</time>
         </p>
         <p>© {new Date().getFullYear()}<span className="status-host"> · {host}</span></p>
       </div>
