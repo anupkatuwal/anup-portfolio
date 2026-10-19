@@ -79,18 +79,6 @@ section { padding-block: calc(var(--section-gap) / 2); }
 }
 .link:hover { background-size: 100% 1px; }
 
-/* The blinking block cursor, shared by the brand and the console */
-.cursor {
-  display: inline-block;
-  width: 0.55em;
-  height: 1.05em;
-  margin-left: 2px;
-  vertical-align: text-bottom;
-  background: var(--accent);
-  animation: blink 1s steps(2, start) infinite;
-}
-@keyframes blink { to { visibility: hidden; } }
-
 /* =========================================================
    BUTTONS (§5.4)
 ========================================================= */

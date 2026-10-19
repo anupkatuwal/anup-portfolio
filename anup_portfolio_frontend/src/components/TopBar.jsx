@@ -1,5 +1,5 @@
-// src/components/TopBar.jsx — sticky top bar (DESIGN.md §5.1): handle with a
-// blinking cursor, section links, the ⌘K chip, theme toggle and a 1px scroll
+// src/components/TopBar.jsx — sticky top bar (DESIGN.md §5.1): handle,
+// section links, the ⌘K chip, theme toggle and a 1px scroll
 // progress line. Below 768px the links give way to search + menu buttons,
 // both of which open the command palette.
 import React, { useEffect, useRef, useState, useSyncExternalStore } from "react";
@@ -70,7 +70,6 @@ export function TopBar({ path = "/" }) {
       <div className="container topbar-inner">
         <a href={isHome ? "#top" : "/"} className="brand">
           {SITE.handle || "anup.katuwal"}
-          <span className="cursor" aria-hidden="true" />
         </a>
 
         <nav className="topbar-nav" aria-label="Main navigation">

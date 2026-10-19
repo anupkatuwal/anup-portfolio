@@ -62,7 +62,6 @@ export function SqlConsole({ console: c }) {
           {typed(tokens, count).map((t, i) => (
             <span key={i} className={t.kind ? `sql-${t.kind}` : undefined}>{t.text}</span>
           ))}
-          <span className="cursor" />
         </pre>
 
         <table className={`console-result${done ? " is-shown" : ""}`}>
