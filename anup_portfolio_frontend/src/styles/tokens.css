@@ -1,0 +1,112 @@
+/* ---------- Tokens ----------
+   Source of truth: DESIGN.md §2. Every color, font, size, radius and timing
+   on the site comes from here — don't hard-code them anywhere else. */
+
+/* Inter Tight 600 is self-hosted (the CSP only allows same-origin fonts) and
+   preloaded from index.html. Inter and JetBrains Mono come from @fontsource
+   imports in main.jsx. */
+@font-face {
+  font-family: "Inter Tight";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/inter-tight-latin-600-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  /* Dark (default) */
+  --bg:        #0A0C09;
+  --surface:   #11150F;
+  --surface-2: #181D15;
+  --border:    #1E231C;
+  --text:      #ECF0E6;
+  --muted:     #8C9686;
+  --accent:    #C6F432;   /* signal lime — links, cursor, one primary CTA */
+  --accent-ink:#0A0C09;   /* text on lime */
+  --data:      #2DD4BF;   /* teal — live dots, success, charts */
+  --focus:     #C6F432;
+
+  /* Type */
+  --font-display: "Inter Tight", system-ui, sans-serif;
+  --font-body:    "Inter", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --fs-display: clamp(2.5rem, 5vw + 1rem, 4rem);   /* 40 → 64px */
+  --fs-h2:      clamp(1.625rem, 2vw + 1rem, 2rem); /* 26 → 32px */
+  --fs-h3:      1.25rem;                           /* 20px */
+  --fs-body:    clamp(1rem, 0.2vw + 0.95rem, 1.0625rem); /* 16 → 17px */
+  --fs-small:   0.875rem;                          /* 14px */
+  --fs-mono:    0.8125rem;                         /* 13px */
+  --fs-micro:   0.75rem;                           /* 12px */
+
+  --lh-tight: 1.1;
+  --lh-body:  1.65;
+  --tracking-display: -0.03em;
+  --tracking-label:    0.08em;
+
+  /* Spacing scale (4px base) */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
+  --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
+  --s-9: 96px; --s-10: 128px;
+
+  /* Layout */
+  --container: 1120px;
+  --gutter: 24px;
+  --page-pad: 20px;            /* mobile side padding */
+  --section-gap: var(--s-10);  /* 128px desktop */
+  --nav-h: 56px;
+  --statusbar-h: 32px;
+
+  /* Shape & depth */
+  --r-sm: 6px;   /* chips, buttons, inputs */
+  --r-md: 10px;  /* cards, images */
+  --hairline: 1px solid var(--border);
+  --shadow-palette: 0 24px 64px -12px rgb(0 0 0 / 0.55);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-fast: 150ms;
+  --t-base: 250ms;
+  --t-reveal: 400ms;
+
+  color-scheme: dark;
+}
+
+/* Light theme (explicit toggle) */
+:root[data-theme="light"] {
+  --bg:        #F7F8F3;
+  --surface:   #FFFFFF;
+  --surface-2: #EEF1E8;
+  --border:    #DDE2D5;
+  --text:      #12150F;
+  --muted:     #59614F;
+  --accent:    #4D7C0F;
+  --accent-ink:#FFFFFF;   /* light theme: deep olive accent keeps AA contrast */
+  --data:      #0B7A6E;   /* DESIGN.md says #0F8C7E: 3.9:1 on --bg, below AA for small text */
+  --focus:     #4D7C0F;
+  --shadow-palette: 0 24px 64px -12px rgb(17 20 24 / 0.18);
+  color-scheme: light;
+}
+
+/* Light theme from system, unless user forced dark */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg:        #F7F8F3;
+    --surface:   #FFFFFF;
+    --surface-2: #EEF1E8;
+    --border:    #DDE2D5;
+    --text:      #12150F;
+    --muted:     #59614F;
+    --accent:    #4D7C0F;
+    --accent-ink:#FFFFFF;
+    --data:      #0B7A6E;
+    --focus:     #4D7C0F;
+    --shadow-palette: 0 24px 64px -12px rgb(17 20 24 / 0.18);
+    color-scheme: light;
+  }
+}
+
+@media (max-width: 768px) {
+  :root { --section-gap: 80px; }
+}

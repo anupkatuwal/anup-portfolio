@@ -28,6 +28,13 @@ export const SKILLS = [
 
 export const EXPERIENCES = [
   {
+    role: "Freelance Developer",
+    org: "Upwork",
+    period: "Jan 2021 — present",
+    location: "Remote",
+    bullets: [],
+  },
+  {
     role: "Graduate Researcher — NLP & Data Analytics",
     org: "NCIT, Pokhara University",
     period: "2020 – 2026",
@@ -41,7 +48,7 @@ export const EXPERIENCES = [
   {
     role: "Consultant Supervisor",
     org: "Bhatta IT Consultancy Services (Remote — Austin, TX)",
-    period: "2021 – 2022",
+    period: "Jan 2021 — Jul 2022",
     location: "Kathmandu, Nepal",
     bullets: [
       "Supervised junior developers on Java and Spring Boot projects.",
@@ -51,7 +58,7 @@ export const EXPERIENCES = [
   {
     role: "Teaching Assistant — Database Management Systems",
     org: "College of Applied Business (CAB)",
-    period: "2018",
+    period: "Feb 2018 — Sep 2018",
     location: "Kathmandu, Nepal",
     bullets: [
       "Delivered MySQL lab sessions covering database design, normalization, stored procedures, and complex SQL queries for 30+ students.",
@@ -401,6 +408,104 @@ export const SKILL_MATRIX = {
   ],
 };
 
+/* ── SITE ─────────────────────────────────────────────────────────────────────
+   Identity, hero copy and the status bar. `available` drives the status-bar
+   dot ("available for work" vs "heads down"). The hero console is the
+   SELECT shown on the homepage; each row is one result line.              */
+
+export const SITE = {
+  name: "Anup Katuwal",
+  handle: "anup.katuwal",
+  role: "Backend Developer & Data Analyst",
+  lead: "Backend developer turning into a data analyst. I build APIs, clean data, and make numbers make sense.",
+  location: "Kathmandu, Nepal",
+  email: "contact@anup-katuwal.com.np",
+  cvUrl: "/resume.pdf",
+  siteUrl: "https://anup-katuwal.com.np",
+  github: "https://github.com/anupkatuwal",
+  linkedin: "https://www.linkedin.com/in/anupkatuwal1989",
+  available: true,
+  console: {
+    file: "query.sql",
+    query: "SELECT focus, stack\nFROM anup WHERE year = 2026;",
+    rows: [
+      { focus: "Data analytics", stack: "Python · pandas · SQL" },
+      { focus: "Backend APIs",   stack: "FastAPI · Java · Spring" },
+      { focus: "ML research",    stack: "BERT · fairness" },
+    ],
+    footer: "3 rows · 12ms",
+  },
+};
+
+/* ── ABOUT SPEC SHEET ─────────────────────────────────────────────────────────
+   The key/value table beside the About text.                                */
+
+export const ABOUT_SPEC = [
+  { key: "based_in",  value: "Kathmandu, Nepal" },
+  { key: "focus",     value: "Data analytics · Backend" },
+  { key: "education", value: "MCIS, Pokhara University · BSc CIS, Columbia College (Denver)" },
+  { key: "languages", value: "Python · SQL · Java" },
+  { key: "currently", value: "Advanced Data Analysis with Python, Broadway Infosys" },
+];
+
+/* ── STACK ────────────────────────────────────────────────────────────────────
+   The stack table. No ratings, no logos.                                    */
+
+export const STACK = [
+  { area: "Languages", tools: "Python, SQL, Java",          use: "Analysis, APIs, scripting" },
+  { area: "Data",      tools: "pandas, PostgreSQL, MySQL",  use: "Cleaning, querying, modelling" },
+  { area: "Backend",   tools: "FastAPI, Spring Boot",       use: "REST APIs, services" },
+  { area: "Cloud",     tools: "Google Cloud, Firebase",     use: "Hosting, auth, storage" },
+  { area: "ML",        tools: "BERT, scikit-learn",         use: "NLP, fairness research" },
+];
+
+/* ── PROJECT NOTES ────────────────────────────────────────────────────────────
+   Card copy for the Work section, joined to PROJECTS by `id`. The ORDER of
+   this list is the order on the page, and the first entry is the featured
+   card. Problem and outcome restate what each project description already
+   says — no new numbers. `paper` is an optional link (e.g. /research);
+   `stats` fills the featured card's right-hand panel.                       */
+
+export const PROJECT_NOTES = [
+  {
+    id: "thesis",
+    tag: "ML · NLP",
+    problem: "Sentiment models misread mental-health posts written in non-standard dialects far more often than standard English.",
+    outcome: "Fine-tuned BERT at 84.0% accuracy, with dialect bias (DPD) cut from 0.327 to 0.066.",
+    paper: "/research",
+    stats: [
+      { label: "accuracy",    value: "84.0%" },
+      { label: "macro-F1",    value: "0.688" },
+      { label: "mean DPD",    value: "−35.4%" },
+      { label: "dialect DPD", value: "0.327 → 0.066" },
+    ],
+  },
+  {
+    id: "food-etl",
+    tag: "DATA · ETL",
+    problem: "Turn raw CSV food orders into a warehouse you can query and a dashboard you can read.",
+    outcome: "MySQL star schema with idempotent loads, job logging, 20 automated tests and CI.",
+  },
+  {
+    id: "upwork-agent",
+    tag: "AUTOMATION · AI",
+    problem: "Writing a tailored Upwork proposal took about 20 minutes.",
+    outcome: "Proposals drafted in under 2 minutes and exported to Google Docs.",
+  },
+  {
+    id: "daily-briefing",
+    tag: "AUTOMATION · AI",
+    problem: "Email, calendar and news were spread across several accounts every morning.",
+    outcome: "One scheduled HTML briefing a day; replies are routed back to the right account.",
+  },
+  {
+    id: "portfolio",
+    tag: "WEB · BACKEND",
+    problem: "Site content had to be editable without a code change or redeploy.",
+    outcome: "React + FastAPI on Vercel with an admin panel, rate limiting and strict security headers.",
+  },
+];
+
 /* ── TESTIMONIALS ─────────────────────────────────────────────────────────────
    Intentionally empty. Add only real, attributable quotes you have permission
    to publish — the section renders nothing while this list is empty.
@@ -441,7 +546,10 @@ export const INTERESTS = {
    API stores. Order of keys here defines the order sections appear in /admin. */
 
 export const DEFAULT_CONTENT = {
+  SITE,
   ABOUT,
+  ABOUT_SPEC,
+  STACK,
   PRIMARY_SKILLS,
   SKILLS,
   EXPERIENCES,
@@ -453,6 +561,7 @@ export const DEFAULT_CONTENT = {
   SKILL_MATRIX,
   TESTIMONIALS,
   PROJECTS,
+  PROJECT_NOTES,
   RESEARCH,
   INTERESTS,
 };

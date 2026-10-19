@@ -22,22 +22,28 @@ const NOT_FOUND_HTML = `<!doctype html>
     <meta name="robots" content="noindex" />
     <title>404 — Page not found</title>
     <style>
-      :root { color-scheme: light; }
+      /* Standalone page with no stylesheet: values mirror src/styles/tokens.css */
+      :root { color-scheme: dark light; }
       body {
         margin: 0; min-height: 100vh; display: grid; place-items: center;
-        background: #fafaf7; color: #1a1a1a; text-align: center;
+        background: #0A0C09; color: #ECF0E6; text-align: center;
         font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
       }
-      main { padding: 2rem 16px; }
-      h1 { font-size: 2.5rem; font-weight: 600; margin: 0 0 .5rem; }
-      p { color: #55554f; margin: 0 0 1.5rem; }
-      a { color: #1f5f4a; }
+      main { padding: 2rem 20px; }
+      h1 { font-size: 2.5rem; font-weight: 600; margin: 0 0 .5rem; letter-spacing: -0.03em; }
+      p { color: #8C9686; margin: 0 0 1.5rem; font-family: ui-monospace, monospace; }
+      a { color: #C6F432; }
+      @media (prefers-color-scheme: light) {
+        body { background: #F7F8F3; color: #12150F; }
+        p { color: #59614F; }
+        a { color: #4D7C0F; }
+      }
     </style>
   </head>
   <body>
     <main>
       <h1>404</h1>
-      <p>That page doesn't exist.</p>
+      <p>404 · no rows returned</p>
       <a href="/">Back to the homepage</a>
     </main>
   </body>

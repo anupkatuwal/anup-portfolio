@@ -6,8 +6,8 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { PROJECTS } from "../src/data/content.js";
-import { liveLinkLabel } from "../src/lib/projects.js";
+import { PROJECTS, PROJECT_NOTES } from "../src/data/content.js";
+import { liveLinkLabel, workItems } from "../src/lib/projects.js";
 import { esc, headerHtml, footerHtml } from "./site-chrome.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -46,20 +46,22 @@ function pageHtml(p) {
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
-      { "@type": "ListItem", position: 2, name: "Projects", item: `${SITE_URL}/#projects` },
+      { "@type": "ListItem", position: 2, name: "Work", item: `${SITE_URL}/#work` },
       { "@type": "ListItem", position: 3, name: p.title, item: url },
     ],
   };
   const jsonld = JSON.stringify({ "@context": "https://schema.org", "@graph": [software, breadcrumb] });
 
-  const tags = (p.tech || []).map((t) => `<li class="tag">${esc(t)}</li>`).join("");
+  const w = workItems(PROJECTS, PROJECT_NOTES).find((x) => x.id === p.id);
+  const chips = w.stack.map((t) => `<li class="chip">${esc(t)}</li>`).join("");
   const links = [
-    p.github && `<a class="btn btn-primary" href="${esc(p.github)}" target="_blank" rel="noreferrer">View on GitHub ↗</a>`,
-    p.live && `<a class="btn" href="${esc(p.live)}" target="_blank" rel="noreferrer">${liveLinkLabel(p.live)} ↗</a>`,
+    w.code && `<a class="btn btn-primary" href="${esc(w.code)}" target="_blank" rel="noreferrer">View code ↗</a>`,
+    w.live && `<a class="btn btn-secondary" href="${esc(w.live)}" target="_blank" rel="noreferrer">${liveLinkLabel(w.live)} ↗</a>`,
+    w.paper && `<a class="btn btn-secondary" href="${esc(w.paper)}">Read the paper</a>`,
   ].filter(Boolean).join("\n            ");
 
   // No app bundle here: main.jsx would mount the homepage over this page.
-  // static-header.js wires the theme toggle and mobile menu instead.
+  // static-header.js wires the theme toggle, menu and status bar instead.
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -68,7 +70,9 @@ function pageHtml(p) {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#fafaf7" />
+    <link rel="preload" href="/fonts/inter-tight-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#0A0C09" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F7F8F3" media="(prefers-color-scheme: light)" />
     <script src="/theme-init.js"></script>
     <title>${esc(title)}</title>
     <meta name="description" content="${esc(desc)}" />
@@ -90,25 +94,33 @@ function pageHtml(p) {
     <script src="/static-header.js" defer></script>
   </head>
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>${headerHtml(`/projects/${p.id}`)}
+    <a class="skip-link" href="#main">Skip to content</a>${headerHtml(`/projects/${p.id}`, { staticPage: true })}
     <main id="main" class="page">
-      <article class="container">
+      <article class="container article">
         <nav class="crumb" aria-label="Breadcrumb">
-          <a href="/">Home</a> <span aria-hidden="true">/</span> <a href="/#projects">Projects</a> <span aria-hidden="true">/</span> <span>${esc(p.title)}</span>
+          <a class="link" href="/">Home</a> <span aria-hidden="true">/</span> <a class="link" href="/#work">Work</a> <span aria-hidden="true">/</span> <span>${esc(p.title)}</span>
         </nav>
-        <header class="page-head">
-          <h1 class="page-title">${esc(p.title)}</h1>
-          ${p.metric ? `<p class="meta">${esc(p.metric)}</p>` : ""}
-          ${tags ? `<ul class="tags" aria-label="Technologies">${tags}</ul>` : ""}
+        <header class="article-head">
+          <p class="label"><span class="idx">project</span>${w.tag ? ` / ${esc(w.tag)}` : ""}</p>
+          <h1 class="article-title">${esc(p.title)}</h1>
+          ${chips ? `<ul class="chips" aria-label="Stack">${chips}</ul>` : ""}
         </header>
-        <section class="page-section" aria-labelledby="overview">
+        <section class="article-section" aria-labelledby="problem">
+          <h2 id="problem">Problem</h2>
+          <p>${esc(w.problem)}</p>
+        </section>
+        ${w.outcome ? `<section class="article-section" aria-labelledby="outcome">
+          <h2 id="outcome">Outcome</h2>
+          <p>${esc(w.outcome)}</p>
+        </section>` : ""}
+        <section class="article-section" aria-labelledby="overview">
           <h2 id="overview">Overview</h2>
           <p>${esc(p.description)}</p>
-          ${links ? `<p class="page-actions">
+          ${links ? `<p class="article-actions">
             ${links}
           </p>` : ""}
         </section>
-        <p class="page-back"><a href="/#projects">← Back to all projects</a></p>
+        <p class="article-back"><a class="link" href="/#work">← Back to work</a></p>
       </article>
     </main>${footerHtml()}
   </body>

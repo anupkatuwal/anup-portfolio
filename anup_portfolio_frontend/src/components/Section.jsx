@@ -1,10 +1,14 @@
 import React from "react";
 
-export function Section({ id, title, children }) {
+// A numbered homepage section: mono label ("02 / work") over the H2.
+export function Section({ id, index, label, title, children }) {
   return (
-    <section id={id} className="section" aria-labelledby={title ? `${id}-title` : undefined}>
+    <section id={id} className="section" aria-labelledby={`${id}-title`}>
       <div className="container">
-        {title && <h2 className="section-title" id={`${id}-title`}>{title}</h2>}
+        <header className="section-head" data-reveal>
+          <p className="label"><span className="idx">{index}</span> / {label}</p>
+          <h2 id={`${id}-title`}>{title}</h2>
+        </header>
         {children}
       </div>
     </section>

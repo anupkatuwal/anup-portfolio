@@ -8,21 +8,21 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Fonts: self-hosted (CSP font-src 'self'); only Inter Tight 600 is preloaded -->
+    <link rel="preload" href="/fonts/inter-tight-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin />
+
     <!-- Primary SEO -->
-    <title>Anup Katuwal — CIS Graduate &amp; Data Enthusiast | Kathmandu, Nepal</title>
+    <title>Anup Katuwal — Backend Developer &amp; Data Analyst</title>
     <meta
       name="description"
-      content="Anup Katuwal — Computer Information Systems graduate, data engineer and NLP researcher in Kathmandu, Nepal. Master's thesis on fairness in mental-health NLP (FairBERT), plus ETL pipelines, star schema data warehousing, Python, SQL (MySQL) and machine learning. Data analyst with a Master's in CIS: I clean, model and query data, then report what it shows."
-    />
-    <meta
-      name="keywords"
-      content="Anup Katuwal, CIS Graduate, Academic Portfolio, Research, Thesis, FairBERT, Bias Mitigation, Data Engineer, ETL Pipeline, Data Warehousing, Star Schema, NLP Researcher, Machine Learning, Python, SQL (MySQL), BERT, Data Science, Kathmandu, Nepal, Portfolio, Upwork, FastAPI, React"
+      content="Backend developer moving into data analytics. Python, SQL, FastAPI and ML research. Based in Kathmandu, Nepal."
     />
     <meta name="author" content="Anup Katuwal" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <meta name="theme-color" content="#fafaf7" />
-    <!-- Blocking on purpose, and after theme-color: sets data-theme before
-         first paint so the saved theme never flashes. Tiny, same-origin. -->
+    <meta name="theme-color" content="#0A0C09" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F7F8F3" media="(prefers-color-scheme: light)" />
+    <!-- Blocking on purpose, and after theme-color: applies a saved theme
+         before first paint so it never flashes. Tiny, same-origin. -->
     <script src="/theme-init.js"></script>
     <link rel="canonical" href="%SITE_URL%/" />
 
@@ -30,27 +30,21 @@
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="Anup Katuwal" />
-    <meta property="og:title" content="Anup Katuwal — CIS Graduate &amp; Data Enthusiast | Kathmandu, Nepal" />
-    <meta
-      property="og:description"
-      content="Data analyst with a Master's in CIS. I clean, model and query data, then report what it shows — with a Master's thesis on fairness in mental-health NLP, plus ETL pipelines, star schema data warehousing, Python, SQL (MySQL) and machine learning. Kathmandu, Nepal."
-    />
+    <meta property="og:title" content="Anup Katuwal — Backend Developer &amp; Data Analyst" />
+    <meta property="og:description" content="Python, SQL, FastAPI and ML research. Kathmandu, Nepal." />
     <meta property="og:url" content="%SITE_URL%/" />
     <meta property="og:image" content="%SITE_URL%/og.png" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Anup Katuwal — CIS Graduate &amp; Data Enthusiast" />
+    <meta property="og:image:alt" content="Anup Katuwal — Backend Developer &amp; Data Analyst" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Anup Katuwal — CIS Graduate &amp; Data Enthusiast | Kathmandu, Nepal" />
-    <meta
-      name="twitter:description"
-      content="Data analyst with a Master's in CIS. I clean, model and query data, then report what it shows — fairness in NLP research, ETL pipelines, data warehousing, Python and SQL. Kathmandu, Nepal."
-    />
+    <meta name="twitter:title" content="Anup Katuwal — Backend Developer &amp; Data Analyst" />
+    <meta name="twitter:description" content="Python, SQL, FastAPI and ML research. Kathmandu, Nepal." />
     <meta name="twitter:image" content="%SITE_URL%/og.png" />
-    <meta name="twitter:image:alt" content="Anup Katuwal — CIS Graduate &amp; Data Enthusiast" />
+    <meta name="twitter:image:alt" content="Anup Katuwal — Backend Developer &amp; Data Analyst" />
 
     <!-- Structured data: Person + WebSite + ProfilePage (linked @graph) -->
     <script type="application/ld+json">
@@ -59,8 +53,8 @@
         "@type": "ProfilePage",
         "@id": "%SITE_URL%/#webpage",
         "url": "%SITE_URL%/",
-        "name": "Anup Katuwal — CIS Graduate & Data Enthusiast | Kathmandu, Nepal",
-        "description": "Portfolio of Anup Katuwal — CIS graduate, data engineer and NLP researcher in Kathmandu, Nepal.",
+        "name": "Anup Katuwal — Backend Developer & Data Analyst",
+        "description": "Portfolio of Anup Katuwal — backend developer moving into data analytics, Kathmandu, Nepal.",
         "inLanguage": "en",
         "isPartOf": {
           "@type": "WebSite",
@@ -75,8 +69,8 @@
           "name": "Anup Katuwal",
           "url": "%SITE_URL%/",
           "image": "%SITE_URL%/profile.jpg",
-          "jobTitle": "Data Engineer & NLP Researcher",
-          "description": "Computer Information Systems graduate based in Kathmandu, Nepal — ETL pipelines, star schema data warehousing, Python, SQL (MySQL) and machine learning, with Master's thesis research on fairness in mental-health NLP.",
+          "jobTitle": "Backend Developer & Data Analyst",
+          "description": "Backend developer moving into data analytics, based in Kathmandu, Nepal. Python, SQL, FastAPI, and Master's thesis research on fairness in mental-health NLP.",
           "email": ["mailto:contact@anup-katuwal.com.np", "mailto:katuwalanup@gmail.com"],
           "address": {
             "@type": "PostalAddress",
@@ -101,7 +95,7 @@
             "Natural Language Processing",
             "Machine Learning",
             "Python",
-            "SQL (MySQL)",
+            "SQL",
             "Pandas",
             "BERT",
             "FastAPI",
