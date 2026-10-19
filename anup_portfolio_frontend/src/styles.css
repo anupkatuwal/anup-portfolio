@@ -459,7 +459,7 @@ section { padding-block: calc(var(--section-gap) / 2); }
   background: var(--surface);
 }
 .stat dt { font-family: var(--font-mono); font-size: var(--fs-micro); color: var(--muted); text-transform: uppercase; letter-spacing: var(--tracking-label); }
-.stat dd { margin: 0; font-family: var(--font-mono); font-size: var(--fs-h3); color: var(--data); white-space: nowrap; }
+.stat dd { margin: 0; font-family: var(--font-mono); font-size: var(--fs-h3); color: var(--data); overflow-wrap: anywhere; }
 @media (max-width: 1023px) {
   .project--featured { grid-template-columns: minmax(0, 1fr); }
 }
