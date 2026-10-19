@@ -25,7 +25,7 @@ export function headerHtml(path = "/", { staticPage = false } = {}) {
   return `
       <header class="topbar">
         <div class="container topbar-inner">
-          <a href="${isHome ? "#top" : "/"}" class="brand">${esc(SITE.handle)}<span class="cursor" aria-hidden="true"></span></a>
+          <a href="${isHome ? "#top" : "/"}" class="brand">${esc(SITE.handle)}</a>
           <nav class="topbar-nav" aria-label="Main navigation"><ul>${links}</ul></nav>
           <div class="topbar-actions">
             <button class="icon-btn theme-toggle" type="button" aria-label="Toggle theme">${icon(Sun, { className: "icon-sun" })}${icon(Moon, { className: "icon-moon", hidden: true })}</button>
