@@ -22,21 +22,20 @@ test("direct-labels every bar with its value", () => {
   const { container } = render(<BarChart chart={simple} />);
   expect(screen.getByText("0.84")).toBeInTheDocument();
   expect(screen.getByText("0.688")).toBeInTheDocument();
-  expect(container.querySelectorAll("rect.chart-bar")).toHaveLength(2);
+  expect(container.querySelectorAll(".chart-bar")).toHaveLength(2);
 });
 
 test("a grouped chart draws two bars per row and carries a legend", () => {
   const { container } = render(<BarChart chart={grouped} />);
-  expect(container.querySelectorAll("rect.chart-bar")).toHaveLength(2);
+  expect(container.querySelectorAll(".chart-bar")).toHaveLength(2);
   expect(screen.getByText("Before debiasing")).toBeInTheDocument();
   expect(screen.getByText("After debiasing")).toBeInTheDocument();
 });
 
 test("bar width is proportional to the value and never exceeds the plot", () => {
   const { container } = render(<BarChart chart={grouped} />);
-  const [before, after] = container.querySelectorAll("rect.chart-bar");
-  expect(Number(before.getAttribute("width"))).toBeGreaterThan(
-    Number(after.getAttribute("width"))
-  );
-  expect(Number(before.getAttribute("width"))).toBeLessThanOrEqual(1000 - 116 - 150);
+  const [before, after] = container.querySelectorAll(".chart-bar");
+  const width = (el) => parseFloat(el.style.width);
+  expect(width(before)).toBeGreaterThan(width(after));
+  expect(width(before)).toBeLessThanOrEqual(100);
 });
