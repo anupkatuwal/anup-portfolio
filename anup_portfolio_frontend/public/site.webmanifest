@@ -1,16 +1,16 @@
 {
-  "name": "Anup Katuwal — CIS Graduate & Data Enthusiast",
+  "name": "Anup Katuwal — Backend Developer & Data Analyst",
   "short_name": "Anup Katuwal",
-  "description": "Portfolio of Anup Katuwal — CIS graduate, data engineer and NLP researcher in Kathmandu, Nepal.",
+  "description": "Backend developer moving into data analytics. Kathmandu, Nepal.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#fafaf7",
-  "theme_color": "#fafaf7",
+  "background_color": "#0A0C09",
+  "theme_color": "#0A0C09",
   "icons": [
     {
       "src": "/favicon.png",
-      "sizes": "96x96",
+      "sizes": "32x32",
       "type": "image/png"
     },
     {

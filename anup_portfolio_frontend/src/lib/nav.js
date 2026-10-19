@@ -1,22 +1,17 @@
 // src/lib/nav.js
-// Single source of truth for the primary navigation, shared by the Navbar,
-// the footer and the build-time prerender scripts.
-//
-// `hash` links point at a section of the homepage, so they need the "/" prefix
-// when the visitor is on a sub-page like /research. `page` links are routes.
+// Single source of truth for the primary navigation, shared by the top bar,
+// the command palette and the build-time prerender scripts. Every link is a
+// homepage section, so on a sub-page like /research it needs a "/" prefix.
 export const NAV_LINKS = [
-  { label: "About",      href: "#about",       kind: "hash" },
-  { label: "Research",   href: "/research",    kind: "page" },
-  { label: "Projects",   href: "#projects",    kind: "hash" },
-  { label: "Experience", href: "#experience",  kind: "hash" },
-  { label: "Contact",    href: "#contact",     kind: "hash" },
+  { label: "About",   id: "about" },
+  { label: "Work",    id: "work" },
+  { label: "Stack",   id: "stack" },
+  { label: "Log",     id: "log" },
+  { label: "Contact", id: "contact" },
 ];
 
-// Resolve a link for the page it's being rendered on. On the homepage a hash
-// link stays a plain in-page anchor; anywhere else it has to jump home first.
-export function resolveHref(link, isHome) {
-  if (link.kind === "page") return link.href;
-  return isHome ? link.href : `/${link.href}`;
+export function sectionHref(id, isHome) {
+  return isHome ? `#${id}` : `/#${id}`;
 }
 
 // "/" and "/index.html" are the homepage; everything else is a sub-page.

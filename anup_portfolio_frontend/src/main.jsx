@@ -5,8 +5,10 @@ import { inject } from "@vercel/analytics";
 import { injectSpeedInsights } from "@vercel/speed-insights";
 
 // Self-hosted fonts (same origin, so the CSP's font-src 'self' covers them).
-// Inter carries all text; JetBrains Mono only metrics, dates and tags.
-import "@fontsource-variable/inter";
+// Inter for body text, JetBrains Mono for labels and data. Inter Tight 600
+// (headings) is declared in styles/tokens.css and preloaded from index.html.
+import "@fontsource/inter/latin-400.css";
+import "@fontsource/inter/latin-500.css";
 import "@fontsource/jetbrains-mono/latin-400.css";
 import "@fontsource/jetbrains-mono/latin-500.css";
 

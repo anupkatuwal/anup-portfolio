@@ -1,52 +1,26 @@
 import React, { useEffect, useState } from "react";
-
-// Keep in step with public/theme-init.js.
-const THEME_COLOR = { light: "#fafaf7", dark: "#141414" };
-
-// public/theme-init.js has already set data-theme before first paint, so
-// start from that rather than recomputing it. Storage access is wrapped:
-// it throws when blocked (Safari private mode, strict cookie settings), and
-// an uncaught throw here would blank the whole page. Light is the default —
-// dark only applies once the visitor has chosen it.
-function initialTheme() {
-  const set = document.documentElement.getAttribute("data-theme");
-  if (set === "light" || set === "dark") return set;
-  try {
-    if (window.localStorage.getItem("theme") === "dark") return "dark";
-  } catch {
-    /* storage blocked — use the default */
-  }
-  return "light";
-}
+import { Moon, Sun } from "lucide-react";
+import { currentTheme, toggleTheme } from "../lib/theme";
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState(initialTheme);
+  const [theme, setTheme] = useState(currentTheme);
 
+  // The command palette can switch the theme too; follow it.
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    document
-      .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", THEME_COLOR[theme]);
-  }, [theme]);
+    const sync = () => setTheme(currentTheme());
+    window.addEventListener("themechange", sync);
+    return () => window.removeEventListener("themechange", sync);
+  }, []);
 
-  const toggle = () => {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    try {
-      window.localStorage.setItem("theme", next);
-    } catch {
-      /* not persisted, but the switch still works for this visit */
-    }
-  };
+  const label = theme === "dark" ? "Switch to light theme" : "Switch to dark theme";
 
   return (
-    <button
-      className="text-button theme-toggle"
-      type="button"
-      onClick={toggle}
-      aria-pressed={theme === "dark"}
-    >
-      Dark mode
+    <button className="icon-btn" type="button" onClick={toggleTheme} aria-label={label} title={label}>
+      {theme === "dark" ? (
+        <Sun size={18} strokeWidth={1.5} aria-hidden="true" />
+      ) : (
+        <Moon size={18} strokeWidth={1.5} aria-hidden="true" />
+      )}
     </button>
   );
 }

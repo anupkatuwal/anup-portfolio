@@ -84,19 +84,20 @@ written.push(
       ...(RESEARCH.thesisUrl ? { sameAs: RESEARCH.thesisUrl } : {}),
     },
     body: `
-        <article class="container">
-          <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <span>Research</span></nav>
-          <header class="page-head">
-            <h1 class="page-title">${esc(RESEARCH.title)}</h1>
-            <p class="meta">${esc(AUTHOR)} · ${esc(RESEARCH.venue)} · ${esc(RESEARCH.period)}</p>
-            <ul class="tags" aria-label="Keywords">${RESEARCH.keywords.map((k) => `<li class="tag">${esc(k)}</li>`).join("")}</ul>
-            ${RESEARCH.thesisUrl ? `<p class="page-actions"><a class="btn btn-primary" href="${esc(RESEARCH.thesisUrl)}">Read the full thesis ↗</a></p>` : ""}
+        <article class="container article">
+          <nav class="crumb" aria-label="Breadcrumb"><a class="link" href="/">Home</a> <span aria-hidden="true">/</span> <span>Research</span></nav>
+          <header class="article-head">
+            <p class="label"><span class="idx">thesis</span> / ${esc(RESEARCH.shortTitle)}</p>
+            <h1 class="article-title">${esc(RESEARCH.title)}</h1>
+            <p class="article-meta">${esc(AUTHOR)} · ${esc(RESEARCH.venue)} · ${esc(RESEARCH.period)}</p>
+            <ul class="chips" aria-label="Keywords">${RESEARCH.keywords.map((k) => `<li class="chip">${esc(k)}</li>`).join("")}</ul>
+            ${RESEARCH.thesisUrl ? `<p class="article-actions"><a class="btn btn-primary" href="${esc(RESEARCH.thesisUrl)}">Read the full thesis ↗</a></p>` : ""}
           </header>
-          <section class="page-section"><h2>Abstract</h2><p>${esc(RESEARCH.abstract)}</p></section>
-          <section class="page-section"><h2>Methodology</h2>
+          <section class="article-section"><h2>Abstract</h2><p>${esc(RESEARCH.abstract)}</p></section>
+          <section class="article-section"><h2>Methodology</h2>
             <ol class="method-list">${RESEARCH.methodology.map((m) => `<li class="method-step"><span class="method-num">${esc(m.step)}</span><div><h3>${esc(m.title)}</h3><p>${esc(m.detail)}</p></div></li>`).join("")}</ol>
           </section>
-          <section class="page-section"><h2>Results</h2>
+          <section class="article-section"><h2>Results</h2>
             ${RESEARCH.charts.map((c) => `<p>${esc(c.title)}: ${esc(
               (c.grouped
                 ? c.bars.map((b) => `${b.label} ${b.before} before, ${b.after} after`)
@@ -105,7 +106,7 @@ written.push(
             )}.</p>`).join("")}
             <ul class="bullets">${RESEARCH.results.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
           </section>
-          <section class="page-section"><h2>References</h2>
+          <section class="article-section"><h2>References</h2>
             <ol class="ieee-list">${RESEARCH.references.map((r, i) => `<li class="ieee-item"><span class="ieee-num">[${i + 1}]</span><span>${esc(r)}</span></li>`).join("")}</ol>
           </section>
         </article>`,

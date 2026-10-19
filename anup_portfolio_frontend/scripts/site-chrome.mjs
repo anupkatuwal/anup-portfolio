@@ -1,38 +1,51 @@
-// Shared build-time markup for the static pages: the header and footer, in
-// the same markup and classes React renders (Navbar.jsx, Footer.jsx), so a
-// prerendered page looks the same before and after JavaScript runs.
-import { NAV_LINKS, resolveHref } from "../src/lib/nav.js";
+// Shared build-time markup for the static pages: the top bar and the status
+// bar, in the same markup and classes React renders (TopBar.jsx,
+// StatusBar.jsx), so a prerendered page looks the same before and after
+// JavaScript runs. Icons are Lucide, rendered to SVG strings here.
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { Menu, Moon, Sun } from "lucide-react";
+import { NAV_LINKS, sectionHref } from "../src/lib/nav.js";
+import { SITE } from "../src/data/content.js";
 
 export const esc = (s = "") =>
   String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;")
            .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-export function headerHtml(path = "/") {
+const icon = (Icon, attrs = {}) =>
+  renderToStaticMarkup(createElement(Icon, { size: 18, strokeWidth: 1.5, "aria-hidden": "true", ...attrs }));
+
+// `staticPage` adds what a page without React needs: a theme toggle and a
+// menu button that public/static-header.js wires up (no command palette).
+export function headerHtml(path = "/", { staticPage = false } = {}) {
   const isHome = path === "/";
-  const link = (l) => {
-    const current = l.kind === "page" && l.href === path ? ' aria-current="page"' : "";
-    return `<li><a class="nav-link" href="${resolveHref(l, isHome)}"${current}>${esc(l.label)}</a></li>`;
-  };
-  const links = NAV_LINKS.map(link).join("");
+  const links = NAV_LINKS
+    .map((l) => `<li><a class="nav-link" href="${sectionHref(l.id, isHome)}">${esc(l.label)}</a></li>`)
+    .join("");
   return `
-      <header class="site-header">
-        <div class="container header-inner">
-          <a href="${isHome ? "#top" : "/"}" class="site-name">Anup Katuwal</a>
-          <nav class="site-nav" aria-label="Main navigation"><ul>${links}</ul></nav>
-          <button class="text-button theme-toggle" type="button" aria-pressed="false">Dark mode</button>
-          <button class="text-button menu-button" type="button" aria-expanded="false" aria-controls="mobile-nav">Menu</button>
+      <header class="topbar">
+        <div class="container topbar-inner">
+          <a href="${isHome ? "#top" : "/"}" class="brand">${esc(SITE.handle)}<span class="cursor" aria-hidden="true"></span></a>
+          <nav class="topbar-nav" aria-label="Main navigation"><ul>${links}</ul></nav>
+          <div class="topbar-actions">
+            <button class="icon-btn theme-toggle" type="button" aria-label="Toggle theme">${icon(Sun, { className: "icon-sun" })}${icon(Moon, { className: "icon-moon", hidden: true })}</button>
+            ${staticPage ? `<button class="icon-btn only-mobile menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">${icon(Menu)}</button>` : ""}
+          </div>
         </div>
-        <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation">
-          <ul class="container">${links}<li><a class="nav-link" href="/resume.pdf">Resume (PDF)</a></li></ul>
-        </nav>
-      </header>`;
+        <span class="scroll-progress" aria-hidden="true"></span>
+      </header>${staticPage ? `
+      <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation"><ul class="container">${links}</ul></nav>` : ""}`;
 }
 
 export function footerHtml() {
+  const host = SITE.siteUrl.replace(/^https?:\/\//, "");
+  const available = SITE.available !== false;
   return `
-      <footer class="site-footer">
-        <div class="container">
-          <p>© ${new Date().getFullYear()} Anup Katuwal · <a href="mailto:contact@anup-katuwal.com.np">Email</a> · <a href="https://www.linkedin.com/in/anupkatuwal1989">LinkedIn</a> · <a href="https://github.com/anupkatuwal">GitHub</a></p>
+      <footer class="statusbar">
+        <div class="container statusbar-inner">
+          <p class="status${available ? " is-available" : ""}"><span class="status-dot" aria-hidden="true"></span>${available ? "available for work" : "heads down"}</p>
+          <p class="status-time">Kathmandu · NPT UTC+5:45 · <time>--:--</time></p>
+          <p>© ${new Date().getFullYear()}<span class="status-host"> · ${esc(host)}</span></p>
         </div>
       </footer>`;
 }
