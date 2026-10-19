@@ -91,17 +91,21 @@ ${section("research", "Research",
               <p class="text-link-row"><a href="/research">Read the full research →</a></p>
             </article>`)}
 ${section("projects", "Projects",
-  `<ul class="project-grid">${projects.map((p) => `
+  `<ul class="project-list">${projects.map((p) => `
               <li class="project">
-                <h3 class="project-title"><a href="/projects/${esc(p.id)}">${esc(p.title)}</a></h3>
+                <div class="project-head">
+                  <h3 class="project-title"><a href="/projects/${esc(p.id)}">${esc(p.title)}</a></h3>
+                  ${p.metric ? `<p class="project-metric">${esc(p.metric)}</p>` : ""}
+                </div>
                 <p class="project-summary">${esc(firstSentence(p.description))}</p>
-                ${p.metric ? `<p class="project-metric">${esc(p.metric)}</p>` : ""}
-                <ul class="tags" aria-label="Technologies">${(p.tech || []).map((t) => `<li class="tag">${esc(t)}</li>`).join("")}</ul>
-                <ul class="project-links">
-                  <li><a href="/projects/${esc(p.id)}">Details</a></li>
-                  ${p.github ? `<li><a href="${esc(p.github)}">GitHub ↗</a></li>` : ""}
-                  ${p.live ? `<li><a href="${esc(p.live)}">${liveLinkLabel(p.live)} ↗</a></li>` : ""}
-                </ul>
+                <div class="project-foot">
+                  <ul class="tags" aria-label="Technologies">${(p.tech || []).map((t) => `<li class="tag">${esc(t)}</li>`).join("")}</ul>
+                  <ul class="project-links">
+                    <li><a href="/projects/${esc(p.id)}">Details</a></li>
+                    ${p.github ? `<li><a href="${esc(p.github)}">GitHub ↗</a></li>` : ""}
+                    ${p.live ? `<li><a href="${esc(p.live)}">${liveLinkLabel(p.live)} ↗</a></li>` : ""}
+                  </ul>
+                </div>
               </li>`).join("")}
             </ul>`)}
 ${section("experience", "Experience",
