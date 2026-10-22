@@ -1,6 +1,7 @@
 // src/components/BarChart.jsx
-// Horizontal bar chart for the research results. Plain inline SVG — no chart
-// library, so nothing extra loads and the strict CSP stays untouched.
+// Horizontal bar chart for the research results. Plain HTML and CSS — no chart
+// library, so nothing extra loads and the strict CSP stays untouched. The
+// text stays at body size at any width (a scaled SVG shrank it on phones).
 //
 // Two shapes, both driven by RESEARCH.charts in src/data/content.js:
 //   simple   { label, value }           — one series, no legend
@@ -10,13 +11,8 @@
 // colour alone (the two series sit close together under tritanopia).
 import React from "react";
 
-const BAR_H = 16;
-const LABEL_W = 116;
-const VALUE_W = 150; // room for "0.327 before" at the label size
-const PAD_TOP = 10;
-const PLOT_W = 1000 - LABEL_W - VALUE_W;
-
 const fmt = (v) => String(Number(v.toFixed(3)));
+const pct = (v, max) => `${Math.max(0.5, (Math.min(v, max) / max) * 100)}%`;
 
 export function BarChart({ chart }) {
   const { bars = [], max = 1, unit, grouped, title, note, id } = chart;
@@ -28,9 +24,6 @@ export function BarChart({ chart }) {
       ])
     : bars.map((b) => ({ key: b.label, label: b.label, sub: "", value: b.value, tone: "b" }));
 
-  const rowH = grouped ? 30 : 44;
-  const height = PAD_TOP + series.length * rowH + 26;
-  const scale = (v) => Math.max(2, (Math.min(v, max) / max) * PLOT_W);
   const titleId = `chart-${id}-title`;
 
   return (
@@ -47,47 +40,28 @@ export function BarChart({ chart }) {
         </ul>
       )}
 
-      <svg
-        className="chart-svg"
-        viewBox={`0 0 1000 ${height}`}
+      <div
+        className={`chart-plot${grouped ? " chart-plot--grouped" : ""}`}
         role="img"
         aria-label={`${title}. ${series
           .map((s) => `${s.label || bars[0]?.label} ${s.sub} ${fmt(s.value)}`.trim())
           .join("; ")}.`}
-        preserveAspectRatio="xMinYMin meet"
       >
-        {/* Baseline — deliberately recessive */}
-        <line
-          className="chart-axis"
-          x1={LABEL_W} y1={PAD_TOP - 4}
-          x2={LABEL_W} y2={PAD_TOP + series.length * rowH}
-        />
-        {series.map((s, i) => {
-          const y = PAD_TOP + i * rowH + (rowH - BAR_H) / 2;
-          const w = scale(s.value);
-          return (
-            <g key={s.key}>
-              {s.label && (
-                <text className="chart-label" x={LABEL_W - 12} y={y + BAR_H - 3} textAnchor="end">
-                  {s.label}
-                </text>
-              )}
-              <rect
+        {series.map((s) => (
+          <div key={s.key} className="chart-row" aria-hidden="true">
+            <span className="chart-label">{s.label}</span>
+            <span className="chart-track">
+              <span
                 className={`chart-bar chart-bar--${s.tone}`}
-                x={LABEL_W} y={y} width={w} height={BAR_H} rx="2"
-              >
-                <title>{`${s.label || bars[0]?.label} ${s.sub}: ${fmt(s.value)}`}</title>
-              </rect>
-              <text className="chart-value" x={LABEL_W + w + 10} y={y + BAR_H - 3}>
-                {fmt(s.value)}{s.sub ? ` ${s.sub}` : ""}
-              </text>
-            </g>
-          );
-        })}
-        <text className="chart-unit" x={LABEL_W} y={height - 6}>
-          {`scale 0 – ${max} (${unit})`}
-        </text>
-      </svg>
+                style={{ width: pct(s.value, max) }}
+                title={`${s.label || bars[0]?.label} ${s.sub}: ${fmt(s.value)}`.replace(" :", ":")}
+              />
+            </span>
+            <span className="chart-value">{fmt(s.value)}{s.sub ? ` ${s.sub}` : ""}</span>
+          </div>
+        ))}
+      </div>
+      <p className="chart-unit">{`scale 0 – ${max} (${unit})`}</p>
     </figure>
   );
 }
